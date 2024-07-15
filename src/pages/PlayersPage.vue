@@ -1,13 +1,11 @@
 <template>
   <q-page class="row items-center justify-center">
-    <scores-component />
+    Players Page
   </q-page>
 </template>
 
 <script setup lang="ts">
-import ScoresComponent from 'components/scores/ScoresComponent.vue';
-
 defineOptions({
-  name: 'IndexPage'
+  name: 'PlayersPage'
 });
 </script>

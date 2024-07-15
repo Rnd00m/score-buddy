@@ -67,8 +67,8 @@
           <q-avatar size="56px" class="q-mb-sm">
             <img src="https://cdn.quasar.dev/img/boy-avatar.png">
           </q-avatar>
-          <div class="text-weight-bold">Razvan Stoenescu</div>
-          <div>@rstoenescu</div>
+          <div class="text-weight-bold">Rnd00m</div>
+          <div>@Rnd00m</div>
         </div>
       </q-img>
     </q-drawer>
@@ -77,11 +77,11 @@
       <router-view />
     </q-page-container>
 
-    <q-footer elevated class="bg-grey-8 text-white">
+    <q-footer elevated class="bg-primary text-white">
       <q-tabs align="center">
-        <q-route-tab to="/page1" label="Page One" />
-        <q-route-tab to="/page2" label="Page Two" />
-        <q-route-tab to="/page3" label="Page Three" />
+        <q-route-tab to="/" label="Game" />
+        <q-route-tab to="/stats" label="Stats" />
+        <q-route-tab to="/players" label="Players" />
       </q-tabs>
     </q-footer>
 

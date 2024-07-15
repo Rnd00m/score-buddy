@@ -1,8 +1,5 @@
-export interface Todo {
+export interface Player {
   id: number;
-  content: string;
-}
-
-export interface Meta {
-  totalCount: number;
+  name: string;
+  score: number;
 }
