@@ -8,12 +8,14 @@ export const useGameStore = defineStore('game', {
 
         id: 1,
         name: 'Player 1',
-        score: 100
+        score: 100,
+        color: 'red'
       },
       {
         id: 2,
         name: 'Player 2',
-        score: 200
+        score: 200,
+        color: 'blue'
       }
     ] as Player[],
   }),
