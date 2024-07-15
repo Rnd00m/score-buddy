@@ -11,7 +11,8 @@
             icon="remove"
             size="md"
             round
-            @click="$emit('decrementScore', player)"
+            v-touch-repeat:300:300:300:300:50.mouse.enter.space="decrementScore"
+            @click="decrementScore"
           >
           </q-btn>
         </div>
@@ -21,7 +22,8 @@
             icon="add"
             size="md"
             round
-            @click="$emit('incrementScore', player)"
+            v-touch-repeat:300:300:300:300:50.mouse.enter.space="incrementScore"
+            @click="incrementScore"
           >
           </q-btn>
         </div>
@@ -38,6 +40,13 @@ interface Props {
 }
 
 const props = defineProps<Props>();
+const emit = defineEmits<{
+  (event: 'incrementScore', player: Player): void
+  (event: 'decrementScore', player: Player): void
+}>()
+
+const incrementScore = () => emit('incrementScore', props.player);
+const decrementScore = () => emit('decrementScore', props.player);
 </script>
 
 <style>
