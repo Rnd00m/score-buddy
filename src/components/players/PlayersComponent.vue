@@ -12,10 +12,19 @@
     >
       <template v-slot:body-cell-color="props">
         <q-td :props="props">
-          <q-btn label="Medium" color="primary" @click="medium = true" />
+          <q-btn
+            icon="edit"
+            round
+            size=".75rem"
+            :style="{
+              color: props.row.color.textColor,
+              backgroundColor: props.row.color.value
+            }"
+            @click="isColorPickerOpen = true"
+          />
 
           <q-dialog
-            v-model="medium"
+            v-model="isColorPickerOpen"
           >
             <q-card style="width: 700px; max-width: 80vw;">
               <q-card-section>
@@ -23,11 +32,14 @@
               </q-card-section>
 
               <q-card-section class="q-pt-none">
-                <color-picker-component />
+                <color-picker-component
+                  :playerId="props.row.id"
+                  @playerColorUpdated="isColorPickerOpen = false"
+                />
               </q-card-section>
 
               <q-card-actions align="right" class="bg-white text-teal">
-                <q-btn flat label="OK" v-close-popup />
+                <q-btn flat label="Cancel" v-close-popup />
               </q-card-actions>
             </q-card>
           </q-dialog>
@@ -43,7 +55,7 @@ import { ref } from 'vue';
 import ColorPickerComponent from './ColorPickerComponent.vue';
 
 const store = useGameStore();
-const medium = ref(false);
+const isColorPickerOpen = ref(false);
 
 const columns = [
   {

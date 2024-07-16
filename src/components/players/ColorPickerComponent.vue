@@ -8,6 +8,8 @@
         backgroundColor: color.value
       }"
       class="col"
+      :disable="isColorAlreadyPicked(color.name)"
+      @click="handleUpdatePlayerColor(color)"
     >
       {{ color.name }}
     </q-btn>
@@ -15,7 +17,30 @@
 </template>
 
 <script setup lang="ts">
-import { colors } from 'components/models';
+interface Props {
+  playerId: number;
+}
+
+const props = defineProps<Props>();
+
+import { Color, colors } from 'components/models';
+import { useGameStore } from 'stores/game-store';
+import { computed } from 'vue';
+
+const emit = defineEmits<{
+  (event: 'playerColorUpdated'): void
+}>()
+
+const store = useGameStore();
+
+const alreadyPickedColors = computed(() => store.players.map(player => player.color.name));
+const isColorAlreadyPicked = (colorName: string) => alreadyPickedColors.value.includes(colorName);
+
+const handleUpdatePlayerColor = (color: Color) => {
+  store.updatePlayerColor(props.playerId, color);
+
+  emit('playerColorUpdated');
+}
 </script>
 
 <style scoped lang="sass">

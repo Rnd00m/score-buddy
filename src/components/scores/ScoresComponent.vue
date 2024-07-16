@@ -18,11 +18,11 @@ import { useGameStore } from 'stores/game-store';
 const store = useGameStore()
 
 function incrementScoreCallback(player: Player) {
-  store.increment(player.id)
+  store.incrementPlayerScore(player.id)
 }
 
 function decrementScoreCallback(player: Player) {
-  store.decrement(player.id)
+  store.decrementPlayerScore(player.id)
 }
 </script>
 

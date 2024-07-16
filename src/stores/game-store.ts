@@ -1,8 +1,8 @@
 import { defineStore } from 'pinia';
 import { LocalStorage } from 'quasar';
-import { colors, Player } from 'components/models';
+import { Color, colors, Player } from 'components/models';
 
-const PLAYERS_LOCAL_STORAGE_KEY = 'players'
+const PLAYERS_LOCAL_STORAGE_KEY = 'players';
 
 const getDefaultPlayers = (): Player[] => ([
   {
@@ -32,40 +32,45 @@ const getDefaultPlayers = (): Player[] => ([
 ]);
 
 const getPlayers = () => {
-  const players = LocalStorage.getItem(PLAYERS_LOCAL_STORAGE_KEY)
+  const players = LocalStorage.getItem(PLAYERS_LOCAL_STORAGE_KEY);
 
-  console.log('players', players);
-  console.log('players', players ? players : getDefaultPlayers());
-
-  return players ? players : getDefaultPlayers()
-}
+  return players ? players : getDefaultPlayers();
+};
 
 export const useGameStore = defineStore('game', {
   state: () => ({
     players: getPlayers() as Player[]
   }),
   actions: {
-    increment(playerId: number) {
+    getPlayerFromId (playerId: number): Player {
       const player = this.players.find((p) => p.id === playerId);
 
       if (player === undefined) {
-        return;
+        throw new Error(`Player with id ${playerId} not found`);
       }
+
+      return player;
+    },
+    updatePlayerColor(playerId: number, color: Color) {
+      const player= this.getPlayerFromId(playerId);
+
+      player.color = color;
+
+      LocalStorage.set(PLAYERS_LOCAL_STORAGE_KEY, this.players);
+    },
+    incrementPlayerScore(playerId: number) {
+      const player= this.getPlayerFromId(playerId);
 
       player.score++;
 
-      LocalStorage.set(PLAYERS_LOCAL_STORAGE_KEY, this.players)
+      LocalStorage.set(PLAYERS_LOCAL_STORAGE_KEY, this.players);
     },
-    decrement(playerId: number) {
-      const player = this.players.find((p) => p.id === playerId);
-
-      if (player === undefined) {
-        return;
-      }
+    decrementPlayerScore(playerId: number) {
+      const player= this.getPlayerFromId(playerId);
 
       player.score--;
 
-      LocalStorage.set(PLAYERS_LOCAL_STORAGE_KEY, this.players)
+      LocalStorage.set(PLAYERS_LOCAL_STORAGE_KEY, this.players);
     }
-  }
+  },
 });
