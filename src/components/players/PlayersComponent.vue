@@ -9,15 +9,41 @@
       :columns="columns"
       row-key="name"
       hide-bottom
-    />
+    >
+      <template v-slot:body-cell-color="props">
+        <q-td :props="props">
+          <q-btn label="Medium" color="primary" @click="medium = true" />
+
+          <q-dialog
+            v-model="medium"
+          >
+            <q-card style="width: 700px; max-width: 80vw;">
+              <q-card-section>
+                <div class="text-h6">Pick a color</div>
+              </q-card-section>
+
+              <q-card-section class="q-pt-none">
+                <color-picker-component />
+              </q-card-section>
+
+              <q-card-actions align="right" class="bg-white text-teal">
+                <q-btn flat label="OK" v-close-popup />
+              </q-card-actions>
+            </q-card>
+          </q-dialog>
+        </q-td>
+      </template>
+    </q-table>
   </div>
 </template>
 
 <script setup lang="js">
-
 import { useGameStore } from 'stores/game-store';
+import { ref } from 'vue';
+import ColorPickerComponent from './ColorPickerComponent.vue';
 
 const store = useGameStore();
+const medium = ref(false);
 
 const columns = [
   {
@@ -73,11 +99,9 @@ const columns = [
     z-index: 1
 
   td:first-child, th:first-child
-    min-width: 200px
+    min-width: 160px
     position: sticky
     left: 0
-
-  /* prevent scrolling behind sticky top row on focus */
 
   tbody
     /* height of all previous header rows */

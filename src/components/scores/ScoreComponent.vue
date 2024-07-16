@@ -1,27 +1,38 @@
 <template>
-  <q-card>
-    <q-card-section>
-      <div class="text-h6">{{ props.player.name }}</div>
-    </q-card-section>
-
-    <q-card-section class="q-pt-none score-wrapper">
-      <div class="row justify-between items-center">
+  <q-card
+    class="score-card shadow-10"
+    :style="{
+      color: props.player.color.textColor,
+      background: props.player.color.value
+    }"
+  >
+    <q-card-section class="score-wrapper">
+      <div class="row">
         <div class="col text-center">
           <q-btn
+            push
+            class="full-height full-width"
             icon="remove"
-            size="md"
-            round
             v-touch-repeat:300:300:300:300:50.mouse.enter.space="decrementScore"
             @click="decrementScore"
           >
           </q-btn>
         </div>
-        <div class="col-6 text-center text-h3">{{ props.player.score }}</div>
+        <div class="col-6 text-center text-h3 flex items-center justify-center column">
+          <div
+            class="text-h6"
+          >
+            {{ props.player.name }}
+          </div>
+          <div>
+            {{ props.player.score }}
+          </div>
+        </div>
         <div class="col text-center">
           <q-btn
             icon="add"
-            size="md"
-            round
+            push
+            class="full-height full-width"
             v-touch-repeat:300:300:300:300:50.mouse.enter.space="incrementScore"
             @click="incrementScore"
           >
@@ -49,20 +60,7 @@ const incrementScore = () => emit('incrementScore', props.player);
 const decrementScore = () => emit('decrementScore', props.player);
 </script>
 
-<style>
-@media (min-width: 640px) {
-  .scores-wrapper {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-
-.scores-wrapper {
-  display: grid;
-  row-gap: 1.5rem;
-  column-gap: 1.5rem;
-}
-
-.score-wrapper {
-  width: 300px;
-}
+<style lang="sass">
+.score-wrapper
+  min-width: 350px
 </style>
