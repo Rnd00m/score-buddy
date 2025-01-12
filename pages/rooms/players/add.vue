@@ -53,23 +53,24 @@ const player = ref({
 });
 
 const colors = ref([
-  { name: 'Turquoise', value: '#1abc9c' },
-  { name: 'Green Sea', value: '#16a085' },
-  { name: 'Emerald', value: '#2ecc71' },
-  { name: 'Nephritis', value: '#27ae60' },
-  { name: 'Peter River', value: '#3498db' },
-  { name: 'Belize Hole', value: '#2980b9' },
-  { name: 'Amethyst', value: '#9b59b6' },
-  { name: 'Wisteria', value: '#8e44ad' },
-  { name: 'Sun Flower', value: '#f1c40f' },
-  { name: 'Orange', value: '#f39c12' },
-  { name: 'Carrot', value: '#e67e22' },
-  { name: 'Pumpkin', value: '#d35400' },
-  { name: 'Alizarin', value: '#e74c3c' },
-  { name: 'Pomegranate', value: '#c0392b' },
-  { name: 'Midnight Blue', value: '#2c3e50' },
-  { name: 'Asbestos', value: '#7f8c8d' },
+  { "name": "Chestnut Brown", "value": "#8B4513" },
+  { "name": "Alizarin", "value": "#e74c3c" },
+  { "name": "Orange", "value": "#f39c12" },
+  { "name": "Sunflower Yellow", "value": "#FFD700" },
+  { "name": "Lime Green", "value": "#32CD32" },
+  { "name": "Emerald Green", "value": "#2E8B57" },
+  { "name": "Sky Blue", "value": "#87CEEB" },
+  { "name": "Royal Blue", "value": "#4169E1" },
+  { "name": "Navy Blue", "value": "#000080" },
+  { "name": "Wisteria", "value": "#8e44ad" },
+  { "name": "Hot Pink", "value": "#FF69B4" },
+  { "name": "Rose Pink", "value": "#FF1493" },
+  { "name": "Turquoise", "value": "#40E0D0" },
+  { "name": "Teal", "value": "#008080" },
+  { "name": "Silver", "value": "#bdc3c7" },
+  { "name": "Jet Black", "value": "#000000" }
 ]);
+
 
 const availableColors = computed(() => {
   return colors.value.filter(color => !roomStore.players.some(player => player.color.value === color.value));
