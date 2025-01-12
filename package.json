@@ -7,11 +7,15 @@
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare"
+    "postinstall": "nuxt prepare",
+    "tailwind": "npx tailwindcss build assets/scss/main.scss -o .tailwind/tailwind.css"
   },
   "dependencies": {
+    "@pinia/nuxt": "^0.9.0",
+    "@primevue/forms": "^4.2.5",
     "@primevue/themes": "^4.2.5",
     "nuxt": "^3.15.1",
+    "primeicons": "^7.0.0",
     "primevue": "^4.2.5",
     "tailwindcss-primeui": "^0.3.4",
     "vue": "latest",
@@ -20,6 +24,7 @@
   "packageManager": "pnpm@9.15.3+sha512.1f79bc245a66eb0b07c5d4d83131240774642caaa86ef7d0434ab47c0d16f66b04e21e0c086eb61e62c77efc4d7f7ec071afad3796af64892fae66509173893a",
   "devDependencies": {
     "@primevue/nuxt-module": "^4.2.5",
+    "@tailwindcss/typography": "^0.5.16",
     "autoprefixer": "^10.4.20",
     "postcss": "^8.4.49",
     "sass": "^1.83.1",

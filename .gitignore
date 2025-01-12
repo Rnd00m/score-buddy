@@ -4,6 +4,7 @@
 .nuxt
 .nitro
 .cache
+.tailwind
 dist
 
 # Node dependencies
