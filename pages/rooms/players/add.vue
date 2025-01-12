@@ -1,5 +1,10 @@
 <template>
-  <h1 class="text-3xl mb-6">Add player</h1>
+  <h1 class="mb-6 flex items-center gap-4">
+    <NuxtLink to="/rooms">
+      <Button severity="secondary" icon="pi pi-arrow-left" />
+    </NuxtLink>
+    <span class="text-3xl">Add player</span>
+  </h1>
 
   <Form v-slot="$form" :initialValues="player" :resolver @submit="onFormSubmit" class="flex flex-col gap-4 w-full">
     <div class="flex flex-col gap-1">
