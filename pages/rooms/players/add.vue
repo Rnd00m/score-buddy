@@ -113,11 +113,7 @@ const resolver = ({values}) => {
 
 const onFormSubmit = ({valid, states}) => {
   if (valid) {
-    roomStore.addPlayer({
-      name: states.name.value.trim(),
-      color: states.color.value,
-      score: 0
-    });
+    roomStore.addPlayer(states.name.value.trim(),states.color.value);
     router.push('/rooms');
   }
 };

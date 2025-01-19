@@ -1,6 +1,6 @@
 <template>
   <h1 class="mb-6 flex justify-between items-center">
-    <span class="text-3xl">{{ roomStore.name }}</span>
+    <span class="text-3xl">Room</span>
     <NuxtLink to="/rooms/players/add">
       <Button icon="pi pi-user-plus" />
     </NuxtLink>
