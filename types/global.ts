@@ -4,13 +4,13 @@ export interface Color {
 }
 
 export interface Game {
-  id: string;
+  uuid: string;
   name: string;
   scores: Record<number, number> // Map of player index to score
 }
 
 export interface Player {
-  id: string;
+  uuid: string;
   name: string;
   color: Color;
   score: number;
