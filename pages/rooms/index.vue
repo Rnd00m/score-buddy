@@ -7,6 +7,7 @@
   </h1>
 
   <DataTable :value="roomStore.players" sortField="score" :sortOrder="-1" removableSort class="-mx-6">
+    <template #empty> Currently no players. </template>
     <Column field="name" header="Player">
       <template #body="slotProps">
         <div class="flex items-center gap-2">

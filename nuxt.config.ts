@@ -3,6 +3,7 @@ import Lara from '@primevue/themes/lara';
 export default defineNuxtConfig({
   compatibilityDate: '2024-11-01',
   devtools: {enabled: true},
+  ssr: false,
   css: ['@/assets/scss/main.scss'],
   modules: [
     '@primevue/nuxt-module',
