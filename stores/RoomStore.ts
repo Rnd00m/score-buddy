@@ -8,6 +8,10 @@ export const useRoomStore = defineStore('room', {
       players: [] as Player[]
     }
   ),
+  persist: {
+    key: 'roomStore',
+    storage: localStorage
+  },
   actions: {
     addPlayer(name: string, color: Color) {
       this.players.push({
