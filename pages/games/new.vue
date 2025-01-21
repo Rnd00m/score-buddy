@@ -23,7 +23,7 @@
 
     <div class="flex flex-col gap-1">
       <label for="startScore">Start score</label>
-      <InputNumber id="startScore" name="startScore" :min="lowestPossibleScore || undefined" inputId="horizontal-buttons" showButtons buttonLayout="horizontal" :step="1" fluid>
+      <InputNumber id="startScore" name="startScore" :min="lowestPossibleScore !== null ? lowestPossibleScore : undefined" showButtons buttonLayout="horizontal" :step="1" fluid>
         <template #incrementbuttonicon>
           <span class="pi pi-plus" />
         </template>
@@ -39,7 +39,7 @@
 
     <div class="flex flex-col gap-1">
       <label for="endingScore">End score</label>
-      <InputNumber id="endingScore" name="endingScore" :min="lowestPossibleScore || undefined" inputId="horizontal-buttons" showButtons buttonLayout="horizontal" :step="1" fluid>
+      <InputNumber id="endingScore" name="endingScore" :min="lowestPossibleScore !== null ? lowestPossibleScore : undefined" showButtons buttonLayout="horizontal" :step="1" fluid>
         <template #incrementbuttonicon>
           <span class="pi pi-plus" />
         </template>
@@ -64,7 +64,7 @@
 
     <div class="flex flex-col gap-1">
       <label for="lowestPossibleScore">Lowest possible score</label>
-      <InputNumber id="lowestPossibleScore" name="lowestPossibleScore" inputId="horizontal-buttons" showButtons buttonLayout="horizontal" :step="1" fluid v-model="lowestPossibleScore">
+      <InputNumber id="lowestPossibleScore" name="lowestPossibleScore" showButtons buttonLayout="horizontal" :step="1" fluid v-model="lowestPossibleScore">
         <template #incrementbuttonicon>
           <span class="pi pi-plus" />
         </template>
