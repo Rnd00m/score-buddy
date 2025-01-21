@@ -6,7 +6,7 @@
     <span class="text-3xl">New Game</span>
   </h1>
 
-  <Form v-slot="$form" :initialValues="player" :resolver @submit="onFormSubmit" class="flex flex-col gap-4 w-full">
+  <Form v-slot="$form" :initialValues="player" :resolver :validateOnValueUpdate="false" :validateOnBlur="false" @submit="onFormSubmit" class="flex flex-col gap-4 w-full">
     <div class="flex flex-col gap-1">
       <label for="name">Name</label>
       <InputText
