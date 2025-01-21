@@ -35,6 +35,8 @@ export const useRoomStore = defineStore('room', {
           acc[player.uuid] = 0;
           return acc;
         }, {} as Record<number, number>),
+        createdAt: new Date(),
+        endedAt: null
       };
       this.games.push(newGame);
     },
@@ -47,4 +49,9 @@ export const useRoomStore = defineStore('room', {
       }
     }
   },
+  getters: {
+    getActiveGame: (state) => {
+      return state.games.find((game) => game.endedAt === null) || null;
+    }
+  }
 })

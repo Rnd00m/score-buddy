@@ -20,7 +20,8 @@ export default defineNuxtConfig({
             order: 'tailwind-base, primevue, tailwind-utilities'
           }
         }
-      }
+      },
+      ripple: true
     }
   },
   postcss: {
