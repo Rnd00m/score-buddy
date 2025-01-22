@@ -1,5 +1,6 @@
 <template>
   <div
+    v-if="roomStore.getActiveGame !== null"
     v-for="(player, index) in roomStore.players"
     :key="index"
     class="flex justify-between p-3 rounded-lg shadow-lg"
@@ -20,7 +21,7 @@
 
     <div class="flex flex-col items-center flex-1 mx-4">
       <h3 :style="{ color: getTextColor(player.color.value) }" class="font-semibold text-lg">{{ player.name }}</h3>
-      <p :style="{ color: getTextColor(player.color.value) }" class="font-bold text-2xl">{{ player.score }}</p>
+      <p :style="{ color: getTextColor(player.color.value) }" class="font-bold text-2xl">{{ roomStore.getPlayerScore(player) }}</p>
     </div>
 
     <Button

@@ -38,7 +38,7 @@
     </div>
 
     <div class="flex flex-col gap-1">
-      <label for="endingScore">End score</label>
+      <label for="endingScore">Ending score</label>
       <InputNumber id="endingScore" name="endingScore" :min="lowestPossibleScore !== null ? lowestPossibleScore : undefined" showButtons buttonLayout="horizontal" :step="1" fluid>
         <template #incrementbuttonicon>
           <span class="pi pi-plus" />
@@ -84,8 +84,8 @@
 </template>
 
 <script setup lang="ts">
-import {WinCondition} from '~/types/global';
-import {ref} from 'vue';
+import { WinCondition } from '~/types/global';
+import { ref } from 'vue';
 
 const roomStore = useRoomStore();
 const router = useRouter();
@@ -146,8 +146,14 @@ const resolver = ({values}) => {
 
 const onFormSubmit = ({valid, states}) => {
   if (valid) {
-    console.log(states.name.value.trim(), states.startScore.value, states.endingScore.value, states.winCondition.value, states.isNegativeScoreAllowed.value);
-    // router.push('/rooms');
+    roomStore.startGame(
+        states.name.value.trim(),
+        states.startScore.value,
+        states.endingScore.value,
+        states.winCondition.value,
+        states.lowestPossibleScore.value
+    );
+    router.push('/games');
   }
 };
 </script>
