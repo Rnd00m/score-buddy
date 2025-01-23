@@ -5,6 +5,7 @@ import { WinCondition } from "~/types/global";
 export const useRoomStore = defineStore('room', {
   state: () => (
     {
+      currentGame: null as Game | null,
       games: [] as Game[],
       players: [] as Player[]
     }
@@ -24,15 +25,11 @@ export const useRoomStore = defineStore('room', {
 
       this.players.push(player);
 
-      const activeGame = this.getActiveGame;
-
-      if (!activeGame) {
+      if (!this.currentGame) {
         return;
       }
 
-      if (this.getActiveGame !== null) {
-        this.getActiveGame.scores[player.uuid] = activeGame.startScore;
-      }
+      this.currentGame.scores[player.uuid] = this.currentGame.startScore;
     },
     removePlayer(playerUuid: string) {
       const player = this.players.find((player) => player.uuid === playerUuid);
@@ -47,7 +44,7 @@ export const useRoomStore = defineStore('room', {
       winCondition: WinCondition,
       lowestPossibleScore: number | null
     ) {
-      const newGame: Game = {
+      this.currentGame = {
         uuid: uuidv4(),
         name,
         startScore,
@@ -61,18 +58,14 @@ export const useRoomStore = defineStore('room', {
         createdAt: new Date(),
         endedAt: null
       };
-      this.games.push(newGame);
-      /*this.ranking = this.players.map((player) => ({
-        player,
-        score: 0
-      }));*/
     },
     endGame() {
-      const activeGame = this.getActiveGame;
+      if (this.currentGame) {
+        this.currentGame.endedAt = new Date();
+        this.calculateRanking(this.currentGame);
+        this.games.push(this.currentGame);
 
-      if (activeGame) {
-        activeGame.endedAt = new Date();
-        this.calculateRanking(activeGame);
+        this.currentGame = null;
       }
     },
     calculateRanking(game: Game) {
@@ -107,52 +100,39 @@ export const useRoomStore = defineStore('room', {
       });
     },
     incrementScore(player: Player) {
-      const activeGame = this.getActiveGame;
-
-      if (!activeGame) {
+      if (!this.currentGame) {
         return;
       }
 
-      if (activeGame.endingScore === null || activeGame.scores[player.uuid] !== activeGame.endingScore) {
-        activeGame.scores[player.uuid]++;
+      if (this.currentGame.endingScore === null || this.currentGame.scores[player.uuid] !== this.currentGame.endingScore) {
+        this.currentGame.scores[player.uuid]++;
       }
 
       if (
-        activeGame.scores[player.uuid] === activeGame.endingScore) {
+        this.currentGame.scores[player.uuid] === this.currentGame.endingScore) {
         this.endGame();
       }
     },
     decrementScore(player: Player) {
-      const activeGame = this.getActiveGame;
-
-      if (!activeGame) {
+      if (!this.currentGame) {
         return;
       }
 
-      if (activeGame.lowestPossibleScore === null
-        || activeGame.scores[player.uuid] > activeGame.lowestPossibleScore
-        && (activeGame.endingScore === null || activeGame.scores[player.uuid] !== activeGame.endingScore)) {
-        activeGame.scores[player.uuid]--;
+      if (this.currentGame.lowestPossibleScore === null
+        || this.currentGame.scores[player.uuid] > this.currentGame.lowestPossibleScore
+        && (this.currentGame.endingScore === null || this.currentGame.scores[player.uuid] !== this.currentGame.endingScore)) {
+        this.currentGame.scores[player.uuid]--;
       }
 
-      if (activeGame.scores[player.uuid] === activeGame.endingScore) {
+      if (this.currentGame.scores[player.uuid] === this.currentGame.endingScore) {
         this.endGame();
       }
     },
     getPlayerScore (player: Player) {
-      const activeGame = this.getActiveGame;
-
-      if (!activeGame) {
-        return 0;
-      }
-
-      return activeGame.scores[player.uuid];
+      return this.currentGame?.scores[player.uuid];
     }
   },
   getters: {
-    getActiveGame: (state) => {
-      return state.games.find((game) => game.endedAt === null) || null;
-    },
     getLastCompletedGame: (state) => {
       return state.games
         .filter((game) => game.endedAt !== null) // Récupérer les parties terminées

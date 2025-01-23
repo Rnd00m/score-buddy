@@ -1,6 +1,6 @@
 <template>
   <div
-    v-if="roomStore.getActiveGame !== null"
+    v-if="roomStore.currentGame !== null"
     v-for="(player, index) in roomStore.players"
     :key="index"
     class="flex justify-between p-3 rounded-lg shadow-lg"

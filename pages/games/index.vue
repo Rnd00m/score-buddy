@@ -1,7 +1,7 @@
 <template>
   <h1 class="text-3xl mb-6">Game</h1>
 
-  <div v-if="roomStore.getActiveGame === null" class="h-[70vh] flex items-center justify-center">
+  <div v-if="roomStore.currentGame === null" class="h-[70vh] flex items-center justify-center">
     <div class="flex flex-col items-center gap-4" v-if="roomStore.players.length">
       <h2 class="text-3xl font-bold">Start a new game</h2>
       <NuxtLink to="/games/new">
