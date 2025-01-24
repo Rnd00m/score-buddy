@@ -1,5 +1,5 @@
 <template>
-  <ConfirmDialog group="confirm" class="max-w-80 w-[calc(100%-7rem)]">
+  <ConfirmDialog group="confirm" class="max-w-96 w-[calc(100%-6rem)]">
     <template #container="{ message, acceptCallback, rejectCallback }">
       <div class="flex flex-col items-center p-8 bg-surface-0 dark:bg-surface-900 rounded">
         <div class="rounded-full bg-orange-500 text-primary-contrast inline-flex justify-center items-center h-24 w-24 -mt-20">
@@ -72,7 +72,7 @@ const handleResetGame = () => {
   confirm.require({
     group: 'confirm',
     header: 'Are you sure?',
-    message: "You're about to reset the current game. Points will be lost.",
+    message: "You're about to reset the current game, all points will be lost.",
     accept: () => {
       roomStore.resetGame();
     },
