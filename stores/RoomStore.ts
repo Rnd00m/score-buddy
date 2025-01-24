@@ -1,6 +1,7 @@
 import type { Player, Color, Game, Rank } from "~/types/global";
 import { v4 as uuidv4 } from 'uuid';
 import { WinCondition } from "~/types/global";
+import { useToast } from 'primevue/usetoast';
 
 export const useRoomStore = defineStore('room', {
   state: () => (

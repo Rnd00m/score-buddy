@@ -1,4 +1,6 @@
 <template>
+  <Toast position="top-center" class="w-[calc(100%-2rem)]"/>
+
   <h1 class="mb-6 flex justify-between items-center">
     <span class="text-3xl">Room</span>
     <NuxtLink to="/rooms/players/add">
@@ -18,11 +20,26 @@
       </template>
     </Column>
     <Column field="score" header="Score" sortable ></Column>
+    <Column class="w-8">
+      <template #body="{ data }">
+        <Button icon="pi pi-times" @click="handleRemovePlayer(data.uuid)" severity="danger" variant="text" rounded aria-label="Cancel" />
+      </template>
+    </Column>
   </DataTable>
 </template>
 
 <script setup lang="ts">
 const roomStore = useRoomStore();
+
+const toast = useToast();
+const handleRemovePlayer = (playerUuid: string) => {
+  if (roomStore.currentGame !== null) {
+    toast.add({ severity: 'error', summary: 'Error', detail: 'You can\'t remove player while a game is in progress.', life: 4000 });
+    return;
+  }
+
+  roomStore.removePlayer(playerUuid);
+};
 </script>
 
 <style scoped>

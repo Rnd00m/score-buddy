@@ -10,6 +10,9 @@ export default defineNuxtConfig({
     '@pinia/nuxt',
     'pinia-plugin-persistedstate/nuxt',
   ],
+  plugins: [
+    { src: './plugins/toast.plugin.ts', mode: 'client' },
+  ],
   primevue: {
     options: {
       theme: {
