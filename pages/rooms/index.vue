@@ -1,10 +1,10 @@
 <template>
-  <Toast position="top-center" class="w-[calc(100%-2rem)]"/>
+  <Toast position="top-center" class="max-w-[calc(100%-2rem)]"/>
 
   <h1 class="mb-6 flex justify-between items-center">
     <span class="text-3xl">Room</span>
     <NuxtLink to="/rooms/players/add">
-      <Button icon="pi pi-user-plus" />
+      <Button severity="contrast" rounded icon="pi pi-user-plus" />
     </NuxtLink>
   </h1>
 

@@ -69,6 +69,14 @@ export const useRoomStore = defineStore('room', {
         this.currentGame = null;
       }
     },
+    resetGame() {
+      if (this.currentGame !== null) {
+        this.currentGame.scores = this.players.reduce((acc: Record<string, number>, player) => {
+          acc[player.uuid] = this.currentGame.startScore;
+          return acc;
+        }, {} as Record<string, number>);
+      }
+    },
     calculateRanking(game: Game) {
       const rankings = this.players.map((player) => ({
         player,
