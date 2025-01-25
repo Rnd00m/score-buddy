@@ -15,9 +15,15 @@ export interface Game {
   endingScore: number | null;
   lowestPossibleScore: number | null;
   winCondition: WinCondition;
-  scores: Record<string, number> // Map of player index to score
+  scores: GameScore[];
   createdAt: Date;
   endedAt: Date | null;
+}
+
+export interface GameScore {
+  player: Player;
+  score: number;
+  rank: number;
 }
 
 export interface Player {

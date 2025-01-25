@@ -16,16 +16,28 @@
   </ConfirmDialog>
 
   <ConfirmDialog group="end" class="max-w-96 w-[calc(100%-6rem)]">
-    <template #container="{ message, acceptCallback, rejectCallback }">
+    <template #container="{ message, acceptCallback, rejectCallback }" v-if="roomStore.winners">
       <div class="flex flex-col items-center p-8 bg-surface-0 dark:bg-surface-900 rounded">
-        <div class="rounded-full bg-primary text-primary-contrast inline-flex justify-center items-center h-24 w-24 -mt-20">
+        <div
+          class="rounded-full bg-primary text-primary-contrast inline-flex justify-center items-center h-24 w-24 -mt-20"
+          :style="endGameIconStyle"
+        >
           <i class="pi pi-trophy text-5xl"></i>
         </div>
         <span class="font-bold text-2xl block mb-2 mt-6">{{ message.header }}</span>
         <p class="mb-0">{{ message.message }}</p>
         <div class="flex items-center gap-2 mt-6">
-          <Button label="Confirm" @click="acceptCallback"></Button>
-          <Button label="Cancel" outlined @click="rejectCallback"></Button>
+          <Button
+            label="Yes"
+            @click="acceptCallback"
+            :style="endGameYesButtonStyle"
+          ></Button>
+          <Button
+            label="No"
+            outlined
+            :style="endGameNoButtonStyle"
+            @click="rejectCallback"
+          ></Button>
         </div>
       </div>
     </template>
@@ -45,9 +57,54 @@
 </template>
 
 <script setup lang="ts">
+import type {GameScore} from "~/types/global";
+
 const roomStore = useRoomStore();
 const confirm = useConfirm();
 const router = useRouter();
+
+const endGameIconStyle = computed(() => {
+  if (!roomStore.winners || roomStore.winners.length > 1) return {};
+
+  const winnerColor = roomStore.winners[0].player.color.value;
+
+  return {
+    background: winnerColor,
+    color: getTextColorContrasted(winnerColor)
+  }
+});
+
+const endGameYesButtonStyle = computed(() => {
+  if (!roomStore.winners || roomStore.winners.length > 1) return {};
+
+  const winnerColor = roomStore.winners[0].player.color.value;
+
+  return {
+    background: winnerColor,
+    color: getTextColorContrasted(winnerColor),
+    borderColor: winnerColor
+  }
+});
+const endGameNoButtonStyle = computed(() => {
+  if (!roomStore.winners || roomStore.winners.length > 1) return {};
+
+  const winnerColor = roomStore.winners[0].player.color.value;
+
+  return {
+    color: winnerColor,
+    borderColor: winnerColor
+  }
+});
+
+watch(
+  () => roomStore.winners,
+  (value) => {
+    if (value?.length) {
+      console.log(value)
+      handleGameFinished(value);
+    }
+  }
+);
 
 const handleEndGame = () => {
   confirm.require({
@@ -56,7 +113,7 @@ const handleEndGame = () => {
     message: "You're about to end the game.",
     accept: () => {
       roomStore.endGame();
-      handleGameFinished();
+      router.push('/games')
     },
   });
 };
@@ -72,12 +129,17 @@ const handleResetGame = () => {
   });
 };
 
-const handleGameFinished = () => {
+const handleGameFinished = (winners: GameScore[]) => {
+  const endMessage = winners.length > 1
+    ? 'It\'s a tie!'
+    : winners[0].player.name + ' has won!';
+
   confirm.require({
     group: 'end',
-    header: 'Game finished',
-    message: 'The game has ended, do you want to start a new one?',
+    header: endMessage,
+    message: 'Do you want to start a new one?',
     accept: () => {
+      roomStore.endGame();
       router.push('/games')
     },
   });
