@@ -1,7 +1,6 @@
 import type { Player, Color, Game, Rank } from "~/types/global";
 import { v4 as uuidv4 } from 'uuid';
 import { WinCondition } from "~/types/global";
-import { useToast } from 'primevue/usetoast';
 
 export const useRoomStore = defineStore('room', {
   state: () => (
@@ -70,7 +69,7 @@ export const useRoomStore = defineStore('room', {
       }
     },
     resetGame() {
-      if (this.currentGame !== null) {
+      if (this.currentGame) {
         this.currentGame.scores = this.players.reduce((acc: Record<string, number>, player) => {
           acc[player.uuid] = this.currentGame.startScore;
           return acc;

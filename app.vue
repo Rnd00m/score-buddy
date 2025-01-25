@@ -27,14 +27,22 @@
 
 <script setup lang="ts">
 import { useRoute } from 'vue-router';
+const roomStore = useRoomStore();
 
-const items = [
-  { icon: 'pi pi-home', route: '/' },
-  { icon: 'pi pi-play', route: '/games' },
-  { icon: 'pi pi-users', route: '/rooms' },
-];
+const items = computed(() => {
+  return [
+    { icon: 'pi pi-home', route: '/' },
+    { icon: 'pi pi-play', route: roomStore.currentGame !== null ? '/games/current' : '/games' },
+    { icon: 'pi pi-users', route: '/rooms' },
+  ];
+});
 
 const route = useRoute();
 
-const isActive = (routePath: string) => route.path === routePath;
+const isActive = (routePath: string) => {
+  const parent = route.path.split('/')[1];
+  const targetRouteParent = routePath.split('/')[1];
+
+  return parent === targetRouteParent;
+}
 </script>
