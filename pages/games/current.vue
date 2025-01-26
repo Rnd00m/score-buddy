@@ -14,7 +14,6 @@
       </div>
     </template>
   </ConfirmDialog>
-
   <ConfirmDialog group="reset" class="max-w-96 w-[calc(100%-6rem)]">
     <template #container="{ message, acceptCallback, rejectCallback }">
       <div class="flex flex-col items-center p-8 bg-surface-0 dark:bg-surface-900 rounded relative">
@@ -33,7 +32,6 @@
       </div>
     </template>
   </ConfirmDialog>
-
   <ConfirmDialog group="end" class="max-w-96 w-[calc(100%-6rem)]">
     <template #container="{ message, acceptCallback, rejectCallback }" v-if="roomStore.winners">
       <div class="flex flex-col items-center p-8 bg-surface-0 dark:bg-surface-900 rounded">
