@@ -117,7 +117,6 @@ watch(
   () => roomStore.winners,
   (value) => {
     if (value?.length) {
-      console.log(value)
       handleGameFinished(value);
     }
   }

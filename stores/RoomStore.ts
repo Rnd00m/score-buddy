@@ -34,6 +34,8 @@ actions: {
       score: this.currentGame.startScore,
       rank: 1
     });
+
+    this.calculateRankings(this.currentGame);
   },
   removePlayer(playerUuid: string) {
     const player = this.players.find((player) => player.uuid === playerUuid);
@@ -69,7 +71,7 @@ actions: {
   endGame() {
     if (this.currentGame) {
       this.currentGame.endedAt = new Date();
-      this.calculateRanking(this.currentGame);
+      this.calculatePlayersEndScore(this.currentGame);
       this.games.push(this.currentGame);
 
       this.currentGame = null;
@@ -89,35 +91,38 @@ actions: {
   cancelGame() {
     this.currentGame = null;
   },
-  calculateRanking(game: Game) {
-    const rankings = this.players.map((player) => ({
-      player,
-      score: game.scores.find((score) => score.player.uuid === player.uuid)?.score || 0,
-    }));
-
-    const ranking = Object.groupBy(rankings, (player) => player.score);
-
-    let scoreToAdd: number;
-
-    if (game.winCondition === WinCondition.MostPoints) {
-      scoreToAdd = this.players.length - Object.entries(ranking).length;
-    } else {
-      scoreToAdd = this.players.length - 1;
-    }
-
-    Object.entries(ranking).forEach(([, players], index) => {
-      players?.forEach((player) => {
-        const roomPlayer = this.players.find((p) => p.uuid === player.player.uuid);
-
-        if (roomPlayer) {
-          roomPlayer.score += scoreToAdd;
-        }
-      });
+  calculateRankings(game: Game) {
+    const rankings = game.scores.sort((a, b) => {
       if (game.winCondition === WinCondition.MostPoints) {
-        scoreToAdd++;
+        if (a.score > b.score) return -1;
+        if (a.score < b.score) return 1;
       } else {
-        scoreToAdd--;
+        if (a.score < b.score) return -1;
+        if (a.score > b.score) return 1;
       }
+
+      return 0;
+    });
+
+    let previousScore: number | null = null;
+    rankings.forEach((score: GameScore, index) => {
+      if (previousScore === score.score) {
+        score.rank = rankings[index - 1].rank;
+      } else {
+        score.rank = index + 1;
+      }
+
+      previousScore = score.score;
+    });
+  },
+  calculatePlayersEndScore(game: Game) {
+    const playersNumber = game.scores.length;
+    game.scores.forEach((score: GameScore) => {
+      const player = this.players.find((player) => player.uuid === score.player.uuid);
+
+      if (!player) return;
+
+      player.score += playersNumber - score.rank;
     });
   },
   incrementScore(player: Player) {
@@ -134,6 +139,8 @@ actions: {
     if (this.currentGame.endingScore === null || playerScore.score !== this.currentGame.endingScore) {
       playerScore.score++;
     }
+
+    this.calculateRankings(this.currentGame);
   },
   decrementScore(player: Player): void {
     if (!this.currentGame) {
@@ -151,6 +158,8 @@ actions: {
       && (this.currentGame.endingScore === null || playerScore.score !== this.currentGame.endingScore)) {
       playerScore.score--;
     }
+
+    this.calculateRankings(this.currentGame);
   },
   getPlayerScore (player: Player): GameScore | null {
     return this.currentGame?.scores.find((score) => score.player.uuid === player.uuid) || null;
@@ -167,14 +176,7 @@ getters: {
 
     if (state.currentGame.endingScore === null) return null;
 
-    return state.currentGame.scores.filter(playerScore => playerScore.score === state.currentGame.endingScore) || null;
+    return state.currentGame.scores.filter(playerScore => playerScore.rank === 1) || null;
   },
-  playersAboutToWin: (state): GameScore[] | null => {
-    if (state.currentGame === null) return null;
-
-    if (state.currentGame.endingScore === null) return null;
-
-
-  }
 }
 })
