@@ -1,4 +1,4 @@
-import type {Player, Color, Game, Rank, GameScore} from "~/types/global";
+import type {Player, Color, Game, GameScore} from "~/types/global";
 import { v4 as uuidv4 } from 'uuid';
 import { WinCondition } from "~/types/global";
 
@@ -178,5 +178,12 @@ getters: {
 
     return state.currentGame.scores.filter(playerScore => playerScore.rank === 1) || null;
   },
+  isGameFinished: (state): boolean => {
+    if (state.currentGame === null) return false;
+
+    if (state.currentGame.endingScore === null) return false;
+
+    return state.currentGame.scores.some(playerScore => playerScore.score === state.currentGame.endingScore);
+  }
 }
 })

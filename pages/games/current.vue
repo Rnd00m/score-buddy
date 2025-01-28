@@ -74,8 +74,6 @@
 </template>
 
 <script setup lang="ts">
-import type {GameScore} from "~/types/global";
-
 const roomStore = useRoomStore();
 const confirm = useConfirm();
 const router = useRouter();
@@ -114,10 +112,10 @@ const endGameNoButtonStyle = computed(() => {
 });
 
 watch(
-  () => roomStore.winners,
-  (value) => {
-    if (value?.length) {
-      handleGameFinished(value);
+  () => roomStore.isGameFinished,
+  (isGameFinished) => {
+    if (isGameFinished) {
+      handleGameFinished();
     }
   }
 );
@@ -128,8 +126,7 @@ const handleEndGame = () => {
     header: 'Are you sure?',
     message: "You're about to end the game.",
     accept: () => {
-      roomStore.endGame();
-      router.push('/games')
+      handleGameFinished();
     },
   });
 };
@@ -149,10 +146,12 @@ const handleResetGame = () => {
   });
 };
 
-const handleGameFinished = (winners: GameScore[]) => {
-  const endMessage = winners.length > 1
+const handleGameFinished = () => {
+  if (!roomStore.winners) return;
+
+  const endMessage = roomStore.winners.length > 1
     ? 'It\'s a tie!'
-    : winners[0].player.name + ' has won!';
+    : roomStore.winners[0].player.name + ' has won!';
 
   confirm.require({
     group: 'end',
@@ -162,6 +161,10 @@ const handleGameFinished = (winners: GameScore[]) => {
       roomStore.endGame();
       router.push('/games')
     },
+    reject: () => {
+      roomStore.endGame();
+      router.push('/rooms')
+    }
   });
 };
 </script>
