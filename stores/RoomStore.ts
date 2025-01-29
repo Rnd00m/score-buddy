@@ -174,8 +174,6 @@ getters: {
   winners: (state): GameScore[] | null => {
     if (state.currentGame === null) return null;
 
-    if (state.currentGame.endingScore === null) return null;
-
     return state.currentGame.scores.filter(playerScore => playerScore.rank === 1) || null;
   },
   isGameFinished: (state): boolean => {
