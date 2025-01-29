@@ -23,8 +23,9 @@
     </NuxtLink>
   </h1>
 
-  <DataTable :value="roomStore.players" sortField="score" :sortOrder="-1" removableSort class="-mx-6">
+  <DataTable :value="roomStore.players" v-model:expandedRows="expandedRows" dataKey="uuid" sortField="score" :sortOrder="-1" removableSort class="-mx-6">
     <template #empty> Currently no players. </template>
+    <Column expander class="w-1" />
     <Column field="name" header="Player">
       <template #body="slotProps">
         <div class="flex items-center gap-2">
@@ -40,13 +41,35 @@
         <Button icon="pi pi-times" @click="handleRemovePlayer(data.uuid)" severity="danger" variant="text" rounded aria-label="Cancel" />
       </template>
     </Column>
+    <template #expansion="slotProps">
+      <div class="p-4">
+        <DataTable :value="userGamesScores(slotProps.data)" removableSort>
+          <Column field="name" header="Game" />
+          <Column header="Rank" >
+            <template #body="{ data }">
+              {{ data.rank }} <i v-if="data.rank === 1" class="pi pi-trophy text-xs"></i>
+            </template>
+          </Column>
+          <Column field="finalScore" header="Points" />
+          <Column field="createdAt" header="Date">
+            <template #body="{ data }">
+              {{ moment(data.createdAt).startOf('hour').fromNow() }}
+            </template>
+          </Column>
+        </DataTable>
+      </div>
+    </template>
   </DataTable>
 </template>
 
 <script setup lang="ts">
+import type { Player } from "~/types/global";
+import moment from 'moment';
+
 const roomStore = useRoomStore();
 const confirm = useConfirm();
 const toast = useToast();
+const expandedRows = ref({});
 
 const handleRemovePlayer = (playerUuid: string) => {
   if (roomStore.currentGame !== null) {
@@ -63,6 +86,26 @@ const handleRemovePlayer = (playerUuid: string) => {
     },
   });
 };
+
+interface PlayerGameScore {
+  name: string;
+  finalScore: number;
+  rank: number;
+  createdAt: Date;
+}
+
+const userGamesScores = (player: Player): PlayerGameScore[] => {
+  return roomStore.games.reduce((acc: PlayerGameScore[], game) => {
+    const score = game.scores.find((score) => score.player.uuid === player.uuid);
+    if (score) acc.push({
+      name: game.name,
+      finalScore: score.score,
+      rank: score.rank,
+      createdAt: game.createdAt
+    });
+    return acc;
+  }, []);
+}
 </script>
 
 <style scoped>
