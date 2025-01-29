@@ -15,13 +15,13 @@
         backgroundColor: getButtonColor(player.color.value, 'dark'),
         color: getTextColorContrasted(player.color.value),
       }"
-      class="rounded-lg min-w-[60px]"
+      class="rounded-lg min-w-[68px]"
       @click="handleDecrementScore(player)"
     />
 
     <div class="flex flex-col items-center flex-1 mx-4">
-      <h3 :style="{ color: getTextColorContrasted(player.color.value) }" class="font-semibold text-lg">{{ player.name }}</h3>
-      <p :style="{ color: getTextColorContrasted(player.color.value) }" class="font-bold text-2xl">{{ roomStore.getPlayerScore(player)?.score || 0 }}</p>
+      <h3 :style="{ color: getTextColorContrasted(player.color.value) }" class="font-semibold text-xl">{{ player.name }}</h3>
+      <p :style="{ color: getTextColorContrasted(player.color.value) }" class="font-bold text-4xl">{{ roomStore.getPlayerScore(player)?.score || 0 }}</p>
     </div>
 
     <Button
@@ -33,7 +33,7 @@
         backgroundColor: getButtonColor(player.color.value, 'dark'),
         color: getTextColorContrasted(player.color.value),
       }"
-      class="rounded-lg min-w-[60px]"
+      class="rounded-lg min-w-[68px]"
       @click="handleIncrementScore(player)"
     />
   </div>

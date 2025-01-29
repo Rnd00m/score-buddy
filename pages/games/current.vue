@@ -68,7 +68,7 @@
     </div>
   </h1>
 
-  <div class="flex flex-col gap-3">
+  <div class="flex flex-col gap-4">
     <GamePlayerCounterCard/>
   </div>
 </template>
