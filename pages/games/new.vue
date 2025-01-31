@@ -9,8 +9,10 @@
   <Form v-slot="$form" :initialValues="player" :resolver :validateOnValueUpdate="false" :validateOnBlur="false" @submit="onFormSubmit" class="flex flex-col gap-4 w-full">
     <div class="flex flex-col gap-1">
       <label for="name">Name</label>
-      <InputText
+      <AutoComplete
         id="name"
+        :suggestions="suggestedGameNames"
+        @complete="searchGameName"
         name="name"
         type="text"
         fluid
@@ -89,6 +91,15 @@ import { ref } from 'vue';
 
 const roomStore = useRoomStore();
 const router = useRouter();
+
+const suggestedGameNames = ref<string[]>([]);
+
+const searchGameName = (event: any) => {
+  suggestedGameNames.value = roomStore.games.filter(game => game.name.toLowerCase().includes(event.query.toLowerCase())).reduce((acc: string[], game) => {
+      acc.push(game.name);
+    return acc;
+  }, []);
+}
 
 const lowestPossibleScore = ref(null);
 

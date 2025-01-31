@@ -43,7 +43,7 @@
     </Column>
     <template #expansion="slotProps">
       <div class="p-4">
-        <DataTable :value="userGamesScores(slotProps.data)" removableSort>
+        <DataTable :value="userGamesScores(slotProps.data)" removableSort sortField="createdAt" :sortOrder="-1">
           <Column field="name" header="Game" />
           <Column header="Rank" >
             <template #body="{ data }">
@@ -51,9 +51,9 @@
             </template>
           </Column>
           <Column field="finalScore" header="Points" />
-          <Column field="createdAt" header="Date">
+          <Column field="createdAt" header="Date" sortable>
             <template #body="{ data }">
-              {{ moment(data.createdAt).startOf('hour').fromNow() }}
+              {{ moment(data.createdAt).fromNow() }}
             </template>
           </Column>
         </DataTable>
