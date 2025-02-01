@@ -18,15 +18,18 @@
 
   <h1 class="mb-6 flex justify-between items-center">
     <span class="text-3xl">Room</span>
-    <NuxtLink to="/rooms/players/add">
-      <Button severity="contrast" rounded icon="pi pi-user-plus" />
-    </NuxtLink>
+    <span class="inline-flex gap-1">
+      <Button severity="danger" variant="text" icon="pi pi-undo" @click="handleResetRoom" />
+      <NuxtLink to="/rooms/players/add">
+          <Button severity="contrast" variant="text" icon="pi pi-user-plus" />
+      </NuxtLink>
+    </span>
   </h1>
 
   <DataTable :value="roomStore.players" v-model:expandedRows="expandedRows" dataKey="uuid" sortField="score" :sortOrder="-1" removableSort class="-mx-6">
     <template #empty> Currently no players. </template>
-    <Column expander class="w-1" />
-    <Column field="name" header="Player">
+    <Column expander class="w-1" v-if="roomStore.games.length"/>
+    <Column field="name" header="Player" sortable>
       <template #body="slotProps">
         <div class="flex items-center gap-2">
           <div class="w-7 h-7 rounded-md" :style="{background: `${slotProps.data.color.value}`}"></div>
@@ -35,7 +38,7 @@
         </div>
       </template>
     </Column>
-    <Column field="score" header="Score" sortable ></Column>
+    <Column field="score" header="Score" sortable></Column>
     <Column class="w-8">
       <template #body="{ data }">
         <Button icon="pi pi-times" @click="handleRemovePlayer(data.uuid)" severity="danger" variant="text" rounded aria-label="Cancel" />
@@ -83,6 +86,17 @@ const handleRemovePlayer = (playerUuid: string) => {
     message: 'Are you sure you want to remove this player?',
     accept: () => {
       roomStore.removePlayer(playerUuid);
+    },
+  });
+};
+
+const handleResetRoom = () => {
+  confirm.require({
+    group: 'remove',
+    header: 'Confirmation',
+    message: 'Are you sure you want to reset the lobby? All games will be lost.',
+    accept: () => {
+      roomStore.resetRoom();
     },
   });
 };

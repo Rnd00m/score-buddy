@@ -88,6 +88,11 @@ actions: {
       });
     }
   },
+  resetRoom() {
+    this.currentGame = null;
+    this.games = [];
+    this.players.forEach((player) => player.score = 0);
+  },
   cancelGame() {
     this.currentGame = null;
   },
