@@ -1,18 +1,41 @@
 <template>
   <DataTable :value="gameTypes" removableSort scrollHeight="16rem">
     <Column field="name" header="Name" sortable></Column>
-    <Column field="startScore" header="Start"></Column>
-    <Column field="endingScore" header="Ending"></Column>
+    <Column field="startScore" header="Start">
+      <template #body="slotProps">
+        <Tag severity="contrast">{{ slotProps.data.startScore }}</Tag>
+      </template>
+    </Column>
+    <Column field="endingScore" header="Ending">
+      <template #body="slotProps">
+        <Tag severity="contrast" v-if="slotProps.data.endingScore">
+          {{ slotProps.data.endingScore }}
+        </Tag>
+        <Tag severity="secondary" v-else>
+          Manual
+        </Tag>
+      </template>
+    </Column>
+    <Column field="lowestPossibleScore" header="Lowest">
+      <template #body="slotProps">
+        <Tag severity="contrast" v-if="slotProps.data.lowestPossibleScore">
+          {{ slotProps.data.lowestPossibleScore }}
+        </Tag>
+        <Tag severity="secondary" v-else>
+          No
+        </Tag>
+      </template>
+    </Column>
     <Column field="winCondition" header="Win">
       <template #body="slotProps">
-        <Tag :severity="slotProps.data.winCondition === WinCondition.MostPoints ? 'primary' : 'secondary'">
+        <Tag :severity="slotProps.data.winCondition === WinCondition.MostPoints ? 'contrast' : 'secondary'">
           {{ slotProps.data.winCondition }}
         </Tag>
       </template>
     </Column>
-    <Column class="w-24 !text-end">
+    <Column class="w-12 !text-end">
       <template #body="{ data }">
-        <Button icon="pi pi-chevron-right" severity="secondary" @click="handleSelectGame(data)"></Button>
+        <Button icon="pi pi-play" variant="text" severity="primary" @click="handleSelectGame(data)"></Button>
       </template>
     </Column>
   </DataTable>
