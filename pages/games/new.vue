@@ -16,6 +16,7 @@
         name="name"
         type="text"
         fluid
+        :showEmptyMessage="false"
       />
       <Message v-if="$form.name?.invalid" severity="error" size="small" variant="simple">{{
           $form.name.error?.message
@@ -96,7 +97,9 @@ const suggestedGameNames = ref<string[]>([]);
 
 const searchGameName = (event: any) => {
   suggestedGameNames.value = roomStore.games.filter(game => game.name.toLowerCase().includes(event.query.toLowerCase())).reduce((acc: string[], game) => {
+    if (!acc.includes(game.name)) {
       acc.push(game.name);
+    }
     return acc;
   }, []);
 }
