@@ -1,6 +1,33 @@
 <template>
-  <DataTable :value="gameTypes" removableSort scrollHeight="16rem">
-    <Column field="name" header="Name" sortable></Column>
+  <Toast position="top-center" class="max-w-[calc(100%-2rem)]"/>
+
+  <ConfirmDialog group="newGame" class="max-w-96 w-[calc(100%-6rem)]">
+    <template #container="{ message, acceptCallback, rejectCallback }">
+      <div class="flex flex-col items-center p-8 bg-surface-0 dark:bg-surface-900 rounded">
+        <div class="rounded-full bg-primary text-primary-contrast inline-flex justify-center items-center h-24 w-24 -mt-20">
+          <i class="pi pi-question text-5xl"></i>
+        </div>
+        <span class="font-bold text-2xl block mb-2 mt-6">{{ message.header }}</span>
+        <p class="mb-0">{{ message.message }}</p>
+        <div class="flex items-center gap-2 mt-6">
+          <Button severity="contrast" label="Confirm" @click="acceptCallback"></Button>
+          <Button severity="secondary" label="Cancel" outlined @click="rejectCallback"></Button>
+        </div>
+      </div>
+    </template>
+  </ConfirmDialog>
+
+  <DataTable
+    size="small"
+    :value="gameTypes"
+    @rowSelect="handleGameSelected"
+    selectionMode="single"
+    scrollable
+    removableSort
+    scrollHeight="16rem"
+    class="w-screen"
+  >
+    <Column field="name" header="Game" sortable frozen />
     <Column field="startScore" header="Start">
       <template #body="slotProps">
         <Tag severity="contrast">{{ slotProps.data.startScore }}</Tag>
@@ -33,11 +60,6 @@
         </Tag>
       </template>
     </Column>
-    <Column class="w-12 !text-end">
-      <template #body="{ data }">
-        <Button icon="pi pi-play" variant="text" severity="primary" @click="handleSelectGame(data)"></Button>
-      </template>
-    </Column>
   </DataTable>
 </template>
 
@@ -46,7 +68,7 @@ import {type Game, WinCondition} from "~/types/global";
 
 const roomStore = useRoomStore();
 const router = useRouter();
-
+const confirm = useConfirm();
 
 const gameTypes = computed(() => {
   return roomStore.games.filter((game, index, self) =>
@@ -60,16 +82,22 @@ const gameTypes = computed(() => {
   );
 })
 
-const handleSelectGame = (game: Game) => {
-  console.log(game);
-  roomStore.startGame(
-    game.name,
-    game.startScore,
-    game.endingScore,
-    game.winCondition,
-    game.lowestPossibleScore
-  );
-  router.push('/games/current');
+const handleGameSelected = (event: {data: Game}) => {
+  confirm.require({
+    group: 'newGame',
+    header: 'New game',
+    message: `Do you wan't to replay ${event.data.name}?`,
+    accept: () => {
+      roomStore.startGame(
+          event.data.name,
+          event.data.startScore,
+          event.data.endingScore,
+          event.data.winCondition,
+          event.data.lowestPossibleScore
+      );
+      router.push('/games/current');
+    },
+  });
 }
 </script>
 
