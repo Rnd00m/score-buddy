@@ -173,8 +173,8 @@ actions: {
 getters: {
   getLastCompletedGame: (state) => {
     return state.games
-      .filter((game) => game.endedAt !== null) // Récupérer les parties terminées
-      .sort((a, b) => new Date(b.endedAt!).getTime() - new Date(a.endedAt!).getTime())[0] || null; // Trier par date de fin décroissante
+      .filter((game) => game.endedAt !== null)
+      .sort((a, b) => new Date(b.endedAt!).getTime() - new Date(a.endedAt!).getTime())[0] || null;
   },
   winners: (state): GameScore[] | null => {
     if (state.currentGame === null) return null;

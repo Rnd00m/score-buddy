@@ -31,7 +31,6 @@ const roomStore = useRoomStore();
 
 const items = computed(() => {
   return [
-    { icon: 'pi pi-home', route: '/' },
     { icon: 'pi pi-play', route: roomStore.currentGame !== null ? '/games/current' : '/games' },
     { icon: 'pi pi-users', route: '/rooms' },
   ];

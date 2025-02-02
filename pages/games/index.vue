@@ -1,11 +1,7 @@
 <template>
-  <h1 class="mb-6 flex justify-between items-center">
-    <span class="text-3xl">Game</span>
-  </h1>
-
-  <div class="h-[70vh] flex items-center justify-center">
+  <div class="h-[calc(100vh-94px)] flex flex-1 items-center justify-center">
     <div class="flex flex-col items-center gap-4" v-if="roomStore.players.length">
-      <h2 class="text-2xl font-bold">Start a new game</h2>
+      <h2 class="text-3xl font-bold">Start a new game</h2>
       <NuxtLink to="/games/new">
         <Button
             class="h-16 w-16"
@@ -18,8 +14,14 @@
         <Divider align="center" class="bg-surface-20">
           <b>Or</b>
         </Divider>
-        <h2 class="text-2xl font-bold">Replay</h2>
-        <GameTypesTable />
+        <h2 class="text-3xl font-bold">Replay {{ roomStore.getLastCompletedGame.name }}</h2>
+        <Button
+            class="h-16 w-16"
+            icon="pi pi-play"
+            severity="secondary"
+            aria-label="Replay"
+            @click="handleReplayGame"
+        />
       </template>
     </div>
     <div class="flex flex-col items-center gap-4" v-else>
@@ -38,4 +40,19 @@
 
 <script setup lang="ts">
 const roomStore = useRoomStore();
+const router = useRouter();
+
+const handleReplayGame = () => {
+  const lastCompletedGame = roomStore.getLastCompletedGame;
+
+  roomStore.startGame(
+      lastCompletedGame.name,
+      lastCompletedGame.startScore,
+      lastCompletedGame.endingScore,
+      lastCompletedGame.winCondition,
+      lastCompletedGame.lowestPossibleScore
+  );
+
+  router.push('/games/current');
+}
 </script>

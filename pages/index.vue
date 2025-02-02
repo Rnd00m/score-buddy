@@ -4,7 +4,10 @@
   </div>
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
+const router = useRouter();
+
+router.push('/games');
 </script>
 
 <style scoped>
