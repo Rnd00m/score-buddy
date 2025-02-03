@@ -1,5 +1,5 @@
 <template>
-  <div class="h-[calc(100vh-94px)] flex flex-1 items-center justify-center">
+  <div class="h-[calc(100vh-118px)] grid place-items-center">
     <div class="flex flex-col items-center gap-4" v-if="roomStore.players.length">
       <h2 class="text-3xl font-bold">Start a new game</h2>
       <NuxtLink to="/games/new">

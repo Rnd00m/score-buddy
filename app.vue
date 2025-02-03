@@ -1,10 +1,10 @@
 <template>
   <div class="flex flex-col min-h-screen">
     <NuxtLayout>
-      <div class="p-6 overflow-y-auto flex-1">
+      <div class="p-6 overflow-y-auto flex-1 h-full">
         <NuxtPage/>
       </div>
-      <div class="sticky bottom-0 w-full">
+      <div class="sticky bottom-0 w-full h-[70px]">
         <Menubar :model="items" breakpoint="0" class="flex justify-center">
           <template #item="{ item, props }">
             <RouterLink v-slot="{ href, navigate }" :to="item.route" custom>
