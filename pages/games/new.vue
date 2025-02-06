@@ -129,8 +129,8 @@ const resolver = ({values}) => {
     errors.name = [{message: 'Name must be at least 1 characters.'}];
   }
 
-  if (name && name.length > 20) {
-    errors.name = [{message: 'Name must be at most 20 characters.'}];
+  if (name && name.length > 48) {
+    errors.name = [{message: 'Name must be at most 48 characters.'}];
   }
 
   if (name && roomStore.players.some(player => player.name === name)) {

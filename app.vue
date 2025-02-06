@@ -5,7 +5,7 @@
         <NuxtPage/>
       </div>
       <div class="sticky bottom-0 w-full h-[70px]">
-        <Menubar :model="items" breakpoint="0" class="flex justify-center">
+        <Menubar :model="items" breakpoint="0" class="h-full flex justify-center rounded-none">
           <template #item="{ item, props }">
             <RouterLink v-slot="{ href, navigate }" :to="item.route" custom>
               <a

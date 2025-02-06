@@ -1,26 +1,20 @@
 <template>
   <div class="h-[calc(100vh-118px)] grid place-items-center">
-    <div class="flex flex-col items-center gap-4" v-if="roomStore.players.length">
-      <h2 class="text-3xl font-bold">Start a new game</h2>
-      <NuxtLink to="/games/new">
-        <Button
-            class="h-16 w-16"
-            icon="pi pi-play"
-            severity="primary"
-            aria-label="Start"
-        />
-      </NuxtLink>
+    <div class="flex flex-col items-center w-full gap-8" v-if="roomStore.players.length">
+      <GameCallToActionCard
+          headingText="New game"
+          buttonText="Start"
+          color="green"
+          icon="pi-play-circle"
+          @buttonClicked="router.push('/games/new')"
+      />
       <template v-if="roomStore.games.length">
-        <Divider align="center" class="bg-surface-20">
-          <b>Or</b>
-        </Divider>
-        <h2 class="text-3xl font-bold">Replay {{ roomStore.getLastCompletedGame.name }}</h2>
-        <Button
-            class="h-16 w-16"
-            icon="pi pi-play"
-            severity="secondary"
-            aria-label="Replay"
-            @click="handleReplayGame"
+        <GameCallToActionCard
+          :headingText="roomStore.getLastCompletedGame.name"
+          buttonText="Replay"
+          color="yellow"
+          icon="pi-history"
+          @buttonClicked="handleReplayGame"
         />
       </template>
     </div>
@@ -39,6 +33,8 @@
 </template>
 
 <script setup lang="ts">
+import GameCallToActionCard from "~/components/game/GameCallToActionCard.vue";
+
 const roomStore = useRoomStore();
 const router = useRouter();
 
