@@ -26,7 +26,16 @@
     </span>
   </h1>
 
-  <DataTable :value="roomStore.players" v-model:expandedRows="expandedRows" dataKey="uuid" sortField="score" :sortOrder="-1" removableSort class="-mx-6">
+  <DataTable
+    :value="roomStore.players"
+    v-model:expandedRows="expandedRows"
+    dataKey="uuid"
+    sortField="score"
+    :sortOrder="-1"
+    removableSort
+    class="-mx-6"
+    size="small"
+  >
     <template #empty> Currently no players. </template>
     <Column expander class="w-1" v-if="roomStore.games.length"/>
     <Column field="name" header="Player" sortable>
@@ -46,7 +55,7 @@
     </Column>
     <template #expansion="slotProps">
       <div class="p-4">
-        <DataTable :value="userGamesScores(slotProps.data)" removableSort sortField="createdAt" :sortOrder="-1">
+        <DataTable size="small" :value="userGamesScores(slotProps.data)" removableSort sortField="createdAt" :sortOrder="-1">
           <Column field="name" header="Game" />
           <Column header="Rank" >
             <template #body="{ data }">
