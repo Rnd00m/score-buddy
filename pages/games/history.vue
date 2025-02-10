@@ -51,7 +51,7 @@
     </Column>
     <Column class="w-8">
       <template #body="{ data }">
-        <Button icon="pi pi-replay" severity="primary" variant="text" rounded aria-label="Cancel" />
+        <Button icon="pi pi-replay" severity="primary" variant="text" rounded aria-label="Replay" @click="handleReplayGame(data)"/>
       </template>
     </Column>
 
@@ -75,9 +75,11 @@
 
 <script setup lang="ts">
 import moment from 'moment';
+import type {Game} from "~/types/global";
 
 const roomStore = useRoomStore();
 const expandedRows = ref({});
+const router = useRouter();
 
 const formattedDuration = (start: Date, end: Date) => {
   const duration = moment.duration(moment(end).diff(moment(start)));
@@ -95,6 +97,18 @@ const formattedDuration = (start: Date, end: Date) => {
               ? `${minutes}m`
               : `${seconds}s`;
 };
+
+const handleReplayGame = (game: Game) => {
+  roomStore.startGame(
+      game.name,
+      game.startScore,
+      game.endingScore,
+      game.winCondition,
+      game.lowestPossibleScore
+  );
+
+  router.push('/game');
+}
 </script>
 
 <style scoped>
