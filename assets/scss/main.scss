@@ -30,3 +30,11 @@ body {
   background-color: var(--p-content-background);
   font-family: 'Nunito', sans-serif;
 }
+
+:root {
+  --p-menubar-gap: 1.5rem;
+}
+
+.p-menubar {
+  gap: var(--p-menubar-gap);
+}

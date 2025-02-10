@@ -95,7 +95,7 @@ const handleGameSelected = (event: {data: Game}) => {
           event.data.winCondition,
           event.data.lowestPossibleScore
       );
-      router.push('/games/current');
+      router.push('/game');
     },
   });
 }

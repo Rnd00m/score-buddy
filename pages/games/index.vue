@@ -49,6 +49,6 @@ const handleReplayGame = () => {
       lastCompletedGame.lowestPossibleScore
   );
 
-  router.push('/games/current');
+  router.push('/game');
 }
 </script>

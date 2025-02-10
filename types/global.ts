@@ -32,8 +32,3 @@ export interface Player {
   color: Color;
   score: number;
 }
-
-export type Rank = {
-  player: Player;
-  score: number; // Score final
-};

@@ -1,5 +1,3 @@
-import Aura from '@primevue/themes/aura';
-
 export default defineNuxtConfig({
   compatibilityDate: '2024-11-01',
   devtools: {enabled: true},
@@ -11,16 +9,8 @@ export default defineNuxtConfig({
     'pinia-plugin-persistedstate/nuxt',
   ],
   primevue: {
+    importTheme: { from: '@/themes/default.ts' },
     options: {
-      theme: {
-        preset: Aura,
-        options: {
-          cssLayer: {
-            name: 'primevue',
-            order: 'tailwind-base, primevue, tailwind-utilities'
-          }
-        }
-      },
       ripple: true
     }
   },

@@ -1,6 +1,6 @@
 <template>
   <h1 class="mb-6 flex items-center gap-4">
-    <NuxtLink to="/games">
+    <NuxtLink to="#" @click.prevent="$router.back()">
       <Button severity="secondary" icon="pi pi-arrow-left"/>
     </NuxtLink>
     <span class="text-3xl">New Game</span>
@@ -167,7 +167,7 @@ const onFormSubmit = ({valid, states}) => {
         states.winCondition.value,
         states.lowestPossibleScore.value
     );
-    router.push('/games/current');
+    router.push('/game');
   }
 };
 </script>
