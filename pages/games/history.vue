@@ -26,10 +26,10 @@
   </h1>
 
   <DataTable
-    :value="roomStore.games"
+    :value="games"
     v-model:expandedRows="expandedRows"
     dataKey="uuid"
-    sortField="createdAt"
+    sortField="createdAtTime"
     :sortOrder="-1"
     removableSort
     class="-mx-6"
@@ -44,7 +44,7 @@
         {{ formattedDuration(data.createdAt, data.endedAt) }}
       </template>
     </Column>
-    <Column field="createdAt" header="Date" sortable>
+    <Column field="createdAtTime" header="Date" sortable>
       <template #body="{ data }">
         {{ moment(data.createdAt).fromNow() }}
       </template>
@@ -80,6 +80,11 @@ import type {Game} from "~/types/global";
 const roomStore = useRoomStore();
 const expandedRows = ref({});
 const router = useRouter();
+
+const games = computed(() => roomStore.games.map(game => ({
+  ...game,
+  createdAtTime: new Date(game.createdAt).getTime(),
+})));
 
 const formattedDuration = (start: Date, end: Date) => {
   const duration = moment.duration(moment(end).diff(moment(start)));

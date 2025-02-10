@@ -55,7 +55,7 @@
     </Column>
     <template #expansion="slotProps">
       <div class="p-4">
-        <DataTable size="small" :value="userGamesScores(slotProps.data)" removableSort sortField="createdAt" :sortOrder="-1">
+        <DataTable size="small" :value="userGamesScores(slotProps.data)" removableSort sortField="createdAtTime" :sortOrder="-1">
           <Column field="name" header="Game" />
           <Column header="Rank" >
             <template #body="{ data }">
@@ -63,7 +63,7 @@
             </template>
           </Column>
           <Column field="finalScore" header="Points" />
-          <Column field="createdAt" header="Date" sortable>
+          <Column field="createdAtTime" header="Date" sortable>
             <template #body="{ data }">
               {{ moment(data.createdAt).fromNow() }}
             </template>
@@ -117,14 +117,19 @@ interface PlayerGameScore {
   createdAt: Date;
 }
 
+interface PlayerGameScoreWithTime extends PlayerGameScore {
+  createdAtTime: number;
+}
+
 const userGamesScores = (player: Player): PlayerGameScore[] => {
-  return roomStore.games.reduce((acc: PlayerGameScore[], game) => {
+  return roomStore.games.reduce((acc: PlayerGameScoreWithTime[], game) => {
     const score = game.scores.find((score) => score.player.uuid === player.uuid);
     if (score) acc.push({
       name: game.name,
       finalScore: score.score,
       rank: score.rank,
-      createdAt: game.createdAt
+      createdAt: game.createdAt,
+      createdAtTime: new Date(game.createdAt).getTime(),
     });
     return acc;
   }, []);
