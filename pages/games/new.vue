@@ -1,89 +1,90 @@
 <template>
-  <h1 class="mb-6 flex items-center gap-4">
-    <NuxtLink to="#" @click.prevent="$router.back()">
-      <Button severity="secondary" icon="pi pi-arrow-left"/>
-    </NuxtLink>
-    <span class="text-3xl">New Game</span>
-  </h1>
+  <div>
+    <h1 class="mb-6 flex items-center gap-4">
+      <NuxtLink to="#" @click.prevent="$router.back()">
+        <Button severity="secondary" icon="pi pi-arrow-left"/>
+      </NuxtLink>
+      <span class="text-3xl">New Game</span>
+    </h1>
 
-  <Form v-slot="$form" :initialValues="player" :resolver :validateOnValueUpdate="false" :validateOnBlur="false" @submit="onFormSubmit" class="flex flex-col gap-4 w-full">
-    <div class="flex flex-col gap-1">
-      <label for="name">Name</label>
-      <AutoComplete
-        id="name"
-        :suggestions="suggestedGameNames"
-        @complete="searchGameName"
-        name="name"
-        type="text"
-        fluid
-        :showEmptyMessage="false"
-      />
-      <Message v-if="$form.name?.invalid" severity="error" size="small" variant="simple">{{
-          $form.name.error?.message
-        }}
-      </Message>
-    </div>
+    <Form v-slot="$form" :initialValues="player" :resolver :validateOnValueUpdate="false" :validateOnBlur="false" @submit="onFormSubmit" class="flex flex-col gap-4 w-full">
+      <div class="flex flex-col gap-1">
+        <label for="name">Name</label>
+        <AutoComplete
+            id="name"
+            :suggestions="suggestedGameNames"
+            @complete="searchGameName"
+            name="name"
+            type="text"
+            fluid
+            :showEmptyMessage="false"
+        />
+        <Message v-if="$form.name?.invalid" severity="error" size="small" variant="simple">{{
+            $form.name.error?.message
+          }}
+        </Message>
+      </div>
 
-    <div class="flex flex-col gap-1">
-      <label for="startScore">Start score</label>
-      <InputNumber id="startScore" name="startScore" :min="lowestPossibleScore !== null ? lowestPossibleScore : undefined" showButtons buttonLayout="horizontal" :step="1" fluid>
-        <template #incrementbuttonicon>
-          <span class="pi pi-plus" />
-        </template>
-        <template #decrementbuttonicon>
-          <span class="pi pi-minus" />
-        </template>
-      </InputNumber>
-      <Message v-if="$form.startScore?.invalid" severity="error" size="small" variant="simple">{{
-          $form.startScore.error?.message
-        }}
-      </Message>
-    </div>
+      <div class="flex flex-col gap-1">
+        <label for="startScore">Start score</label>
+        <InputNumber id="startScore" name="startScore" :min="lowestPossibleScore !== null ? lowestPossibleScore : undefined" showButtons buttonLayout="horizontal" :step="1" fluid>
+          <template #incrementbuttonicon>
+            <span class="pi pi-plus" />
+          </template>
+          <template #decrementbuttonicon>
+            <span class="pi pi-minus" />
+          </template>
+        </InputNumber>
+        <Message v-if="$form.startScore?.invalid" severity="error" size="small" variant="simple">{{
+            $form.startScore.error?.message
+          }}
+        </Message>
+      </div>
 
-    <div class="flex flex-col gap-1">
-      <label for="endingScore">Ending score</label>
-      <InputNumber id="endingScore" name="endingScore" :min="lowestPossibleScore !== null ? lowestPossibleScore : undefined" showButtons buttonLayout="horizontal" :step="1" fluid>
-        <template #incrementbuttonicon>
-          <span class="pi pi-plus" />
-        </template>
-        <template #decrementbuttonicon>
-          <span class="pi pi-minus" />
-        </template>
-      </InputNumber>
-      <Message v-if="$form.endingScore?.invalid" severity="error" size="small" variant="simple">{{
-          $form.endingScore.error?.message
-        }}
-      </Message>
-    </div>
+      <div class="flex flex-col gap-1">
+        <label for="endingScore">Ending score</label>
+        <InputNumber id="endingScore" name="endingScore" :min="lowestPossibleScore !== null ? lowestPossibleScore : undefined" showButtons buttonLayout="horizontal" :step="1" fluid>
+          <template #incrementbuttonicon>
+            <span class="pi pi-plus" />
+          </template>
+          <template #decrementbuttonicon>
+            <span class="pi pi-minus" />
+          </template>
+        </InputNumber>
+        <Message v-if="$form.endingScore?.invalid" severity="error" size="small" variant="simple">{{
+            $form.endingScore.error?.message
+          }}
+        </Message>
+      </div>
 
-    <div class="flex flex-col gap-1">
-      <label for="winCondition">Winner</label>
-      <SelectButton id="winCondition" name="winCondition" :options="winConditions" />
-      <Message v-if="$form.winCondition?.invalid" severity="error" size="small" variant="simple">{{
-          $form.winCondition.error?.message
-        }}
-      </Message>
-    </div>
+      <div class="flex flex-col gap-1">
+        <label for="winCondition">Winner</label>
+        <SelectButton id="winCondition" name="winCondition" :options="winConditions" />
+        <Message v-if="$form.winCondition?.invalid" severity="error" size="small" variant="simple">{{
+            $form.winCondition.error?.message
+          }}
+        </Message>
+      </div>
 
-    <div class="flex flex-col gap-1">
-      <label for="lowestPossibleScore">Lowest possible score</label>
-      <InputNumber id="lowestPossibleScore" name="lowestPossibleScore" showButtons buttonLayout="horizontal" :step="1" fluid v-model="lowestPossibleScore">
-        <template #incrementbuttonicon>
-          <span class="pi pi-plus" />
-        </template>
-        <template #decrementbuttonicon>
-          <span class="pi pi-minus" />
-        </template>
-      </InputNumber>
-      <Message v-if="$form.lowestPossibleScore?.invalid" severity="error" size="small" variant="simple">{{
-          $form.lowestPossibleScore.error?.message
-        }}
-      </Message>
-    </div>
+      <div class="flex flex-col gap-1">
+        <label for="lowestPossibleScore">Lowest possible score</label>
+        <InputNumber id="lowestPossibleScore" name="lowestPossibleScore" showButtons buttonLayout="horizontal" :step="1" fluid v-model="lowestPossibleScore">
+          <template #incrementbuttonicon>
+            <span class="pi pi-plus" />
+          </template>
+          <template #decrementbuttonicon>
+            <span class="pi pi-minus" />
+          </template>
+        </InputNumber>
+        <Message v-if="$form.lowestPossibleScore?.invalid" severity="error" size="small" variant="simple">{{
+            $form.lowestPossibleScore.error?.message
+          }}
+        </Message>
+      </div>
 
-    <Button type="submit" severity="secondary" label="Start"/>
-  </Form>
-
+      <Button type="submit" severity="secondary" label="Start"/>
+    </Form>
+  </div>
 </template>
 
 <script setup lang="ts">

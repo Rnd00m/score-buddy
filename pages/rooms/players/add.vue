@@ -1,49 +1,50 @@
 <template>
-  <h1 class="mb-6 flex items-center gap-4">
-    <NuxtLink to="/rooms">
-      <Button severity="secondary" icon="pi pi-arrow-left"/>
-    </NuxtLink>
-    <span class="text-3xl">Add player</span>
-  </h1>
+  <div>
+    <h1 class="mb-6 flex items-center gap-4">
+      <NuxtLink to="/rooms">
+        <Button severity="secondary" icon="pi pi-arrow-left"/>
+      </NuxtLink>
+      <span class="text-3xl">Add player</span>
+    </h1>
 
-  <Form v-slot="$form" :initialValues="player" :resolver @submit="onFormSubmit" class="flex flex-col gap-4 w-full">
-    <div class="flex flex-col gap-1">
-      <label for="name">Name</label>
-      <InputText
-        id="name"
-        name="name"
-        type="text"
-        fluid
-      />
-      <Message v-if="$form.name?.invalid" severity="error" size="small" variant="simple">{{
-          $form.name.error?.message
-        }}
-      </Message>
-    </div>
-    <div class="flex flex-col gap-1">
-      <label for="color">Color</label>
-      <Select id="color" name="color" :options="availableColors" optionLabel="name" class="w-full">
-        <template #value="slotProps">
-          <div v-if="slotProps.value" class="flex items-center gap-2">
-            <div class="w-6 h-6 rounded-md" :style="{background: `${slotProps.value.value}`}"></div>
-            <div>{{ slotProps.value.name }}</div>
-          </div>
-        </template>
-        <template #option="slotProps">
-          <div class="flex items-center gap-2">
-            <div class="w-6 h-6 rounded-md" :style="{background: `${slotProps.option.value}`}"></div>
-            <div>{{ slotProps.option.name }}</div>
-          </div>
-        </template>
-      </Select>
-      <Message v-if="$form.color?.invalid" severity="error" size="small" variant="simple">{{
-          $form.color.error?.message
-        }}
-      </Message>
-    </div>
-    <Button type="submit" severity="secondary" label="Submit"/>
-  </Form>
-
+    <Form v-slot="$form" :initialValues="player" :resolver @submit="onFormSubmit" class="flex flex-col gap-4 w-full">
+      <div class="flex flex-col gap-1">
+        <label for="name">Name</label>
+        <InputText
+            id="name"
+            name="name"
+            type="text"
+            fluid
+        />
+        <Message v-if="$form.name?.invalid" severity="error" size="small" variant="simple">{{
+            $form.name.error?.message
+          }}
+        </Message>
+      </div>
+      <div class="flex flex-col gap-1">
+        <label for="color">Color</label>
+        <Select id="color" name="color" :options="availableColors" optionLabel="name" class="w-full">
+          <template #value="slotProps">
+            <div v-if="slotProps.value" class="flex items-center gap-2">
+              <div class="w-6 h-6 rounded-md" :style="{background: `${slotProps.value.value}`}"></div>
+              <div>{{ slotProps.value.name }}</div>
+            </div>
+          </template>
+          <template #option="slotProps">
+            <div class="flex items-center gap-2">
+              <div class="w-6 h-6 rounded-md" :style="{background: `${slotProps.option.value}`}"></div>
+              <div>{{ slotProps.option.name }}</div>
+            </div>
+          </template>
+        </Select>
+        <Message v-if="$form.color?.invalid" severity="error" size="small" variant="simple">{{
+            $form.color.error?.message
+          }}
+        </Message>
+      </div>
+      <Button type="submit" severity="secondary" label="Submit"/>
+    </Form>
+  </div>
 </template>
 
 <script setup lang="ts">

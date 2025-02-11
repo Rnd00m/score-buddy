@@ -38,3 +38,18 @@ body {
 .p-menubar {
   gap: var(--p-menubar-gap);
 }
+
+// Page transition
+.slide-enter-active, .slide-leave-active {
+  transition: transform 0.2s ease-in-out, opacity 0.2s ease-in-out;
+}
+
+.slide-enter-from {
+  opacity: 0;
+  transform: translateX(20px);
+}
+
+.slide-leave-to {
+  opacity: 0;
+  transform: translateX(-20px);
+}

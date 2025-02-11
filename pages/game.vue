@@ -1,75 +1,77 @@
 <template>
-  <ConfirmDialog group="confirm" class="max-w-96 w-[calc(100%-6rem)]">
-    <template #container="{ message, acceptCallback, rejectCallback }">
-      <div class="flex flex-col items-center p-8 bg-surface-0 dark:bg-surface-900 rounded">
-        <div class="rounded-full bg-orange-500 text-primary-contrast inline-flex justify-center items-center h-24 w-24 -mt-20">
-          <i class="pi pi-exclamation-circle text-5xl"></i>
+  <div>
+    <ConfirmDialog group="confirm" class="max-w-96 w-[calc(100%-6rem)]">
+      <template #container="{ message, acceptCallback, rejectCallback }">
+        <div class="flex flex-col items-center p-8 bg-surface-0 dark:bg-surface-900 rounded">
+          <div class="rounded-full bg-orange-500 text-primary-contrast inline-flex justify-center items-center h-24 w-24 -mt-20">
+            <i class="pi pi-exclamation-circle text-5xl"></i>
+          </div>
+          <span class="font-bold text-2xl block mb-2 mt-6">{{ message.header }}</span>
+          <p class="mb-0">{{ message.message }}</p>
+          <div class="flex items-center gap-2 mt-6">
+            <Button severity="contrast" label="Confirm" @click="acceptCallback"></Button>
+            <Button severity="secondary" label="Cancel" outlined @click="rejectCallback"></Button>
+          </div>
         </div>
-        <span class="font-bold text-2xl block mb-2 mt-6">{{ message.header }}</span>
-        <p class="mb-0">{{ message.message }}</p>
-        <div class="flex items-center gap-2 mt-6">
-          <Button severity="contrast" label="Confirm" @click="acceptCallback"></Button>
-          <Button severity="secondary" label="Cancel" outlined @click="rejectCallback"></Button>
+      </template>
+    </ConfirmDialog>
+    <ConfirmDialog group="reset" class="max-w-96 w-[calc(100%-6rem)]">
+      <template #container="{ message, acceptCallback, rejectCallback }">
+        <div class="flex flex-col items-center p-8 bg-surface-0 dark:bg-surface-900 rounded relative">
+          <div class="rounded-full bg-orange-500 text-primary-contrast inline-flex justify-center items-center h-24 w-24 -mt-20">
+            <i class="pi pi-exclamation-circle text-5xl"></i>
+          </div>
+          <div class="absolute top-1 right-1">
+            <Button size="large" icon="pi pi-times" severity="danger" variant="text" rounded aria-label="Cancel" @click="confirm.close()" />
+          </div>
+          <span class="font-bold text-2xl block mb-2 mt-6">{{ message.header }}</span>
+          <p class="mb-0">{{ message.message }}</p>
+          <div class="flex items-center gap-2 mt-6">
+            <Button severity="contrast" label="Reset" @click="acceptCallback"></Button>
+            <Button severity="secondary" label="Cancel" outlined @click="rejectCallback"></Button>
+          </div>
         </div>
-      </div>
-    </template>
-  </ConfirmDialog>
-  <ConfirmDialog group="reset" class="max-w-96 w-[calc(100%-6rem)]">
-    <template #container="{ message, acceptCallback, rejectCallback }">
-      <div class="flex flex-col items-center p-8 bg-surface-0 dark:bg-surface-900 rounded relative">
-        <div class="rounded-full bg-orange-500 text-primary-contrast inline-flex justify-center items-center h-24 w-24 -mt-20">
-          <i class="pi pi-exclamation-circle text-5xl"></i>
+      </template>
+    </ConfirmDialog>
+    <ConfirmDialog group="end" class="max-w-96 w-[calc(100%-6rem)]">
+      <template #container="{ message, acceptCallback, rejectCallback }" v-if="roomStore.winners">
+        <div class="flex flex-col items-center p-8 bg-surface-0 dark:bg-surface-900 rounded">
+          <div
+              class="rounded-full bg-primary text-primary-contrast inline-flex justify-center items-center h-24 w-24 -mt-20"
+              :style="endGameIconStyle"
+          >
+            <i class="pi pi-trophy text-5xl"></i>
+          </div>
+          <span class="font-bold text-2xl block mb-2 mt-6">{{ message.header }}</span>
+          <p class="mb-0">{{ message.message }}</p>
+          <div class="flex items-center gap-2 mt-6">
+            <Button
+                label="Yes"
+                @click="acceptCallback"
+                :style="endGameYesButtonStyle"
+            ></Button>
+            <Button
+                label="No"
+                outlined
+                :style="endGameNoButtonStyle"
+                @click="rejectCallback"
+            ></Button>
+          </div>
         </div>
-        <div class="absolute top-1 right-1">
-          <Button size="large" icon="pi pi-times" severity="danger" variant="text" rounded aria-label="Cancel" @click="confirm.close()" />
-        </div>
-        <span class="font-bold text-2xl block mb-2 mt-6">{{ message.header }}</span>
-        <p class="mb-0">{{ message.message }}</p>
-        <div class="flex items-center gap-2 mt-6">
-          <Button severity="contrast" label="Reset" @click="acceptCallback"></Button>
-          <Button severity="secondary" label="Cancel" outlined @click="rejectCallback"></Button>
-        </div>
-      </div>
-    </template>
-  </ConfirmDialog>
-  <ConfirmDialog group="end" class="max-w-96 w-[calc(100%-6rem)]">
-    <template #container="{ message, acceptCallback, rejectCallback }" v-if="roomStore.winners">
-      <div class="flex flex-col items-center p-8 bg-surface-0 dark:bg-surface-900 rounded">
-        <div
-          class="rounded-full bg-primary text-primary-contrast inline-flex justify-center items-center h-24 w-24 -mt-20"
-          :style="endGameIconStyle"
-        >
-          <i class="pi pi-trophy text-5xl"></i>
-        </div>
-        <span class="font-bold text-2xl block mb-2 mt-6">{{ message.header }}</span>
-        <p class="mb-0">{{ message.message }}</p>
-        <div class="flex items-center gap-2 mt-6">
-          <Button
-            label="Yes"
-            @click="acceptCallback"
-            :style="endGameYesButtonStyle"
-          ></Button>
-          <Button
-            label="No"
-            outlined
-            :style="endGameNoButtonStyle"
-            @click="rejectCallback"
-          ></Button>
-        </div>
-      </div>
-    </template>
-  </ConfirmDialog>
+      </template>
+    </ConfirmDialog>
 
-  <h1 class="mb-6 flex justify-between items-center">
-    <span class="text-3xl">Game</span>
-    <span class="inline-flex gap-1">
+    <h1 class="mb-6 flex justify-between items-center">
+      <span class="text-3xl">Game</span>
+      <span class="inline-flex gap-1">
       <Button @click="handleResetGame" variant="text" severity="danger" icon="pi pi-replay" />
       <Button @click="handleEndGame" variant="text" severity="contrast" icon="pi pi-stop" />
     </span>
-  </h1>
+    </h1>
 
-  <div class="flex flex-col gap-4">
-    <GamePlayerCounterCard/>
+    <div class="flex flex-col gap-4">
+      <GamePlayerCounterCard/>
+    </div>
   </div>
 </template>
 
