@@ -4,7 +4,16 @@
       <GameCallToActionCard
           headingText="New game"
           buttonText="Start"
-          color="green"
+          :buttonStyle="{
+            backgroundColor: `var(--p-surface-900)`,
+            borderColor: `var(--p-surface-900)`,
+            color: `var(--p-primary-500)`,
+          }"
+          :cardStyle="{
+            backgroundColor: `var(--p-primary-500)`,
+            borderColor: `var(--p-primary-500)`,
+            color: `var(--p-surface-900)`,
+          }"
           icon="pi-play-circle"
           @buttonClicked="router.push('/games/new')"
       />
@@ -12,7 +21,16 @@
         <GameCallToActionCard
           :headingText="roomStore.getLastCompletedGame.name"
           buttonText="Replay"
-          color="yellow"
+          :buttonStyle="{
+            backgroundColor: `var(--p-primary-500)`,
+            borderColor: `var(--p-primary-500)`,
+            color: `var(--p-surface-900)`,
+          }"
+          :cardStyle="{
+            backgroundColor: `var(--p-deep-blue-900)`,
+            borderColor: `var(--p-deep-blue-900)`,
+            color: `var(--p-surface-0)`,
+          }"
           icon="pi-history"
           @buttonClicked="handleReplayGame"
         />

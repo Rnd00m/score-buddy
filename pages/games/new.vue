@@ -82,7 +82,7 @@
         </Message>
       </div>
 
-      <Button type="submit" severity="secondary" label="Start"/>
+      <Button type="submit" severity="primary" label="Start"/>
     </Form>
   </div>
 </template>

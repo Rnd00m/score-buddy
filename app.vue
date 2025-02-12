@@ -4,15 +4,15 @@
       <NuxtPage/>
     </div>
     <div class="sticky bottom-0 w-full h-[70px]">
-      <Menubar :model="items" breakpoint="0" class="h-full flex justify-center rounded-none border-t-2 border-l-0 border-r-0 border-b-0">
+      <Menubar :model="items" breakpoint="0" class="h-full flex justify-center rounded-none border-0">
         <template #item="{ item, props }">
-          <RouterLink v-slot="{ href, navigate }" :to="item.route" custom>
+          <RouterLink v-slot="{ href, navigate, isActive }" :to="item.route" custom>
             <a
               v-ripple
               :href="href"
               v-bind="props.action"
               @click="navigate"
-              :class="{ 'text-primary': isActive(item.route) }"
+              :class="{ 'route-active': isActive }"
             >
               <span :class="item.icon" class="text-2xl"/>
             </a>
@@ -24,7 +24,6 @@
 </template>
 
 <script setup lang="ts">
-import { useRoute } from 'vue-router';
 const roomStore = useRoomStore();
 
 const items = computed(() => {
@@ -34,8 +33,4 @@ const items = computed(() => {
     { icon: 'pi pi-users', route: '/rooms' },
   ];
 });
-
-const route = useRoute();
-
-const isActive = (routePath: string) => route.path === routePath;
 </script>

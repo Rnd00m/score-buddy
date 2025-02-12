@@ -42,7 +42,7 @@
           }}
         </Message>
       </div>
-      <Button type="submit" severity="secondary" label="Submit"/>
+      <Button type="submit" severity="primary" label="Submit"/>
     </Form>
   </div>
 </template>

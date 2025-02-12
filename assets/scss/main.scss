@@ -33,6 +33,24 @@ body {
 
 :root {
   --p-menubar-gap: 1.5rem;
+  --p-menubar-background: var(--p-primary-500);
+}
+
+.p-menubar-item-link.route-active {
+  background: var(--p-surface-900);
+  border-radius: var(--p-button-border-radius);
+  color: var(--p-primary-500);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --p-menubar-background: var(--p-deep-blue-900);
+  }
+
+  .p-menubar-item-link.route-active {
+    background: var(--p-primary-500);
+    color: var(--p-surface-900);
+  }
 }
 
 .p-menubar {
