@@ -62,7 +62,7 @@
     </ConfirmDialog>
 
     <h1 class="mb-6 flex justify-between items-center">
-      <span class="text-3xl">Game</span>
+      <span class="text-3xl truncate w-full pr-2">{{ roomStore.currentGame?.name }}</span>
       <span class="inline-flex gap-2">
       <Button @click="handleResetGame" raised severity="contrast" icon="pi pi-replay" />
       <Button @click="handleEndGame" raised severity="contrast" icon="pi pi-stop" />

@@ -1,7 +1,23 @@
 <template>
   <div>
     <Toast position="top-center" class="max-w-[calc(100%-2rem)]"/>
-    <ConfirmDialog group="remove" class="max-w-96 w-[calc(100%-6rem)]">
+    <ConfirmDialog group="delete" class="max-w-96 w-[calc(100%-6rem)]">
+      <template #container="{ message, acceptCallback, rejectCallback }">
+        <div class="flex flex-col items-center p-8 bg-surface-0 dark:bg-surface-900 rounded">
+          <div class="rounded-full bg-red-500 text-primary-contrast inline-flex justify-center items-center h-24 w-24 -mt-20">
+            <i class="pi pi-trash text-5xl"></i>
+          </div>
+          <span class="font-bold text-2xl block mb-2 mt-6">{{ message.header }}</span>
+          <p class="mb-0">{{ message.message }}</p>
+          <div class="flex items-center gap-2 mt-6">
+            <Button severity="contrast" label="Confirm" @click="acceptCallback"></Button>
+            <Button severity="secondary" label="Cancel" outlined @click="rejectCallback"></Button>
+          </div>
+        </div>
+      </template>
+    </ConfirmDialog>
+
+    <ConfirmDialog group="reset" class="max-w-96 w-[calc(100%-6rem)]">
       <template #container="{ message, acceptCallback, rejectCallback }">
         <div class="flex flex-col items-center p-8 bg-surface-0 dark:bg-surface-900 rounded">
           <div class="rounded-full bg-orange-500 text-primary-contrast inline-flex justify-center items-center h-24 w-24 -mt-20">
@@ -20,11 +36,12 @@
     <h1 class="mb-6 flex justify-between items-center">
       <span class="text-3xl">Room</span>
       <span class="inline-flex gap-2">
-      <Button raised severity="contrast" icon="pi pi-undo" @click="handleResetRoom" />
-      <NuxtLink to="/rooms/players/add">
-          <Button raised severity="contrast" icon="pi pi-user-plus" />
-      </NuxtLink>
-    </span>
+        <Button raised severity="danger" icon="pi pi-trash" :disabled="roomStore.players.length === 0" @click="handleDeleteRoom" />
+        <Button raised severity="contrast" icon="pi pi-undo" :disabled="roomStore.players.length === 0" @click="handleResetRoom" />
+        <NuxtLink to="/rooms/players/add">
+            <Button raised severity="contrast" icon="pi pi-user-plus" />
+        </NuxtLink>
+      </span>
     </h1>
 
     <DataTable
@@ -102,9 +119,20 @@ const handleRemovePlayer = (playerUuid: string) => {
   });
 };
 
+const handleDeleteRoom = () => {
+  confirm.require({
+    group: 'delete',
+    header: 'Confirmation',
+    message: 'Are you sure you want to remove the lobby? All players will be deleted and all games will be lost.',
+    accept: () => {
+      roomStore.deleteRoom();
+    },
+  });
+};
+
 const handleResetRoom = () => {
   confirm.require({
-    group: 'remove',
+    group: 'reset',
     header: 'Confirmation',
     message: 'Are you sure you want to reset the lobby? All games will be lost.',
     accept: () => {

@@ -82,11 +82,16 @@ actions: {
       this.currentGame.scores = this.players.map((player: Player) => {
         return {
           player: player,
-          score: this.currentGame.startScore,
+          score: this.currentGame?.startScore || 0,
           rank: 1
         }
       });
     }
+  },
+  deleteRoom() {
+    this.currentGame = null;
+    this.games = [];
+    this.players = [];
   },
   resetRoom() {
     this.currentGame = null;
@@ -186,7 +191,7 @@ getters: {
 
     if (state.currentGame.endingScore === null) return false;
 
-    return state.currentGame.scores.some(playerScore => playerScore.score === state.currentGame.endingScore);
+    return state.currentGame.scores.some(playerScore => playerScore.score === state.currentGame?.endingScore);
   }
 }
 })
