@@ -3,7 +3,7 @@
     <div class="p-6 overflow-y-auto flex-1 h-full">
       <NuxtPage/>
     </div>
-    <div class="sticky bottom-0 w-full h-[70px]">
+    <div class="sticky bottom-0 w-full">
       <Menubar :model="items" breakpoint="0" class="h-full flex justify-center rounded-none border-0">
         <template #item="{ item, props }">
           <RouterLink v-slot="{ href, navigate, isActive }" :to="item.route" custom>

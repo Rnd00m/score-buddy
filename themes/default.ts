@@ -76,9 +76,9 @@ const MyPreset = definePreset(Aura, {
         gap: "0"
       },
       item: {
-        padding: "0.75rem 0.75rem",
+        padding: "1rem 1rem",
         borderRadius: "0",
-        gap: "0.5rem"
+        gap: "0"
       },
       submenuLabel: {
         padding: "0.625rem 1rem",
