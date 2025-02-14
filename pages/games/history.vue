@@ -19,9 +19,9 @@
 
     <h1 class="mb-6 flex justify-between items-center">
       <span class="text-3xl">History</span>
-      <span class="inline-flex gap-1">
+      <span class="inline-flex gap-2">
       <NuxtLink to="/games/new">
-          <Button severity="contrast" variant="text" icon="pi pi-play" />
+          <Button raised severity="contrast" icon="pi pi-play" />
       </NuxtLink>
     </span>
     </h1>
@@ -52,7 +52,7 @@
       </Column>
       <Column class="w-8">
         <template #body="{ data }">
-          <Button icon="pi pi-replay" severity="primary" variant="text" rounded aria-label="Replay" @click="handleReplayGame(data)"/>
+          <Button icon="pi pi-replay" severity="primary" size="small" aria-label="Replay" @click="handleReplayGame(data)"/>
         </template>
       </Column>
 

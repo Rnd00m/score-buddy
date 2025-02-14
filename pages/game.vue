@@ -63,9 +63,9 @@
 
     <h1 class="mb-6 flex justify-between items-center">
       <span class="text-3xl">Game</span>
-      <span class="inline-flex gap-1">
-      <Button @click="handleResetGame" variant="text" severity="danger" icon="pi pi-replay" />
-      <Button @click="handleEndGame" variant="text" severity="contrast" icon="pi pi-stop" />
+      <span class="inline-flex gap-2">
+      <Button @click="handleResetGame" raised severity="contrast" icon="pi pi-replay" />
+      <Button @click="handleEndGame" raised severity="contrast" icon="pi pi-stop" />
     </span>
     </h1>
 

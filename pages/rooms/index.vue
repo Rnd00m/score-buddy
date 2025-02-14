@@ -19,10 +19,10 @@
 
     <h1 class="mb-6 flex justify-between items-center">
       <span class="text-3xl">Room</span>
-      <span class="inline-flex gap-1">
-      <Button severity="danger" variant="text" icon="pi pi-undo" @click="handleResetRoom" />
+      <span class="inline-flex gap-2">
+      <Button raised severity="contrast" icon="pi pi-undo" @click="handleResetRoom" />
       <NuxtLink to="/rooms/players/add">
-          <Button severity="contrast" variant="text" icon="pi pi-user-plus" />
+          <Button raised severity="contrast" icon="pi pi-user-plus" />
       </NuxtLink>
     </span>
     </h1>
@@ -51,7 +51,7 @@
       <Column field="score" header="Score" sortable></Column>
       <Column class="w-8">
         <template #body="{ data }">
-          <Button icon="pi pi-times" @click="handleRemovePlayer(data.uuid)" severity="danger" variant="text" rounded aria-label="Cancel" />
+          <Button icon="pi pi-times" @click="handleRemovePlayer(data.uuid)" severity="danger" size="small" />
         </template>
       </Column>
       <template #expansion="slotProps">

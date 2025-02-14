@@ -3,7 +3,7 @@
     v-if="roomStore.currentGame !== null"
     v-for="(player, index) in roomStore.players"
     :key="index"
-    class="flex justify-between p-3 rounded-lg shadow-lg"
+    class="flex justify-between p-3 rounded-lg shadow-xl"
     :style="{ backgroundColor: player.color.value }"
   >
     <Button
