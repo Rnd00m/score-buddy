@@ -58,7 +58,7 @@ body {
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --p-menubar-background: var(--p-dark-primary-900);
+    --p-menubar-background: var(--p-dark-secondary-900);
   }
 
   .p-menubar-item-link.route-active {
