@@ -21,7 +21,7 @@
       <span class="text-3xl">History</span>
       <span class="inline-flex gap-2">
       <NuxtLink to="/games/new">
-          <Button raised severity="contrast" icon="pi pi-play" />
+          <Button raised severity="contrast" :disabled="roomStore.players.length ===0" icon="pi pi-play" />
       </NuxtLink>
     </span>
     </h1>

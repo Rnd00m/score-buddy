@@ -16,7 +16,9 @@
         color: getTextColorContrasted(player.color.value),
       }"
       class="rounded-lg min-w-[68px]"
-      @click="handleDecrementScore(player)"
+      @mousedown="handleStartPress(() => handleDecrementScore(player))"
+      @mouseup="handleStopPress"
+      @mouseleave="handleStopPress"
     />
 
     <div class="flex flex-col items-center flex-1 mx-4">
@@ -34,7 +36,9 @@
         color: getTextColorContrasted(player.color.value),
       }"
       class="rounded-lg min-w-[68px]"
-      @click="handleIncrementScore(player)"
+      @mousedown="handleStartPress(() => handleIncrementScore(player))"
+      @mouseup="handleStopPress"
+      @mouseleave="handleStopPress"
     />
   </div>
 </template>
@@ -55,8 +59,38 @@ const handleDecrementScore = (player: Player) => {
 const getButtonColor = (color: string, type: 'light' | 'dark'): string => {
   return adjustColor(color, type);
 };
-</script>
 
+
+const interval = ref<ReturnType<typeof setInterval> | null>(null);
+const timeout = ref<ReturnType<typeof setTimeout> | null>(null);
+const speedUpTimeout = ref<ReturnType<typeof setTimeout> | null>(null);
+const intervalSpeed = ref(100);
+
+const handleStartPress = (action: () => void) => {
+  action();
+
+  timeout.value = setTimeout(() => {
+    interval.value = setInterval(action, intervalSpeed.value);
+
+    speedUpTimeout.value = setTimeout(() => {
+      if (interval.value) clearInterval(interval.value);
+      intervalSpeed.value = 50;
+      interval.value = setInterval(action, intervalSpeed.value);
+    }, 1000);
+  }, 300);
+};
+
+const handleStopPress = () => {
+  if (timeout.value) clearTimeout(timeout.value);
+  if (speedUpTimeout.value) clearTimeout(speedUpTimeout.value);
+  if (interval.value) clearInterval(interval.value);
+
+  timeout.value = null;
+  speedUpTimeout.value = null;
+  interval.value = null;
+  intervalSpeed.value = 100;
+};
+</script>
 
 <style scoped>
 
