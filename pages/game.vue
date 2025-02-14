@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="roomStore.currentGame">
     <ConfirmDialog group="confirm" class="max-w-96 w-[calc(100%-6rem)]">
       <template #container="{ message, acceptCallback, rejectCallback }">
         <div class="flex flex-col items-center p-8 bg-surface-0 dark:bg-surface-900 rounded">
@@ -60,10 +60,34 @@
         </div>
       </template>
     </ConfirmDialog>
+    <Dialog v-model:visible="isGameInfoDialogOpened" :header="roomStore.currentGame.name" class="max-w-96 w-[calc(100%-6rem)]" :modal="true" :draggable="false" close-on-escape>
+      <div class="grid grid-cols-2 gap-2 items-center">
+        <label class="text-left">Start score</label>
+        <span>
+          <Tag severity="contrast" :value="roomStore.currentGame.startScore" />
+        </span>
+
+        <label class="text-left">Ending score</label>
+        <span>
+          <Tag severity="contrast" :value="roomStore.currentGame.endingScore || '-'" />
+        </span>
+
+        <label class="text-left">Lowest possible score</label>
+        <span>
+          <Tag severity="contrast" :value="roomStore.currentGame.lowestPossibleScore || '-'" />
+        </span>
+
+        <label class="text-left">Win condition</label>
+        <span>
+          <Tag severity="contrast" :value="roomStore.currentGame.winCondition" />
+        </span>
+      </div>
+    </Dialog>
 
     <h1 class="mb-6 flex justify-between items-center">
-      <span class="text-3xl truncate w-full pr-2">{{ roomStore.currentGame?.name }}</span>
+      <span class="text-3xl truncate w-full pr-2">{{ roomStore.currentGame.name }}</span>
       <span class="inline-flex gap-2">
+      <Button @click="isGameInfoDialogOpened = !isGameInfoDialogOpened" raised severity="info" icon="pi pi-info" />
       <Button @click="handleResetGame" raised severity="contrast" icon="pi pi-replay" />
       <Button @click="handleEndGame" raised severity="contrast" icon="pi pi-stop" />
     </span>
@@ -79,6 +103,7 @@
 const roomStore = useRoomStore();
 const confirm = useConfirm();
 const router = useRouter();
+const isGameInfoDialogOpened = ref(false);
 
 if (roomStore.currentGame === null) {
   router.push('/games');
