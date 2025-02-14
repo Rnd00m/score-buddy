@@ -2,10 +2,9 @@
   <Card class="card w-[calc(100%-4rem)] max-w-96 p-2 border-2" :style="cardStyle">
     <template #content>
       <div class="flex flex-col items-center justify-center text-xl font-bold gap-4">
-        <i class="pi" :class="icon" style="font-size: 4.5rem"></i>
-
+        <slot name="icon" />
         <div class="header text-center truncate w-full max-w-72">{{ headingText }}</div>
-        <Button class="button border-2 px-4 py-2" :style="buttonStyle" @click="emit('buttonClicked')">{{ buttonText }}</Button>
+        <Button class="border-2 px-4 py-2 font-extrabold" :style="buttonStyle" @click="emit('buttonClicked')">{{ buttonText }}</Button>
       </div>
     </template>
   </Card>

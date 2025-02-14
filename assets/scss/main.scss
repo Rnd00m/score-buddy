@@ -25,6 +25,20 @@
   font-style: normal;
 }
 
+@font-face {
+  font-family: 'Nunito';
+  src: url('/assets/fonts/Nunito-ExtraBold.ttf') format('truetype');
+  font-weight: 800;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Nunito';
+  src: url('/assets/fonts/Nunito-Black.ttf') format('truetype');
+  font-weight: 900;
+  font-style: normal;
+}
+
 body {
   margin: 0;
   background-color: var(--p-content-background);
@@ -44,7 +58,7 @@ body {
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --p-menubar-background: var(--p-deep-blue-900);
+    --p-menubar-background: var(--p-dark-primary-900);
   }
 
   .p-menubar-item-link.route-active {

@@ -80,6 +80,10 @@ const roomStore = useRoomStore();
 const confirm = useConfirm();
 const router = useRouter();
 
+if (roomStore.currentGame === null) {
+  router.push('/games');
+}
+
 const endGameIconStyle = computed(() => {
   if (!roomStore.winners || roomStore.winners.length > 1) return {};
 
