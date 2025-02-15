@@ -1,8 +1,19 @@
-# Nuxt Minimal Starter
+# Score Buddy
 
-Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+Score Buddy is an application designed to make it easier to track points during your board game sessions. No more need for pen and paper—follow your scores in real-time and keep a history of your games during a session.
 
-## Setup
+## Features
+
+- [ ] Logo
+- [ ] Mobile app with capacitor
+- [ ] Web responsive
+- [ ] PWA
+- [ ] Disable mobile stand-by
+- [ ] Duel mode
+- [ ] French translation
+- [ ] Game history and statistics
+
+## Installation
 
 Make sure to install dependencies:
 
