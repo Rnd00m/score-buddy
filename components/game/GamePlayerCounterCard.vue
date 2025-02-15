@@ -16,9 +16,11 @@
         color: getTextColorContrasted(player.color.value),
       }"
       class="rounded-lg min-w-[68px]"
-      @mousedown="handleStartPress(() => handleDecrementScore(player))"
+      @mousedown="!isTouchDevice ? handleStartPress(() => handleDecrementScore(player)) : null"
       @mouseup="handleStopPress"
       @mouseleave="handleStopPress"
+      @touchstart="handleStartPress(() => handleDecrementScore(player))"
+      @touchend="handleStopPress"
     />
 
     <div class="flex flex-col items-center flex-1 mx-4">
@@ -36,9 +38,11 @@
         color: getTextColorContrasted(player.color.value),
       }"
       class="rounded-lg min-w-[68px]"
-      @mousedown="handleStartPress(() => handleIncrementScore(player))"
+      @mousedown="!isTouchDevice ? handleStartPress(() => handleIncrementScore(player)) : null"
       @mouseup="handleStopPress"
       @mouseleave="handleStopPress"
+      @touchstart="handleStartPress(() => handleIncrementScore(player))"
+      @touchend="handleStopPress"
     />
   </div>
 </template>
@@ -47,6 +51,12 @@
 import type {Player} from "~/types/global";
 
 const roomStore = useRoomStore();
+
+const isTouchDevice = ref(false);
+
+onMounted(() => {
+  isTouchDevice.value = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+});
 
 const handleIncrementScore = (player: Player) => {
   roomStore.incrementScore(player);
@@ -59,7 +69,6 @@ const handleDecrementScore = (player: Player) => {
 const getButtonColor = (color: string, type: 'light' | 'dark'): string => {
   return adjustColor(color, type);
 };
-
 
 const interval = ref<ReturnType<typeof setInterval> | null>(null);
 const timeout = ref<ReturnType<typeof setTimeout> | null>(null);
