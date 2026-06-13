@@ -78,6 +78,20 @@ body {
   }
 }
 
+// -------------------- AutoComplete -------------------- >
+.p-autocomplete-overlay {
+  // PrimeVue only sets a min-width matching the input; without an
+  // explicit width the overlay shrinks to fit its content instead,
+  // so long suggestions stretch it past the input's width.
+  width: 0;
+}
+
+.p-autocomplete-option {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 // -------------------- Page transition -------------------- >
 .slide-enter-active, .slide-leave-active {
   transition: transform 0.15s ease-in-out, opacity 0.15s ease-in-out;

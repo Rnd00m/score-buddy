@@ -13,11 +13,11 @@
         <AutoComplete
             id="name"
             :suggestions="suggestedGameNames"
+            :loading="isSearchingBggGames"
             @complete="searchGameName"
             name="name"
             type="text"
             fluid
-            :showEmptyMessage="false"
         />
         <Message v-if="$form.name?.invalid" severity="error" size="small" variant="simple">{{
             $form.name.error?.message
@@ -89,21 +89,29 @@
 
 <script setup lang="ts">
 import { WinCondition } from '~/types/global';
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 
 const roomStore = useRoomStore();
 const router = useRouter();
 
-const suggestedGameNames = ref<string[]>([]);
+const gameNameQuery = ref('');
+const { data: bggGames, isFetching: isSearchingBggGames } = useBggGameSearch(gameNameQuery);
 
 const searchGameName = (event: any) => {
-  suggestedGameNames.value = roomStore.games.filter(game => game.name.toLowerCase().includes(event.query.toLowerCase())).reduce((acc: string[], game) => {
-    if (!acc.includes(game.name)) {
-      acc.push(game.name);
-    }
-    return acc;
-  }, []);
+  gameNameQuery.value = event.query;
 }
+
+const suggestedGameNames = computed<string[]>(() => {
+  const query = gameNameQuery.value.toLowerCase();
+
+  const localMatches = roomStore.games
+    .filter(game => game.name.toLowerCase().includes(query))
+    .map(game => game.name);
+
+  const bggMatches = (bggGames.value ?? []).map(game => game.name);
+
+  return [...new Set([...localMatches, ...bggMatches])];
+});
 
 const lowestPossibleScore = ref(null);
 
