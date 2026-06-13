@@ -21,9 +21,12 @@
       </Menubar>
     </div>
   </div>
+  <VueQueryDevtools />
 </template>
 
 <script setup lang="ts">
+import { VueQueryDevtools } from '@tanstack/vue-query-devtools'
+
 const roomStore = useRoomStore();
 
 const items = computed(() => {
