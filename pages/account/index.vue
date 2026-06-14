@@ -36,6 +36,20 @@
         <Button label="Sign up" icon="pi pi-user-plus" outlined fluid/>
       </NuxtLink>
     </div>
+
+    <h2 class="mt-8 mb-4 text-xl">Preferences</h2>
+
+    <div class="flex flex-col gap-4">
+      <div class="flex items-center justify-between">
+        <label for="dark-mode-switch">Dark mode</label>
+        <ToggleSwitch v-model="isDarkMode" inputId="dark-mode-switch"/>
+      </div>
+
+      <div v-if="isWakeLockSupported" class="flex items-center justify-between">
+        <label for="wake-lock-switch">Keep screen on</label>
+        <ToggleSwitch v-model="isWakeLockEnabled" inputId="wake-lock-switch"/>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -45,6 +59,18 @@ const user = useSupabaseUser();
 const toast = useToast();
 const confirm = useConfirm();
 const {isSyncing, pullRemote, importLocalToRemote} = useSupabaseSync();
+
+const {colorScheme, setColorScheme} = useColorScheme();
+const isDarkMode = computed({
+  get: () => colorScheme.value === 'dark',
+  set: (value: boolean) => setColorScheme(value ? 'dark' : 'light'),
+});
+
+const {isSupported: isWakeLockSupported, isEnabled: isWakeLockEnabledState, setEnabled: setWakeLockEnabled} = useScreenWakeLock();
+const isWakeLockEnabled = computed({
+  get: () => isWakeLockEnabledState.value,
+  set: (value: boolean) => setWakeLockEnabled(value),
+});
 
 const handleSync = async () => {
   try {

@@ -64,17 +64,15 @@ body {
   border-bottom: var(--p-dark-secondary-900) 0.2rem solid;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --p-menubar-background: var(--p-dark-secondary-900);
-  }
+:root.app-dark {
+  --p-menubar-background: var(--p-dark-secondary-900);
+}
 
-  .p-menubar-item:has(.p-menubar-item-link.route-active) {
-    border-bottom: var(--p-primary-500) 0.15rem solid;
+.app-dark .p-menubar-item:has(.p-menubar-item-link.route-active) {
+  border-bottom: var(--p-primary-500) 0.15rem solid;
 
-    .p-menubar-item-link.route-active {
-      color: var(--p-primary-500);
-    }
+  .p-menubar-item-link.route-active {
+    color: var(--p-primary-500);
   }
 }
 

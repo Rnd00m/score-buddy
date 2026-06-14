@@ -41,6 +41,14 @@ const items = computed(() => {
   ];
 });
 
+const { init: initColorScheme } = useColorScheme();
+const { init: initWakeLock } = useScreenWakeLock();
+
+onMounted(() => {
+  initColorScheme();
+  initWakeLock();
+});
+
 router.beforeEach((to, from) => {
   const routes = items.value.map(item => item.route);
   const fromIndex = routes.indexOf(from.path);
