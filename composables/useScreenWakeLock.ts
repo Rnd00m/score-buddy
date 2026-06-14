@@ -1,41 +1,18 @@
+import { KeepAwake } from '@capacitor-community/keep-awake';
+
 const STORAGE_KEY = 'keepScreenAwake';
 
+const isSupported = ref(false);
 const isEnabled = ref(false);
-let sentinel: WakeLockSentinel | null = null;
 
 export const useScreenWakeLock = () => {
-  const isSupported = 'wakeLock' in navigator;
-
-  const requestWakeLock = async () => {
-    if (!isSupported) return;
-
-    try {
-      sentinel = await navigator.wakeLock.request('screen');
-      sentinel.addEventListener('release', () => {
-        sentinel = null;
-      });
-    } catch {
-      isEnabled.value = false;
-    }
-  };
-
-  const releaseWakeLock = async () => {
-    await sentinel?.release();
-    sentinel = null;
-  };
-
-  const init = () => {
-    isEnabled.value = isSupported && localStorage.getItem(STORAGE_KEY) === 'true';
+  const init = async () => {
+    isSupported.value = (await KeepAwake.isSupported()).isSupported;
+    isEnabled.value = isSupported.value && localStorage.getItem(STORAGE_KEY) === 'true';
 
     if (isEnabled.value) {
-      requestWakeLock();
+      await KeepAwake.keepAwake();
     }
-
-    document.addEventListener('visibilitychange', () => {
-      if (isEnabled.value && document.visibilityState === 'visible') {
-        requestWakeLock();
-      }
-    });
   };
 
   const setEnabled = async (enabled: boolean) => {
@@ -43,9 +20,9 @@ export const useScreenWakeLock = () => {
     localStorage.setItem(STORAGE_KEY, String(enabled));
 
     if (enabled) {
-      await requestWakeLock();
+      await KeepAwake.keepAwake();
     } else {
-      await releaseWakeLock();
+      await KeepAwake.allowSleep();
     }
   };
 
