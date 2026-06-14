@@ -27,14 +27,15 @@
     </h1>
 
     <DataTable
-        :value="games"
-        v-model:expandedRows="expandedRows"
-        dataKey="uuid"
-        sortField="createdAtTime"
-        :sortOrder="-1"
-        removableSort
-        class="-mx-6"
-        size="small"
+      :value="games"
+      v-model:expandedRows="expandedRows"
+      @row-click="onRowClick"
+      dataKey="uuid"
+      sortField="createdAtTime"
+      :sortOrder="-1"
+      removableSort
+      class="-mx-6"
+      size="small"
     >
       <template #empty> Currently no played games. </template>
       <Column expander class="w-1" />
@@ -78,7 +79,7 @@ import moment from 'moment';
 import type {Game} from "~/types/global";
 
 const roomStore = useRoomStore();
-const expandedRows = ref({});
+const { expandedRows, onRowClick } = useExpandableRow('uuid');
 const router = useRouter();
 
 const games = computed(() => roomStore.games.map(game => ({

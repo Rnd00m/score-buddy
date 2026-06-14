@@ -61,14 +61,15 @@
     </h1>
 
     <DataTable
-        :value="roomStore.players"
-        v-model:expandedRows="expandedRows"
-        dataKey="uuid"
-        sortField="score"
-        :sortOrder="-1"
-        removableSort
-        class="-mx-6"
-        size="small"
+      :value="roomStore.players"
+      v-model:expandedRows="expandedRows"
+      @row-click="onRowClick"
+      dataKey="uuid"
+      sortField="score"
+      :sortOrder="-1"
+      removableSort
+      class="-mx-6"
+      size="small"
     >
       <template #empty> Currently no players. </template>
       <Column expander class="w-1" v-if="roomStore.games.length"/>
@@ -115,7 +116,7 @@ import moment from 'moment';
 const roomStore = useRoomStore();
 const confirm = useConfirm();
 const toast = useToast();
-const expandedRows = ref({});
+const { expandedRows, onRowClick } = useExpandableRow('uuid');
 
 const handleRemovePlayer = (playerUuid: string) => {
   if (roomStore.currentGame !== null) {
