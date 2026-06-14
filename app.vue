@@ -1,6 +1,6 @@
 <template>
   <div class="flex flex-col min-h-screen">
-    <div class="p-6 overflow-y-auto flex-1 h-full">
+    <div ref="mainContent" class="p-6 overflow-y-auto flex-1 h-full">
       <NuxtPage/>
     </div>
     <div class="sticky bottom-0 w-full">
@@ -29,13 +29,36 @@ import { VueQueryDevtools } from '@tanstack/vue-query-devtools'
 
 const roomStore = useRoomStore();
 const user = useSupabaseUser();
+const route = useRoute();
+const router = useRouter();
 
 const items = computed(() => {
   return [
     { icon: 'pi pi-play', route: roomStore.currentGame !== null ? '/game' : '/games' },
     { icon: 'pi pi-history', route: '/games/history' },
     { icon: 'pi pi-users', route: '/rooms' },
-    { icon: user.value ? 'pi pi-user-check' : 'pi pi-user', route: '/account' },
+    { icon: 'pi pi-user', route: '/account' },
   ];
+});
+
+const mainContent = ref<HTMLElement | null>(null);
+
+useSwipe(mainContent, {
+  onSwipeLeft: () => {
+    const routes = items.value.map(item => item.route);
+    const index = routes.indexOf(route.path);
+
+    if (index === -1 || index === routes.length - 1) return;
+
+    router.push(routes[index + 1]);
+  },
+  onSwipeRight: () => {
+    const routes = items.value.map(item => item.route);
+    const index = routes.indexOf(route.path);
+
+    if (index <= 0) return;
+
+    router.push(routes[index - 1]);
+  },
 });
 </script>
