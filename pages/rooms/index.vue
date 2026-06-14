@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="flex flex-col h-full">
     <Toast position="top-center" class="max-w-[calc(100%-2rem)]"/>
     <ConfirmDialog group="remove" class="max-w-96 w-[calc(100%-6rem)]">
       <template #container="{ message, acceptCallback, rejectCallback }">
@@ -49,7 +49,7 @@
       </template>
     </ConfirmDialog>
 
-    <h1 class="mb-6 flex justify-between items-center">
+    <h1 class="mb-6 flex justify-between items-center shrink-0">
       <span class="text-3xl">Room</span>
       <span class="inline-flex gap-2">
         <Button raised severity="danger" icon="pi pi-trash" :disabled="roomStore.players.length === 0" @click="handleDeleteRoom" />
@@ -61,6 +61,7 @@
     </h1>
 
     <DataTable
+      class="flex-1 min-h-0 -mx-6 -mb-6"
       :value="roomStore.players"
       v-model:expandedRows="expandedRows"
       @row-click="onRowClick"
@@ -68,7 +69,8 @@
       sortField="score"
       :sortOrder="-1"
       removableSort
-      class="-mx-6"
+      scrollable
+      scrollHeight="flex"
       size="small"
     >
       <template #empty> Currently no players. </template>
@@ -106,7 +108,6 @@
       </template>
     </DataTable>
   </div>
-
 </template>
 
 <script setup lang="ts">

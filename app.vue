@@ -1,6 +1,6 @@
 <template>
-  <div class="flex flex-col min-h-screen">
-    <div ref="mainContent" class="p-6 overflow-y-auto flex-1 h-full">
+  <div class="flex flex-col h-dvh">
+    <div ref="mainContent" class="p-6 overflow-y-auto flex-1 min-h-0">
       <NuxtPage/>
     </div>
     <div class="sticky bottom-0 w-full">

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="flex flex-col h-full">
     <Toast position="top-center" class="max-w-[calc(100%-2rem)]"/>
     <ConfirmDialog group="remove" class="max-w-96 w-[calc(100%-6rem)]">
       <template #container="{ message, acceptCallback, rejectCallback }">
@@ -17,7 +17,7 @@
       </template>
     </ConfirmDialog>
 
-    <h1 class="mb-6 flex justify-between items-center">
+    <h1 class="mb-6 flex justify-between items-center shrink-0">
       <span class="text-3xl">History</span>
       <span class="inline-flex gap-2">
       <NuxtLink to="/games/new">
@@ -27,6 +27,7 @@
     </h1>
 
     <DataTable
+      class="flex-1 min-h-0 -mx-6 -mb-6"
       :value="games"
       v-model:expandedRows="expandedRows"
       @row-click="onRowClick"
@@ -34,7 +35,8 @@
       sortField="createdAtTime"
       :sortOrder="-1"
       removableSort
-      class="-mx-6"
+      scrollable
+      scrollHeight="flex"
       size="small"
     >
       <template #empty> Currently no played games. </template>
