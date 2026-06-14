@@ -171,6 +171,23 @@ actions: {
 
     this.calculateRankings(this.currentGame);
   },
+  setScore(player: Player, score: number): void {
+    if (!this.currentGame) {
+      return;
+    }
+
+    const playerScore = this.getPlayerScore(player);
+
+    if (!playerScore) {
+      return;
+    }
+
+    playerScore.score = this.currentGame.lowestPossibleScore !== null
+      ? Math.max(score, this.currentGame.lowestPossibleScore)
+      : score;
+
+    this.calculateRankings(this.currentGame);
+  },
   getPlayerScore (player: Player): GameScore | null {
     return this.currentGame?.scores.find((score) => score.player.uuid === player.uuid) || null;
   }

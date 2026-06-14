@@ -26,7 +26,25 @@
 
     <div class="flex flex-col items-center flex-1 mx-4">
       <h3 :style="{ color: getTextColorContrasted(player.color.value) }" class="font-semibold text-xl">{{ player.name }}</h3>
-      <p :style="{ color: getTextColorContrasted(player.color.value) }" class="font-bold text-4xl">{{ roomStore.getPlayerScore(player)?.score || 0 }}</p>
+      <InputText
+        v-if="editingPlayerUuid === player.uuid"
+        v-focus
+        v-model="editValue"
+        type="text"
+        inputmode="tel"
+        unstyled
+        :style="{ color: getTextColorContrasted(player.color.value) }"
+        class="font-bold text-4xl text-center bg-transparent border-b-2 w-28 outline-none"
+        @blur="applyScoreEdit(player)"
+        @keyup.enter="applyScoreEdit(player)"
+      />
+      <p
+        v-else
+        v-ripple
+        :style="{ color: getTextColorContrasted(player.color.value) }"
+        class="p-ripple font-bold text-4xl cursor-pointer select-none rounded-lg px-3"
+        @click="startEditingScore(player)"
+      >{{ roomStore.getPlayerScore(player)?.score || 0 }}</p>
     </div>
 
     <Button
@@ -100,6 +118,51 @@ const handleStopPress = () => {
   speedUpTimeout.value = null;
   interval.value = null;
   intervalSpeed.value = 100;
+};
+
+const editingPlayerUuid = ref<string | null>(null);
+const editValue = ref('');
+
+const vFocus = {
+  mounted: (el: HTMLInputElement) => {
+    el.focus();
+  },
+};
+
+const startEditingScore = (player: Player) => {
+  editingPlayerUuid.value = player.uuid;
+  editValue.value = String(roomStore.getPlayerScore(player)?.score || 0);
+};
+
+const parseScoreInput = (value: string, currentScore: number): number | null => {
+  const trimmed = value.replace(/\s+/g, '');
+
+  const calcMatch = trimmed.match(/^(\d+)?([+-])(\d+)$/);
+  if (calcMatch) {
+    const [, base, sign, amount] = calcMatch;
+    const baseValue = base !== undefined ? parseInt(base, 10) : currentScore;
+
+    return sign === '+' ? baseValue + parseInt(amount, 10) : baseValue - parseInt(amount, 10);
+  }
+
+  if (/^\d+$/.test(trimmed)) {
+    return parseInt(trimmed, 10);
+  }
+
+  return null;
+};
+
+const applyScoreEdit = (player: Player) => {
+  if (editingPlayerUuid.value !== player.uuid) return;
+
+  const currentScore = roomStore.getPlayerScore(player)?.score || 0;
+  const newScore = parseScoreInput(editValue.value, currentScore);
+
+  if (newScore !== null) {
+    roomStore.setScore(player, newScore);
+  }
+
+  editingPlayerUuid.value = null;
 };
 </script>
 
