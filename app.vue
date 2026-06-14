@@ -41,6 +41,22 @@ const items = computed(() => {
   ];
 });
 
+router.beforeEach((to, from) => {
+  const routes = items.value.map(item => item.route);
+  const fromIndex = routes.indexOf(from.path);
+  const toIndex = routes.indexOf(to.path);
+
+  if (fromIndex === -1 || toIndex === -1 || fromIndex === toIndex) return;
+
+  const pageTransition = {
+    name: toIndex > fromIndex ? 'slide-left' : 'slide-right',
+    mode: 'out-in' as const,
+  };
+
+  to.meta.pageTransition = pageTransition;
+  from.meta.pageTransition = pageTransition;
+});
+
 const mainContent = ref<HTMLElement | null>(null);
 
 useSwipe(mainContent, {
