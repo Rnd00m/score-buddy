@@ -15,12 +15,13 @@
         backgroundColor: getButtonColor(player.color.value, 'dark'),
         color: getTextColorContrasted(player.color.value),
       }"
-      class="rounded-lg min-w-[68px]"
+      class="rounded-lg min-w-[68px] touch-none"
       @mousedown="!isTouchDevice ? handleStartPress(() => handleDecrementScore(player)) : null"
       @mouseup="handleStopPress"
       @mouseleave="handleStopPress"
       @touchstart="handleStartPress(() => handleDecrementScore(player))"
       @touchend="handleStopPress"
+      @touchcancel="handleStopPress"
     />
 
     <div class="flex flex-col items-center flex-1 mx-4">
@@ -37,12 +38,13 @@
         backgroundColor: getButtonColor(player.color.value, 'dark'),
         color: getTextColorContrasted(player.color.value),
       }"
-      class="rounded-lg min-w-[68px]"
+      class="rounded-lg min-w-[68px] touch-none"
       @mousedown="!isTouchDevice ? handleStartPress(() => handleIncrementScore(player)) : null"
       @mouseup="handleStopPress"
       @mouseleave="handleStopPress"
       @touchstart="handleStartPress(() => handleIncrementScore(player))"
       @touchend="handleStopPress"
+      @touchcancel="handleStopPress"
     />
   </div>
 </template>
