@@ -28,12 +28,14 @@
 import { VueQueryDevtools } from '@tanstack/vue-query-devtools'
 
 const roomStore = useRoomStore();
+const user = useSupabaseUser();
 
 const items = computed(() => {
   return [
     { icon: 'pi pi-play', route: roomStore.currentGame !== null ? '/game' : '/games' },
     { icon: 'pi pi-history', route: '/games/history' },
     { icon: 'pi pi-users', route: '/rooms' },
+    { icon: user.value ? 'pi pi-user-check' : 'pi pi-user', route: '/account' },
   ];
 });
 </script>

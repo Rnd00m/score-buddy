@@ -103,6 +103,8 @@
 const roomStore = useRoomStore();
 const confirm = useConfirm();
 const router = useRouter();
+const user = useSupabaseUser();
+const {syncGame} = useSupabaseSync();
 const isGameInfoDialogOpened = ref(false);
 
 if (roomStore.currentGame === null) {
@@ -177,6 +179,15 @@ const handleResetGame = () => {
   });
 };
 
+const finishGame = () => {
+  const game = roomStore.currentGame;
+  roomStore.endGame();
+
+  if (game && user.value) {
+    syncGame(game).catch(() => {});
+  }
+};
+
 const handleGameFinished = () => {
   if (!roomStore.winners) return;
 
@@ -189,11 +200,11 @@ const handleGameFinished = () => {
     header: endMessage,
     message: 'Do you want to start a new one?',
     accept: () => {
-      roomStore.endGame();
+      finishGame();
       router.push('/games')
     },
     reject: () => {
-      roomStore.endGame();
+      finishGame();
       router.push('/rooms')
     }
   });

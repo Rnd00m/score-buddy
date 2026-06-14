@@ -11,6 +11,7 @@
     "tailwind": "npx tailwindcss build assets/scss/main.scss -o .tailwind/tailwind.css"
   },
   "dependencies": {
+    "@nuxtjs/supabase": "^2.0.9",
     "@pinia/nuxt": "^0.9.0",
     "@primevue/forms": "^4.2.5",
     "@primevue/themes": "^4.2.5",

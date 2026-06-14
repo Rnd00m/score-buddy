@@ -32,3 +32,9 @@ export interface Player {
   color: Color;
   score: number;
 }
+
+export interface PlayerProfile {
+  id: string;
+  name: string;
+  color: Color;
+}

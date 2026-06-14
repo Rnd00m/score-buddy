@@ -7,6 +7,24 @@
       <span class="text-3xl">Add player</span>
     </h1>
 
+    <div v-if="quickPickProfiles.length" class="flex flex-col gap-2 mb-4">
+      <label>Players you've played with</label>
+      <div class="flex flex-wrap gap-2">
+        <Button
+            v-for="profile in quickPickProfiles"
+            :key="profile.id"
+            severity="secondary"
+            outlined
+            @click="addFromProfile(profile)"
+        >
+          <div class="flex items-center gap-2">
+            <div class="w-4 h-4 rounded-md" :style="{background: profile.color.value}"></div>
+            <span>{{ profile.name }}</span>
+          </div>
+        </Button>
+      </div>
+    </div>
+
     <Form v-slot="$form" :initialValues="player" :resolver @submit="onFormSubmit" class="flex flex-col gap-4 w-full">
       <div class="flex flex-col gap-1">
         <label for="name">Name</label>
@@ -49,8 +67,13 @@
 
 <script setup lang="ts">
 import {ref} from 'vue';
+import type {PlayerProfile} from '~/types/global';
+import {PLAYER_COLORS} from '~/utils/color';
 
 const roomStore = useRoomStore();
+const playerProfilesStore = usePlayerProfilesStore();
+const user = useSupabaseUser();
+const {syncProfile} = useSupabaseSync();
 const router = useRouter();
 
 const player = ref({
@@ -58,29 +81,20 @@ const player = ref({
   color: null
 });
 
-const colors = ref([
-  {"name": "Chestnut Brown", "value": "#8B4513"},
-  {"name": "Alizarin", "value": "#e74c3c"},
-  {"name": "Orange", "value": "#f39c12"},
-  {"name": "Sunflower Yellow", "value": "#FFD700"},
-  {"name": "Lime Green", "value": "#32CD32"},
-  {"name": "Emerald Green", "value": "#2E8B57"},
-  {"name": "Sky Blue", "value": "#87CEEB"},
-  {"name": "Royal Blue", "value": "#4169E1"},
-  {"name": "Navy Blue", "value": "#000080"},
-  {"name": "Wisteria", "value": "#8e44ad"},
-  {"name": "Hot Pink", "value": "#FF69B4"},
-  {"name": "Rose Pink", "value": "#FF1493"},
-  {"name": "Turquoise", "value": "#40E0D0"},
-  {"name": "Teal", "value": "#008080"},
-  {"name": "Silver", "value": "#bdc3c7"},
-  {"name": "Jet Black", "value": "#000000"}
-]);
-
-
 const availableColors = computed(() => {
-  return colors.value.filter(color => !roomStore.players.some(player => player.color.value === color.value));
+  return PLAYER_COLORS.filter(color => !roomStore.players.some(player => player.color.value === color.value));
 });
+
+const quickPickProfiles = computed(() => {
+  return playerProfilesStore.profiles.filter(profile => !roomStore.players.some(player =>
+    player.name === profile.name || player.color.value === profile.color.value
+  ));
+});
+
+const addFromProfile = (profile: PlayerProfile) => {
+  roomStore.addPlayer(profile.name, profile.color);
+  router.push('/rooms');
+};
 
 const resolver = ({values}) => {
   const errors = {};
@@ -113,9 +127,21 @@ const resolver = ({values}) => {
 };
 
 const onFormSubmit = ({valid, states}) => {
-  if (valid) {
-    roomStore.addPlayer(states.name.value.trim(),states.color.value);
-    router.push('/rooms');
+  if (!valid) return;
+
+  const name = states.name.value.trim();
+  const color = states.color.value;
+
+  roomStore.addPlayer(name, color);
+
+  if (!playerProfilesStore.profiles.some(profile => profile.name === name)) {
+    const profile = playerProfilesStore.addProfile(name, color);
+
+    if (user.value) {
+      syncProfile(profile).catch(() => {});
+    }
   }
+
+  router.push('/rooms');
 };
 </script>
