@@ -1,5 +1,7 @@
 <template>
   <div>
+    <Toast position="top-center" class="max-w-[calc(100%-2rem)]"/>
+
     <h1 class="mb-6 flex items-center gap-4">
       <NuxtLink to="/rooms">
         <Button severity="secondary" icon="pi pi-arrow-left"/>
@@ -9,7 +11,7 @@
 
     <div v-if="quickPickProfiles.length" class="flex flex-col gap-2 mb-4">
       <label>Players you've played with</label>
-      <div class="flex flex-wrap gap-2">
+      <div class="flex flex-wrap content-start gap-2 max-h-52 overflow-y-auto">
         <Button
             v-for="profile in quickPickProfiles"
             :key="profile.id"
@@ -25,7 +27,7 @@
       </div>
     </div>
 
-    <Form v-slot="$form" :initialValues="player" :resolver @submit="onFormSubmit" class="flex flex-col gap-4 w-full">
+    <Form :key="formKey" v-slot="$form" :initialValues="player" :resolver @submit="onFormSubmit" class="flex flex-col gap-4 w-full">
       <div class="flex flex-col gap-1">
         <label for="name">Name</label>
         <InputText
@@ -74,7 +76,13 @@ const roomStore = useRoomStore();
 const playerProfilesStore = usePlayerProfilesStore();
 const user = useSupabaseUser();
 const {syncProfile} = useSupabaseSync();
-const router = useRouter();
+const toast = useToast();
+
+const formKey = ref(0);
+
+const notifyPlayerAdded = (name: string) => {
+  toast.add({severity: 'success', summary: 'Player added', detail: `${name} has been added to the lobby.`, life: 3000});
+};
 
 const player = ref({
   name: '',
@@ -85,15 +93,22 @@ const availableColors = computed(() => {
   return PLAYER_COLORS.filter(color => !roomStore.players.some(player => player.color.value === color.value));
 });
 
+const gamesPlayedCount = (profile: PlayerProfile) => {
+  return roomStore.games.filter(game => game.scores.some(score => score.player.name === profile.name)).length;
+};
+
 const quickPickProfiles = computed(() => {
-  return playerProfilesStore.profiles.filter(profile => !roomStore.players.some(player =>
-    player.name === profile.name || player.color.value === profile.color.value
-  ));
+  return playerProfilesStore.profiles
+    .filter(profile => !roomStore.players.some(player => player.name === profile.name))
+    .sort((a, b) => gamesPlayedCount(b) - gamesPlayedCount(a));
 });
 
 const addFromProfile = (profile: PlayerProfile) => {
-  roomStore.addPlayer(profile.name, profile.color);
-  router.push('/rooms');
+  const colorTaken = roomStore.players.some(player => player.color.value === profile.color.value);
+  const color = colorTaken ? (availableColors.value[0] ?? profile.color) : profile.color;
+
+  roomStore.addPlayer(profile.name, color);
+  notifyPlayerAdded(profile.name);
 };
 
 const resolver = ({values}) => {
@@ -133,6 +148,7 @@ const onFormSubmit = ({valid, states}) => {
   const color = states.color.value;
 
   roomStore.addPlayer(name, color);
+  notifyPlayerAdded(name);
 
   if (!playerProfilesStore.profiles.some(profile => profile.name === name)) {
     const profile = playerProfilesStore.addProfile(name, color);
@@ -142,6 +158,6 @@ const onFormSubmit = ({valid, states}) => {
     }
   }
 
-  router.push('/rooms');
+  formKey.value++;
 };
 </script>

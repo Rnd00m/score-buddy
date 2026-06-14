@@ -72,22 +72,20 @@
         </template>
       </Column>
       <template #expansion="slotProps">
-        <div class="p-4">
-          <DataTable size="small" :value="userGamesScores(slotProps.data)" removableSort sortField="createdAtTime" :sortOrder="-1">
-            <Column field="name" header="Game" />
-            <Column header="Rank" >
-              <template #body="{ data }">
-                {{ data.rank }} <i v-if="data.rank === 1" class="pi pi-trophy text-xs"></i>
-              </template>
-            </Column>
-            <Column field="finalScore" header="Points" />
-            <Column field="createdAtTime" header="Date" sortable>
-              <template #body="{ data }">
-                {{ moment(data.createdAt).fromNow() }}
-              </template>
-            </Column>
-          </DataTable>
-        </div>
+        <DataTable size="small" :value="userGamesScores(slotProps.data)" removableSort sortField="createdAtTime" :sortOrder="-1">
+          <Column field="name" header="Game" />
+          <Column header="Rank" >
+            <template #body="{ data }">
+              {{ data.rank }} <i v-if="data.rank === 1" class="pi pi-trophy text-xs"></i>
+            </template>
+          </Column>
+          <Column field="finalScore" header="Points" />
+          <Column field="createdAtTime" header="Date" sortable>
+            <template #body="{ data }">
+              {{ moment(data.createdAt).fromNow() }}
+            </template>
+          </Column>
+        </DataTable>
       </template>
     </DataTable>
   </div>
@@ -168,5 +166,7 @@ const userGamesScores = (player: Player): PlayerGameScore[] => {
 </script>
 
 <style scoped>
-
+:deep(td:has(.p-datatable)) {
+  padding: 0;
+}
 </style>

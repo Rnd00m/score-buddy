@@ -57,19 +57,17 @@
       </Column>
 
       <template #expansion="slotProps">
-        <div class="p-4">
-          <DataTable size="small" :value="slotProps.data.scores" removableSort sortField="rank" :sortOrder="1">
-            <Column field="rank" header="Rank" sortable>
-              <template #body="{ data }">
-                {{ data.rank }} <i v-if="data.rank === 1" class="pi pi-trophy text-xs"></i>
-              </template>
-            </Column>
-            <Column field="player" header="Player" #body="{ data }">
-              {{ data.player.name }}
-            </Column>
-            <Column field="score" header="Score" />
-          </DataTable>
-        </div>
+        <DataTable size="small" :value="slotProps.data.scores" removableSort sortField="rank" :sortOrder="1">
+          <Column field="rank" header="Rank" sortable>
+            <template #body="{ data }">
+              {{ data.rank }} <i v-if="data.rank === 1" class="pi pi-trophy text-xs"></i>
+            </template>
+          </Column>
+          <Column field="player" header="Player" #body="{ data }">
+            {{ data.player.name }}
+          </Column>
+          <Column field="score" header="Score" />
+        </DataTable>
       </template>
     </DataTable>
   </div>
@@ -119,5 +117,7 @@ const handleReplayGame = (game: Game) => {
 </script>
 
 <style scoped>
-
+:deep(td:has(.p-datatable)) {
+  padding: 0;
+}
 </style>
