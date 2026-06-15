@@ -61,27 +61,7 @@
       </template>
     </ConfirmDialog>
     <Dialog v-model:visible="isGameInfoDialogOpened" :header="roomStore.currentGame.name" class="max-w-96 w-[calc(100%-6rem)]" :modal="true" :draggable="false" close-on-escape>
-      <div class="grid grid-cols-2 gap-2 items-center">
-        <label class="text-left">Start score</label>
-        <span>
-          <Tag severity="contrast" :value="roomStore.currentGame.startScore" />
-        </span>
-
-        <label class="text-left">Ending score</label>
-        <span>
-          <Tag severity="contrast" :value="roomStore.currentGame.endingScore || '-'" />
-        </span>
-
-        <label class="text-left">Lowest possible score</label>
-        <span>
-          <Tag severity="contrast" :value="roomStore.currentGame.lowestPossibleScore || '-'" />
-        </span>
-
-        <label class="text-left">Win condition</label>
-        <span>
-          <Tag severity="contrast" :value="roomStore.currentGame.winCondition" />
-        </span>
-      </div>
+      <GameInfo :game="roomStore.currentGame" />
     </Dialog>
 
     <h1 class="mb-6 flex justify-between items-center">

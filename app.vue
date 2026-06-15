@@ -37,6 +37,7 @@ const items = computed(() => {
     { icon: 'pi pi-play', route: roomStore.currentGame !== null ? '/game' : '/games' },
     { icon: 'pi pi-history', route: '/games/history' },
     { icon: 'pi pi-users', route: '/rooms' },
+    { icon: 'pi pi-clock', route: '/users/games/history' },
     { icon: 'pi pi-user', route: '/account' },
   ];
 });
