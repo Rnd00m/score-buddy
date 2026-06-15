@@ -2,6 +2,7 @@
   <div class="flex flex-col h-full">
     <h1 class="mb-6 flex justify-between items-center shrink-0">
       <span class="text-3xl">History</span>
+      <span class="text-surface-500">{{ games.length }} games</span>
     </h1>
 
     <div v-if="!user" class="flex flex-col gap-4">
