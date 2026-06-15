@@ -43,10 +43,12 @@ const items = computed(() => {
 
 const { init: initColorScheme } = useColorScheme();
 const { init: initWakeLock } = useScreenWakeLock();
+const { init: initDuelMode } = useDuelMode();
 
 onMounted(() => {
   initColorScheme();
   initWakeLock();
+  initDuelMode();
 });
 
 router.beforeEach((to, from) => {

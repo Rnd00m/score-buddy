@@ -4,6 +4,7 @@
     v-for="(player, index) in roomStore.players"
     :key="index"
     class="flex justify-between p-3 rounded-lg shadow-xl"
+    :class="duelMode ? [index === 0 ? 'rotate-180' : '', 'flex-1'] : ''"
     :style="{ backgroundColor: player.color.value }"
   >
     <Button
@@ -11,11 +12,12 @@
       severity="contrast"
       variant="text"
       raised
+      :size="duelMode ? 'large' : undefined"
       :style="{
         backgroundColor: getButtonColor(player.color.value, 'dark'),
         color: getTextColorContrasted(player.color.value),
       }"
-      class="rounded-lg min-w-[68px] touch-none"
+      :class="duelMode ? 'rounded-lg min-w-24 touch-none' : 'rounded-lg min-w-[68px] touch-none'"
       @mousedown="!isTouchDevice ? handleStartPress(() => handleDecrementScore(player)) : null"
       @mouseup="handleStopPress"
       @mouseleave="handleStopPress"
@@ -24,8 +26,8 @@
       @touchcancel="handleStopPress"
     />
 
-    <div class="flex flex-col items-center flex-1 mx-4">
-      <h3 :style="{ color: getTextColorContrasted(player.color.value) }" class="font-semibold text-xl">{{ player.name }}</h3>
+    <div class="flex flex-col items-center flex-1 mx-4 min-w-0" :class="duelMode ? 'justify-center' : ''">
+      <h3 :style="{ color: getTextColorContrasted(player.color.value) }" class="w-full truncate text-center" :class="duelMode ? 'font-semibold text-3xl' : 'font-semibold text-xl'">{{ player.name }}</h3>
       <InputText
         v-if="editingPlayerUuid === player.uuid"
         v-focus
@@ -34,7 +36,7 @@
         inputmode="tel"
         unstyled
         :style="{ color: getTextColorContrasted(player.color.value) }"
-        class="font-bold text-4xl text-center bg-transparent border-b-2 w-28 outline-none"
+        :class="duelMode ? 'font-bold text-6xl text-center bg-transparent border-none w-40 outline-none' : 'font-bold text-4xl text-center bg-transparent border-none w-28 outline-none'"
         @blur="applyScoreEdit(player)"
         @keyup.enter="applyScoreEdit(player)"
       />
@@ -42,7 +44,7 @@
         v-else
         v-ripple
         :style="{ color: getTextColorContrasted(player.color.value) }"
-        class="p-ripple font-bold text-4xl cursor-pointer select-none rounded-lg px-3"
+        :class="duelMode ? 'p-ripple font-bold text-7xl cursor-pointer select-none rounded-lg px-3' : 'p-ripple font-bold text-4xl cursor-pointer select-none rounded-lg px-3'"
         @click="startEditingScore(player)"
       >{{ roomStore.getPlayerScore(player)?.score || 0 }}</p>
     </div>
@@ -52,11 +54,12 @@
       severity="contrast"
       variant="text"
       raised
+      :size="duelMode ? 'large' : undefined"
       :style="{
         backgroundColor: getButtonColor(player.color.value, 'dark'),
         color: getTextColorContrasted(player.color.value),
       }"
-      class="rounded-lg min-w-[68px] touch-none"
+      :class="duelMode ? 'rounded-lg min-w-24 touch-none' : 'rounded-lg min-w-[68px] touch-none'"
       @mousedown="!isTouchDevice ? handleStartPress(() => handleIncrementScore(player)) : null"
       @mouseup="handleStopPress"
       @mouseleave="handleStopPress"
@@ -69,6 +72,10 @@
 
 <script lang="ts" setup>
 import type {Player} from "~/types/global";
+
+defineProps<{
+  duelMode?: boolean;
+}>();
 
 const roomStore = useRoomStore();
 

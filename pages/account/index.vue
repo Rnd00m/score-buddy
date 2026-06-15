@@ -49,6 +49,17 @@
         <label for="wake-lock-switch">Keep screen on</label>
         <ToggleSwitch v-model="isWakeLockEnabled" inputId="wake-lock-switch"/>
       </div>
+
+      <div class="flex items-center justify-between">
+        <span class="inline-flex items-center gap-2">
+          <label for="duel-mode-switch">Duel mode</label>
+          <i
+            class="pi pi-info-circle text-surface-500 cursor-help"
+            v-tooltip.top="'For 2-player games, displays the score cards face to face at the top and bottom of the screen. We recommend also enabling Keep screen on when using this mode.'"
+          />
+        </span>
+        <ToggleSwitch v-model="isDuelModeEnabled" inputId="duel-mode-switch"/>
+      </div>
     </div>
   </div>
 </template>
@@ -70,6 +81,12 @@ const {isSupported: isWakeLockSupported, isEnabled: isWakeLockEnabledState, setE
 const isWakeLockEnabled = computed({
   get: () => isWakeLockEnabledState.value,
   set: (value: boolean) => setWakeLockEnabled(value),
+});
+
+const {isEnabled: isDuelModeEnabledState, setEnabled: setDuelModeEnabled} = useDuelMode();
+const isDuelModeEnabled = computed({
+  get: () => isDuelModeEnabledState.value,
+  set: (value: boolean) => setDuelModeEnabled(value),
 });
 
 const handleSync = async () => {

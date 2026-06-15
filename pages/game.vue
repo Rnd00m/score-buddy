@@ -1,5 +1,5 @@
 <template>
-  <div v-if="roomStore.currentGame">
+  <div v-if="roomStore.currentGame" :class="isDuelModeActive ? 'flex flex-col h-full' : ''">
     <ConfirmDialog group="confirm" class="max-w-96 w-[calc(100%-6rem)]">
       <template #container="{ message, acceptCallback, rejectCallback }">
         <div class="flex flex-col items-center p-8 bg-surface-0 dark:bg-surface-900 rounded">
@@ -93,8 +93,8 @@
     </span>
     </h1>
 
-    <div class="flex flex-col gap-4">
-      <GamePlayerCounterCard/>
+    <div class="flex flex-col gap-4" :class="isDuelModeActive ? 'flex-1 min-h-0' : ''">
+      <GamePlayerCounterCard :duel-mode="isDuelModeActive"/>
     </div>
   </div>
 </template>
@@ -106,6 +106,9 @@ const router = useRouter();
 const user = useSupabaseUser();
 const {syncGame} = useSupabaseSync();
 const isGameInfoDialogOpened = ref(false);
+
+const {isEnabled: isDuelModeEnabled} = useDuelMode();
+const isDuelModeActive = computed(() => isDuelModeEnabled.value && roomStore.players.length === 2);
 
 if (roomStore.currentGame === null) {
   router.push('/games');
