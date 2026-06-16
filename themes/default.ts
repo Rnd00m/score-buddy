@@ -162,6 +162,7 @@ const MyPreset = definePreset(Aura, {
 export default {
   preset: MyPreset,
   options: {
+    darkModeSelector: '.app-dark',
     cssLayer: {
       name: 'primevue',
       order: 'tailwind-base, primevue, tailwind-utilities'

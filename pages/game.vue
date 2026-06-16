@@ -1,5 +1,5 @@
 <template>
-  <div v-if="roomStore.currentGame">
+  <div v-if="roomStore.currentGame" :class="isDuelModeActive ? 'flex flex-col h-full' : ''">
     <ConfirmDialog group="confirm" class="max-w-96 w-[calc(100%-6rem)]">
       <template #container="{ message, acceptCallback, rejectCallback }">
         <div class="flex flex-col items-center p-8 bg-surface-0 dark:bg-surface-900 rounded">
@@ -61,27 +61,7 @@
       </template>
     </ConfirmDialog>
     <Dialog v-model:visible="isGameInfoDialogOpened" :header="roomStore.currentGame.name" class="max-w-96 w-[calc(100%-6rem)]" :modal="true" :draggable="false" close-on-escape>
-      <div class="grid grid-cols-2 gap-2 items-center">
-        <label class="text-left">Start score</label>
-        <span>
-          <Tag severity="contrast" :value="roomStore.currentGame.startScore" />
-        </span>
-
-        <label class="text-left">Ending score</label>
-        <span>
-          <Tag severity="contrast" :value="roomStore.currentGame.endingScore || '-'" />
-        </span>
-
-        <label class="text-left">Lowest possible score</label>
-        <span>
-          <Tag severity="contrast" :value="roomStore.currentGame.lowestPossibleScore || '-'" />
-        </span>
-
-        <label class="text-left">Win condition</label>
-        <span>
-          <Tag severity="contrast" :value="roomStore.currentGame.winCondition" />
-        </span>
-      </div>
+      <GameInfo :game="roomStore.currentGame" />
     </Dialog>
 
     <h1 class="mb-6 flex justify-between items-center">
@@ -93,8 +73,8 @@
     </span>
     </h1>
 
-    <div class="flex flex-col gap-4">
-      <GamePlayerCounterCard/>
+    <div class="flex flex-col gap-4" :class="isDuelModeActive ? 'flex-1 min-h-0' : ''">
+      <GamePlayerCounterCard :duel-mode="isDuelModeActive"/>
     </div>
   </div>
 </template>
@@ -103,7 +83,12 @@
 const roomStore = useRoomStore();
 const confirm = useConfirm();
 const router = useRouter();
+const user = useSupabaseUser();
+const {syncGame} = useSupabaseSync();
 const isGameInfoDialogOpened = ref(false);
+
+const {isEnabled: isDuelModeEnabled} = useDuelMode();
+const isDuelModeActive = computed(() => isDuelModeEnabled.value && roomStore.players.length === 2);
 
 if (roomStore.currentGame === null) {
   router.push('/games');
@@ -177,6 +162,15 @@ const handleResetGame = () => {
   });
 };
 
+const finishGame = () => {
+  const game = roomStore.currentGame;
+  roomStore.endGame();
+
+  if (game && user.value) {
+    syncGame(game).catch(() => {});
+  }
+};
+
 const handleGameFinished = () => {
   if (!roomStore.winners) return;
 
@@ -189,11 +183,11 @@ const handleGameFinished = () => {
     header: endMessage,
     message: 'Do you want to start a new one?',
     accept: () => {
-      roomStore.endGame();
+      finishGame();
       router.push('/games')
     },
     reject: () => {
-      roomStore.endGame();
+      finishGame();
       router.push('/rooms')
     }
   });

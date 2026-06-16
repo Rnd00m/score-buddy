@@ -1,3 +1,5 @@
+import type {Color} from "~/types/global";
+
 /**
  * Lighten or darken a color
  *
@@ -40,3 +42,22 @@ export const getContrastYIQ = (hexColor: string): string => {
 export const getTextColorContrasted = (color: string): string => {
   return getContrastYIQ(color) || '#000000';
 };
+
+export const PLAYER_COLORS: Color[] = [
+  { name: "Chestnut Brown", value: "#8B4513" },
+  { name: "Alizarin", value: "#e74c3c" },
+  { name: "Orange", value: "#f39c12" },
+  { name: "Sunflower Yellow", value: "#FFD700" },
+  { name: "Lime Green", value: "#32CD32" },
+  { name: "Emerald Green", value: "#2E8B57" },
+  { name: "Sky Blue", value: "#87CEEB" },
+  { name: "Royal Blue", value: "#4169E1" },
+  { name: "Navy Blue", value: "#000080" },
+  { name: "Wisteria", value: "#8e44ad" },
+  { name: "Hot Pink", value: "#FF69B4" },
+  { name: "Rose Pink", value: "#FF1493" },
+  { name: "Turquoise", value: "#40E0D0" },
+  { name: "Teal", value: "#008080" },
+  { name: "Silver", value: "#bdc3c7" },
+  { name: "Jet Black", value: "#000000" },
+];

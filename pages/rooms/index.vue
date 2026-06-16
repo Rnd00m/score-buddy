@@ -1,6 +1,22 @@
 <template>
-  <div>
+  <div class="flex flex-col h-full">
     <Toast position="top-center" class="max-w-[calc(100%-2rem)]"/>
+    <ConfirmDialog group="remove" class="max-w-96 w-[calc(100%-6rem)]">
+      <template #container="{ message, acceptCallback, rejectCallback }">
+        <div class="flex flex-col items-center p-8 bg-surface-0 dark:bg-surface-900 rounded">
+          <div class="rounded-full bg-orange-500 text-primary-contrast inline-flex justify-center items-center h-24 w-24 -mt-20">
+            <i class="pi pi-exclamation-circle text-5xl"></i>
+          </div>
+          <span class="font-bold text-2xl block mb-2 mt-6">{{ message.header }}</span>
+          <p class="mb-0">{{ message.message }}</p>
+          <div class="flex items-center gap-2 mt-6">
+            <Button severity="contrast" label="Confirm" @click="acceptCallback"></Button>
+            <Button severity="secondary" label="Cancel" outlined @click="rejectCallback"></Button>
+          </div>
+        </div>
+      </template>
+    </ConfirmDialog>
+
     <ConfirmDialog group="delete" class="max-w-96 w-[calc(100%-6rem)]">
       <template #container="{ message, acceptCallback, rejectCallback }">
         <div class="flex flex-col items-center p-8 bg-surface-0 dark:bg-surface-900 rounded">
@@ -33,7 +49,7 @@
       </template>
     </ConfirmDialog>
 
-    <h1 class="mb-6 flex justify-between items-center">
+    <h1 class="mb-6 flex justify-between items-center shrink-0">
       <span class="text-3xl">Room</span>
       <span class="inline-flex gap-2">
         <Button raised severity="danger" icon="pi pi-trash" :disabled="roomStore.players.length === 0" @click="handleDeleteRoom" />
@@ -45,14 +61,17 @@
     </h1>
 
     <DataTable
-        :value="roomStore.players"
-        v-model:expandedRows="expandedRows"
-        dataKey="uuid"
-        sortField="score"
-        :sortOrder="-1"
-        removableSort
-        class="-mx-6"
-        size="small"
+      class="flex-1 min-h-0 -mx-6 -mb-6"
+      :value="roomStore.players"
+      v-model:expandedRows="expandedRows"
+      @row-click="onRowClick"
+      dataKey="uuid"
+      sortField="score"
+      :sortOrder="-1"
+      removableSort
+      scrollable
+      scrollHeight="flex"
+      size="small"
     >
       <template #empty> Currently no players. </template>
       <Column expander class="w-1" v-if="roomStore.games.length"/>
@@ -72,26 +91,23 @@
         </template>
       </Column>
       <template #expansion="slotProps">
-        <div class="p-4">
-          <DataTable size="small" :value="userGamesScores(slotProps.data)" removableSort sortField="createdAtTime" :sortOrder="-1">
-            <Column field="name" header="Game" />
-            <Column header="Rank" >
-              <template #body="{ data }">
-                {{ data.rank }} <i v-if="data.rank === 1" class="pi pi-trophy text-xs"></i>
-              </template>
-            </Column>
-            <Column field="finalScore" header="Points" />
-            <Column field="createdAtTime" header="Date" sortable>
-              <template #body="{ data }">
-                {{ moment(data.createdAt).fromNow() }}
-              </template>
-            </Column>
-          </DataTable>
-        </div>
+        <DataTable size="small" :value="userGamesScores(slotProps.data)" removableSort sortField="createdAtTime" :sortOrder="-1">
+          <Column field="name" header="Game" />
+          <Column header="Rank" >
+            <template #body="{ data }">
+              {{ data.rank }} <i v-if="data.rank === 1" class="pi pi-trophy text-xs"></i>
+            </template>
+          </Column>
+          <Column field="finalScore" header="Points" />
+          <Column field="createdAtTime" header="Date" sortable>
+            <template #body="{ data }">
+              {{ moment(data.createdAt).fromNow() }}
+            </template>
+          </Column>
+        </DataTable>
       </template>
     </DataTable>
   </div>
-
 </template>
 
 <script setup lang="ts">
@@ -101,7 +117,7 @@ import moment from 'moment';
 const roomStore = useRoomStore();
 const confirm = useConfirm();
 const toast = useToast();
-const expandedRows = ref({});
+const { expandedRows, onRowClick } = useExpandableRow('uuid');
 
 const handleRemovePlayer = (playerUuid: string) => {
   if (roomStore.currentGame !== null) {
@@ -168,5 +184,7 @@ const userGamesScores = (player: Player): PlayerGameScore[] => {
 </script>
 
 <style scoped>
-
+:deep(td:has(.p-datatable)) {
+  padding: 0;
+}
 </style>

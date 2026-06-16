@@ -32,7 +32,15 @@ export default defineNuxtConfig({
     '@primevue/nuxt-module',
     '@pinia/nuxt',
     'pinia-plugin-persistedstate/nuxt',
+    '@nuxtjs/supabase',
   ],
+  supabase: {
+    redirectOptions: {
+      login: '/account/login',
+      callback: '/account/callback',
+      exclude: ['/**'],
+    },
+  },
   primevue: {
     importTheme: { from: '@/themes/default.ts' },
     options: {
