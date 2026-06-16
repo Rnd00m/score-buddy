@@ -17,24 +17,15 @@
     </div>
 
     <template v-else>
-      <ConfirmDialog group="replay" class="max-w-96 w-[calc(100%-6rem)]">
-        <template #container="{ message, acceptCallback, rejectCallback }">
-          <div class="flex flex-col items-center p-8 bg-surface-0 dark:bg-surface-900 rounded">
-            <div class="rounded-full bg-primary text-primary-contrast inline-flex justify-center items-center h-24 w-24 -mt-20">
-              <i class="pi pi-replay text-5xl"></i>
-            </div>
-            <span class="font-bold text-2xl block mb-2 mt-6">{{ message.header }}</span>
-
-            <GameInfo v-if="selectedGame" :game="selectedGame" class="mt-2" />
-
-            <p class="mb-0 mt-4">{{ message.message }}</p>
-            <div class="flex items-center gap-2 mt-6">
-              <Button label="Yes" @click="acceptCallback"></Button>
-              <Button label="No" outlined @click="rejectCallback"></Button>
-            </div>
-          </div>
-        </template>
-      </ConfirmDialog>
+      <BaseConfirmModal
+        group="replay"
+        icon="pi pi-replay"
+        icon-bg-class="bg-primary"
+        accept-label="Yes"
+        reject-label="No"
+      >
+        <GameInfo v-if="selectedGame" :game="selectedGame" class="mt-2" />
+      </BaseConfirmModal>
 
       <GameHistoryTable
           :games="games"
@@ -89,20 +80,20 @@ const handleReplayGame = (game: Game) => {
   confirm.require({
     group: 'replay',
     header: game.name,
-    message: roomStore.players.length === 0
-        ? 'Do you want to create a new lobby with the same players and start this game?'
-        : 'Do you really want to restart this game?',
+    message: roomStore.currentGame !== null
+      ? 'Your current game will be canceled without being saved. Do you want to continue?'
+      : 'Do you want to start a new game with the same settings and your current lobby?',
     accept: () => {
-      if (roomStore.players.length === 0) {
-        roomStore.players = game.scores.map(({ player }) => ({ ...player, score: 0 }));
+      if (roomStore.currentGame !== null) {
+        roomStore.cancelGame();
       }
 
       roomStore.startGame(
-          game.name,
-          game.startScore,
-          game.endingScore,
-          game.winCondition,
-          game.lowestPossibleScore
+        game.name,
+        game.startScore,
+        game.endingScore,
+        game.winCondition,
+        game.lowestPossibleScore
       );
 
       router.push('/game');
