@@ -5,30 +5,20 @@ Score Buddy is an application designed to make it easier to track points during 
 ## Features
 
 - [ ] Logo
-- [ ] Mobile app with capacitor
+- [X] Mobile app with capacitor
 - [ ] Web responsive
 - [ ] PWA
-- [ ] Disable mobile stand-by
-- [ ] Duel mode
+- [X] Disable mobile stand-by
+- [X] Duel mode
 - [ ] French translation
-- [ ] Game history and statistics
+- [X] Game history and statistics
 
 ## Installation
 
 Make sure to install dependencies:
 
 ```bash
-# npm
-npm install
-
-# pnpm
 pnpm install
-
-# yarn
-yarn install
-
-# bun
-bun install
 ```
 
 ## Development Server
@@ -36,17 +26,7 @@ bun install
 Start the development server on `http://localhost:3000`:
 
 ```bash
-# npm
-npm run dev
-
-# pnpm
 pnpm dev
-
-# yarn
-yarn dev
-
-# bun
-bun run dev
 ```
 
 ## Production
@@ -54,33 +34,72 @@ bun run dev
 Build the application for production:
 
 ```bash
-# npm
-npm run build
-
-# pnpm
 pnpm build
-
-# yarn
-yarn build
-
-# bun
-bun run build
 ```
 
 Locally preview production build:
 
 ```bash
-# npm
-npm run preview
-
-# pnpm
 pnpm preview
-
-# yarn
-yarn preview
-
-# bun
-bun run preview
 ```
 
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+## Android Build
+
+> **WSL users:** the build runs entirely from WSL via Gradle CLI. Android Studio on Windows is not used for building — only the Android SDK installed on Windows is required (accessible from WSL via `/mnt/c/...`).
+
+### Prerequisites
+
+- [Android Studio](https://developer.android.com/studio) installed on Windows (provides the Android SDK)
+- Java 21 installed in WSL (`sudo apt install openjdk-21-jdk`)
+- A device connected via USB with USB debugging enabled (for `run` only)
+- `android/local.properties` must point to the SDK: `sdk.dir=/mnt/c/Users/<you>/AppData/Local/Android/Sdk`
+
+### Debug build
+
+Generates a debug APK, no signing required. Install it directly on any device with "Unknown sources" enabled.
+
+```bash
+pnpm generate
+pnpm exec cap sync android
+cd android && ./gradlew assembleDebug
+```
+
+APK output:
+```
+android/app/build/outputs/apk/debug/app-debug.apk
+```
+
+Accessible from Windows at:
+```
+\\wsl$\Ubuntu\home\jboilevin\dev\score-buddy\android\app\build\outputs\apk\debug\app-debug.apk
+```
+
+### Release build
+
+Generates an unsigned release APK. Requires a keystore to sign it before publishing to the Play Store.
+
+```bash
+pnpm generate
+pnpm exec cap sync android
+cd android && ./gradlew assembleRelease
+```
+
+APK output:
+```
+android/app/build/outputs/apk/release/app-release-unsigned.apk
+```
+
+To sign the APK, use `apksigner` from the Android SDK build-tools:
+
+```bash
+apksigner sign --ks my-release-key.jks --out app-release.apk app-release-unsigned.apk
+```
+
+### App info
+
+| Property | Value |
+|---|---|
+| App ID | `com.scorebuddy.app` |
+| App Name | Score Buddy |
+| Min SDK | 23 (Android 6.0) |
+| Target SDK | 35 (Android 15) |
