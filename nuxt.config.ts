@@ -12,7 +12,7 @@ if (existsSync('.env.local')) {
 }
 
 export default defineNuxtConfig({
-  compatibilityDate: '2024-11-01',
+  compatibilityDate: '2025-01-01',
   devtools: {enabled: true},
   ssr: false,
   app: {
@@ -55,7 +55,13 @@ export default defineNuxtConfig({
   },
   vite: {
     optimizeDeps: {
-      include: ['@vue/devtools-api']
+      include: [
+        '@capacitor-community/keep-awake',
+        '@tanstack/vue-query',
+        '@tanstack/vue-query-devtools',
+        '@vue/devtools-api',
+        'uuid',
+      ]
     }
   }
 })

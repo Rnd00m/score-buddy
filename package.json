@@ -8,38 +8,42 @@
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
-    "tailwind": "npx tailwindcss build assets/scss/main.scss -o .tailwind/tailwind.css"
+    "tailwind": "npx tailwindcss build app/assets/scss/main.scss -o .tailwind/tailwind.css"
   },
   "dependencies": {
     "@capacitor-community/keep-awake": "^8.0.1",
     "@capacitor/core": "^8.4.0",
     "@nuxtjs/supabase": "^2.0.9",
-    "@pinia/nuxt": "^0.9.0",
-    "@primevue/forms": "^4.2.5",
-    "@primevue/themes": "^4.2.5",
+    "@pinia/nuxt": "^0.11.3",
+    "@primevue/forms": "^4.5.5",
+    "@primeuix/themes": "^2.0.3",
     "@tanstack/vue-query": "^5.101.0",
-    "@vue/devtools-api": "^8.1.2",
-    "fast-xml-parser": "^5.8.0",
+    "@vue/devtools-api": "^8.1.3",
+    "fast-xml-parser": "^5.9.0",
     "moment": "^2.30.1",
-    "nuxt": "^3.15.1",
-    "pinia": "^2.3.1",
-    "pinia-plugin-persistedstate": "^4.2.0",
+    "nuxt": "^4.4.8",
+    "pinia": "^3.0.4",
+    "pinia-plugin-persistedstate": "^4.7.1",
     "primeicons": "^7.0.0",
-    "primevue": "^4.2.5",
-    "tailwindcss-primeui": "^0.3.4",
-    "uuid": "^11.0.5",
-    "vue": "latest",
-    "vue-router": "latest"
+    "primevue": "^4.5.5",
+    "tailwindcss-primeui": "^0.6.1",
+    "uuid": "^11.0.5"
   },
   "packageManager": "pnpm@9.15.3+sha512.1f79bc245a66eb0b07c5d4d83131240774642caaa86ef7d0434ab47c0d16f66b04e21e0c086eb61e62c77efc4d7f7ec071afad3796af64892fae66509173893a",
   "devDependencies": {
-    "@primevue/nuxt-module": "^4.2.5",
-    "@tailwindcss/typography": "^0.5.16",
+    "@primevue/nuxt-module": "^4.5.5",
+    "@tailwindcss/typography": "^0.5.20",
     "@tanstack/vue-query-devtools": "^6.1.34",
-    "@types/uuid": "^10.0.0",
-    "autoprefixer": "^10.4.20",
-    "postcss": "^8.4.49",
-    "sass": "^1.83.1",
+    "autoprefixer": "^10.5.0",
+    "postcss": "^8.5.15",
+    "sass": "^1.101.0",
     "tailwindcss": "^3.4.17"
+  },
+  "pnpm": {
+    "peerDependencyRules": {
+      "allowedVersions": {
+        "c12>magicast": "*"
+      }
+    }
   }
 }
