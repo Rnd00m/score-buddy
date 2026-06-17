@@ -6,12 +6,12 @@
       <NuxtLink to="/account">
         <Button severity="secondary" icon="pi pi-arrow-left"/>
       </NuxtLink>
-      <span class="text-3xl">Sign up</span>
+      <span class="text-3xl">{{ t('signup.title') }}</span>
     </h1>
 
     <Form v-slot="$form" :initialValues="credentials" :resolver :validateOnValueUpdate="false" :validateOnBlur="false" @submit="onFormSubmit" class="flex flex-col gap-4 w-full">
       <div class="flex flex-col gap-1">
-        <label for="email">Email</label>
+        <label for="email">{{ t('login.email') }}</label>
         <InputText id="email" name="email" type="email" fluid/>
         <Message v-if="$form.email?.invalid" severity="error" size="small" variant="simple">{{
             $form.email.error?.message
@@ -20,7 +20,7 @@
       </div>
 
       <div class="flex flex-col gap-1">
-        <label for="password">Password</label>
+        <label for="password">{{ t('login.password') }}</label>
         <Password id="password" name="password" toggleMask fluid/>
         <Message v-if="$form.password?.invalid" severity="error" size="small" variant="simple">{{
             $form.password.error?.message
@@ -29,7 +29,7 @@
       </div>
 
       <div class="flex flex-col gap-1">
-        <label for="confirmPassword">Confirm password</label>
+        <label for="confirmPassword">{{ t('signup.confirmPassword') }}</label>
         <Password id="confirmPassword" name="confirmPassword" :feedback="false" toggleMask fluid/>
         <Message v-if="$form.confirmPassword?.invalid" severity="error" size="small" variant="simple">{{
             $form.confirmPassword.error?.message
@@ -37,11 +37,11 @@
         </Message>
       </div>
 
-      <Button type="submit" severity="primary" label="Sign up" :loading="isLoading"/>
+      <Button type="submit" severity="primary" :label="t('signup.submit')" :loading="isLoading"/>
     </Form>
 
     <p class="mt-4 text-center">
-      Already have an account? <NuxtLink to="/account/login" class="text-primary">Log in</NuxtLink>
+      {{ t('signup.alreadyHaveAccount') }} <NuxtLink to="/account/login" class="text-primary">{{ t('signup.logIn') }}</NuxtLink>
     </p>
   </div>
 </template>
@@ -50,6 +50,7 @@
 import {ref} from 'vue';
 import {Capacitor} from '@capacitor/core';
 
+const {t} = useI18n();
 const supabase = useSupabaseClient();
 const router = useRouter();
 const toast = useToast();
@@ -66,17 +67,17 @@ const resolver = ({values}) => {
   const errors = {};
 
   if (!values.email?.trim()) {
-    errors.email = [{message: 'Email is required.'}];
+    errors.email = [{message: t('login.emailRequired')}];
   }
 
   if (!values.password) {
-    errors.password = [{message: 'Password is required.'}];
+    errors.password = [{message: t('login.passwordRequired')}];
   } else if (values.password.length < 6) {
-    errors.password = [{message: 'Password must be at least 6 characters.'}];
+    errors.password = [{message: t('signup.passwordMinLength')}];
   }
 
   if (values.confirmPassword !== values.password) {
-    errors.confirmPassword = [{message: 'Passwords do not match.'}];
+    errors.confirmPassword = [{message: t('signup.passwordsDoNotMatch')}];
   }
 
   return {
@@ -102,11 +103,11 @@ const onFormSubmit = async ({valid, states}) => {
   isLoading.value = false;
 
   if (error) {
-    toast.add({severity: 'error', summary: 'Error', detail: error.message, life: 4000});
+    toast.add({severity: 'error', summary: t('common.error'), detail: error.message, life: 4000});
     return;
   }
 
-  toast.add({severity: 'success', summary: 'Check your inbox', detail: 'Confirm your email address to finish creating your account.', life: 6000});
+  toast.add({severity: 'success', summary: t('signup.checkInboxTitle'), detail: t('signup.checkInboxMessage'), life: 6000});
   router.push('/account/login');
 };
 </script>

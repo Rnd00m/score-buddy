@@ -10,7 +10,7 @@ Score Buddy is an application designed to make it easier to track points during 
 - [ ] PWA
 - [X] Disable mobile stand-by
 - [X] Duel mode
-- [ ] French translation
+- [X] French translation
 - [X] Game history and statistics
 
 ## Installation

@@ -9,8 +9,8 @@
           <span class="font-bold text-2xl block mb-2 mt-6">{{ message.header }}</span>
           <p class="mb-0">{{ message.message }}</p>
           <div class="flex items-center gap-2 mt-6">
-            <Button severity="contrast" label="Confirm" @click="acceptCallback"></Button>
-            <Button severity="secondary" label="Cancel" outlined @click="rejectCallback"></Button>
+            <Button severity="contrast" :label="t('common.confirm')" @click="acceptCallback"></Button>
+            <Button severity="secondary" :label="t('common.cancel')" outlined @click="rejectCallback"></Button>
           </div>
         </div>
       </template>
@@ -22,13 +22,13 @@
             <i class="pi pi-exclamation-circle text-5xl"></i>
           </div>
           <div class="absolute top-1 right-1">
-            <Button size="large" icon="pi pi-times" severity="danger" variant="text" rounded aria-label="Cancel" @click="confirm.close()" />
+            <Button size="large" icon="pi pi-times" severity="danger" variant="text" rounded :aria-label="t('common.cancel')" @click="confirm.close()" />
           </div>
           <span class="font-bold text-2xl block mb-2 mt-6">{{ message.header }}</span>
           <p class="mb-0">{{ message.message }}</p>
           <div class="flex items-center gap-2 mt-6">
-            <Button severity="contrast" label="Reset" @click="acceptCallback"></Button>
-            <Button severity="secondary" label="Cancel" outlined @click="rejectCallback"></Button>
+            <Button severity="contrast" :label="t('game.reset')" @click="acceptCallback"></Button>
+            <Button severity="secondary" :label="t('common.cancel')" outlined @click="rejectCallback"></Button>
           </div>
         </div>
       </template>
@@ -46,12 +46,12 @@
           <p class="mb-0">{{ message.message }}</p>
           <div class="flex items-center gap-2 mt-6">
             <Button
-                label="Yes"
+                :label="t('common.yes')"
                 @click="acceptCallback"
                 :style="endGameYesButtonStyle"
             ></Button>
             <Button
-                label="No"
+                :label="t('common.no')"
                 outlined
                 :style="endGameNoButtonStyle"
                 @click="rejectCallback"
@@ -80,6 +80,7 @@
 </template>
 
 <script setup lang="ts">
+const {t} = useI18n();
 const roomStore = useRoomStore();
 const confirm = useConfirm();
 const router = useRouter();
@@ -139,8 +140,8 @@ watch(
 const handleEndGame = () => {
   confirm.require({
     group: 'confirm',
-    header: 'Are you sure?',
-    message: "You're about to end the game.",
+    header: t('game.confirmTitle'),
+    message: t('game.endGameMessage'),
     accept: () => {
       handleGameFinished();
     },
@@ -150,8 +151,8 @@ const handleEndGame = () => {
 const handleResetGame = () => {
   confirm.require({
     group: 'reset',
-    header: 'Reset or cancel?',
-    message: "Do you want to reset (all points will be set to min score) or cancel (game will be deleted no winner will be declared) the game ?",
+    header: t('game.resetOrCancelTitle'),
+    message: t('game.resetOrCancelMessage'),
     accept: () => {
       roomStore.resetGame();
     },
@@ -175,13 +176,13 @@ const handleGameFinished = () => {
   if (!roomStore.winners) return;
 
   const endMessage = roomStore.winners.length > 1
-    ? 'It\'s a tie!'
-    : roomStore.winners[0].player.name + ' has won!';
+    ? t('game.tie')
+    : t('game.hasWon', {name: roomStore.winners[0].player.name});
 
   confirm.require({
     group: 'end',
     header: endMessage,
-    message: 'Do you want to start a new one?',
+    message: t('game.startNewGame'),
     accept: () => {
       finishGame();
       router.push('/games')

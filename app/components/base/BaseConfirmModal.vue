@@ -9,8 +9,8 @@
         <slot />
         <p :class="['mb-0', $slots.default ? 'mt-4' : '']">{{ message.message }}</p>
         <div class="flex items-center gap-2 mt-6">
-          <Button :severity="acceptSeverity" :label="acceptLabel" @click="acceptCallback"></Button>
-          <Button :severity="rejectSeverity" :label="rejectLabel" outlined @click="rejectCallback"></Button>
+          <Button :severity="acceptSeverity" :label="acceptLabel ?? t('common.confirm')" @click="acceptCallback"></Button>
+          <Button :severity="rejectSeverity" :label="rejectLabel ?? t('common.cancel')" outlined @click="rejectCallback"></Button>
         </div>
       </div>
     </template>
@@ -18,6 +18,8 @@
 </template>
 
 <script setup lang="ts">
+const {t} = useI18n();
+
 withDefaults(defineProps<{
   group: string;
   icon?: string;
@@ -29,8 +31,6 @@ withDefaults(defineProps<{
 }>(), {
   icon: 'pi pi-exclamation-circle',
   iconBgClass: 'bg-orange-500',
-  acceptLabel: 'Confirm',
-  rejectLabel: 'Cancel',
   acceptSeverity: 'contrast',
   rejectSeverity: 'secondary',
 });

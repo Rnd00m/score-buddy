@@ -10,8 +10,8 @@
         <span class="font-bold text-2xl block mb-2 mt-6">{{ message.header }}</span>
         <p class="mb-0">{{ message.message }}</p>
         <div class="flex items-center gap-2 mt-6">
-          <Button severity="contrast" label="Confirm" @click="acceptCallback"></Button>
-          <Button severity="secondary" label="Cancel" outlined @click="rejectCallback"></Button>
+          <Button severity="contrast" :label="t('common.confirm')" @click="acceptCallback"></Button>
+          <Button severity="secondary" :label="t('common.cancel')" outlined @click="rejectCallback"></Button>
         </div>
       </div>
     </template>
@@ -27,36 +27,36 @@
     scrollHeight="16rem"
     class="w-screen"
   >
-    <Column field="name" header="Game" sortable frozen />
-    <Column field="startScore" header="Start">
+    <Column field="name" :header="t('gameTypesTable.game')" sortable frozen />
+    <Column field="startScore" :header="t('gameTypesTable.start')">
       <template #body="slotProps">
         <Tag severity="contrast">{{ slotProps.data.startScore }}</Tag>
       </template>
     </Column>
-    <Column field="endingScore" header="Ending">
+    <Column field="endingScore" :header="t('gameTypesTable.ending')">
       <template #body="slotProps">
         <Tag severity="contrast" v-if="slotProps.data.endingScore">
           {{ slotProps.data.endingScore }}
         </Tag>
         <Tag severity="secondary" v-else>
-          Manual
+          {{ t('gameTypesTable.manual') }}
         </Tag>
       </template>
     </Column>
-    <Column field="lowestPossibleScore" header="Lowest">
+    <Column field="lowestPossibleScore" :header="t('gameTypesTable.lowest')">
       <template #body="slotProps">
         <Tag severity="contrast" v-if="slotProps.data.lowestPossibleScore">
           {{ slotProps.data.lowestPossibleScore }}
         </Tag>
         <Tag severity="secondary" v-else>
-          No
+          {{ t('gameTypesTable.no') }}
         </Tag>
       </template>
     </Column>
-    <Column field="winCondition" header="Win">
+    <Column field="winCondition" :header="t('gameTypesTable.win')">
       <template #body="slotProps">
         <Tag :severity="slotProps.data.winCondition === WinCondition.MostPoints ? 'contrast' : 'secondary'">
-          {{ slotProps.data.winCondition }}
+          {{ t(`winCondition.${slotProps.data.winCondition}`) }}
         </Tag>
       </template>
     </Column>
@@ -66,6 +66,7 @@
 <script lang="ts" setup>
 import {type Game, WinCondition} from "~/types/global";
 
+const {t} = useI18n();
 const roomStore = useRoomStore();
 const router = useRouter();
 const confirm = useConfirm();
@@ -85,8 +86,8 @@ const gameTypes = computed(() => {
 const handleGameSelected = (event: {data: Game}) => {
   confirm.require({
     group: 'newGame',
-    header: 'New game',
-    message: `Do you wan't to replay ${event.data.name}?`,
+    header: t('gameTypesTable.newGameTitle'),
+    message: t('gameTypesTable.newGameMessage', {name: event.data.name}),
     accept: () => {
       roomStore.startGame(
           event.data.name,

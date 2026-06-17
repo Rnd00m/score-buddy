@@ -6,11 +6,11 @@
       <NuxtLink to="/rooms">
         <Button severity="secondary" icon="pi pi-arrow-left"/>
       </NuxtLink>
-      <span class="text-3xl">Add player</span>
+      <span class="text-3xl">{{ t('addPlayer.title') }}</span>
     </h1>
 
     <div v-if="quickPickProfiles.length" class="flex flex-col gap-2 mb-4">
-      <label>Players you've played with</label>
+      <label>{{ t('addPlayer.playersPlayedWith') }}</label>
       <div class="flex flex-wrap content-start gap-2 max-h-52 overflow-y-auto">
         <Button
             v-for="profile in quickPickProfiles"
@@ -29,7 +29,7 @@
 
     <Form :key="formKey" v-slot="$form" :initialValues="player" :resolver @submit="onFormSubmit" class="flex flex-col gap-4 w-full">
       <div class="flex flex-col gap-1">
-        <label for="name">Name</label>
+        <label for="name">{{ t('common.name') }}</label>
         <InputText
             id="name"
             name="name"
@@ -42,7 +42,7 @@
         </Message>
       </div>
       <div class="flex flex-col gap-1">
-        <label for="color">Color</label>
+        <label for="color">{{ t('common.color') }}</label>
         <Select id="color" name="color" :options="availableColors" optionLabel="name" class="w-full">
           <template #value="slotProps">
             <div v-if="slotProps.value" class="flex items-center gap-2">
@@ -62,7 +62,7 @@
           }}
         </Message>
       </div>
-      <Button type="submit" severity="primary" label="Submit"/>
+      <Button type="submit" severity="primary" :label="t('common.submit')"/>
     </Form>
   </div>
 </template>
@@ -72,6 +72,7 @@ import {ref} from 'vue';
 import type {PlayerProfile} from '~/types/global';
 import {PLAYER_COLORS} from '~/utils/color';
 
+const {t} = useI18n();
 const roomStore = useRoomStore();
 const playerProfilesStore = usePlayerProfilesStore();
 const user = useSupabaseUser();
@@ -81,7 +82,7 @@ const toast = useToast();
 const formKey = ref(0);
 
 const notifyPlayerAdded = (name: string) => {
-  toast.add({severity: 'success', summary: 'Player added', detail: `${name} has been added to the lobby.`, life: 3000});
+  toast.add({severity: 'success', summary: t('addPlayer.playerAddedTitle'), detail: t('addPlayer.playerAddedMessage', {name}), life: 3000});
 };
 
 const player = ref({
@@ -117,23 +118,23 @@ const resolver = ({values}) => {
   const name = values.name.trim();
 
   if (!name) {
-    errors.name = [{message: 'Name is required.'}];
+    errors.name = [{message: t('addPlayer.nameRequired')}];
   }
 
   if (name && name.length < 2) {
-    errors.name = [{message: 'Name must be at least 2 characters.'}];
+    errors.name = [{message: t('addPlayer.nameMinLength')}];
   }
 
   if (name && name.length > 20) {
-    errors.name = [{message: 'Name must be at most 20 characters.'}];
+    errors.name = [{message: t('addPlayer.nameMaxLength')}];
   }
 
   if (name && roomStore.players.some(player => player.name === name)) {
-    errors.name = [{message: 'Name is already taken.'}];
+    errors.name = [{message: t('addPlayer.nameTaken')}];
   }
 
   if (!values.color) {
-    errors.color = [{message: 'Color is required.'}];
+    errors.color = [{message: t('addPlayer.colorRequired')}];
   }
 
   return {

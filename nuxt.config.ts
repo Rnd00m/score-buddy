@@ -25,12 +25,26 @@ export default defineNuxtConfig({
     '@pinia/nuxt',
     'pinia-plugin-persistedstate/nuxt',
     '@nuxtjs/supabase',
+    '@nuxtjs/i18n',
   ],
   supabase: {
     redirectOptions: {
       login: '/account/login',
       callback: '/account/callback',
       exclude: ['/**'],
+    },
+  },
+  i18n: {
+    defaultLocale: 'en',
+    locales: [
+      {code: 'en', name: 'English', file: 'en.json'},
+      {code: 'fr', name: 'Français', file: 'fr.json'},
+    ],
+    strategy: 'no_prefix',
+    detectBrowserLanguage: {
+      useCookie: true,
+      cookieKey: 'locale',
+      redirectOn: 'root',
     },
   },
   primevue: {
@@ -48,8 +62,10 @@ export default defineNuxtConfig({
   vite: {
     optimizeDeps: {
       include: [
-        '@capacitor/app',
         '@capacitor-community/keep-awake',
+        '@capacitor/app',
+        '@capacitor/core',
+        '@capawesome/capacitor-android-edge-to-edge-support',
         '@tanstack/vue-query',
         '@tanstack/vue-query-devtools',
         '@vue/devtools-api',

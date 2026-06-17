@@ -4,14 +4,14 @@
       group="replay"
       icon="pi pi-replay"
       icon-bg-class="bg-primary"
-      accept-label="Yes"
-      reject-label="No"
+      :accept-label="t('common.yes')"
+      :reject-label="t('common.no')"
     >
       <GameInfo v-if="selectedGame" :game="selectedGame" class="mt-2" />
     </BaseConfirmModal>
 
     <h1 class="mb-6 flex justify-between items-center shrink-0">
-      <span class="text-3xl">History</span>
+      <span class="text-3xl">{{ t('gamesHistory.title') }}</span>
       <span class="inline-flex gap-2">
         <NuxtLink to="/games/new">
           <Button raised severity="contrast" :disabled="roomStore.players.length === 0" icon="pi pi-play" />
@@ -26,6 +26,7 @@
 <script setup lang="ts">
 import type {Game} from "~/types/global";
 
+const {t} = useI18n();
 const roomStore = useRoomStore();
 const router = useRouter();
 const confirm = useConfirm();
@@ -44,8 +45,8 @@ const handleReplayGame = (game: Game) => {
     group: 'replay',
     header: game.name,
     message: roomStore.currentGame !== null
-      ? 'Your current game will be canceled without being saved. Do you want to continue?'
-      : 'Do you want to start a new game with the same settings and your current lobby?',
+      ? t('gamesHistory.replayCurrentCanceled')
+      : t('gamesHistory.replayStartNew'),
     accept: () => {
       if (roomStore.currentGame !== null) {
         roomStore.cancelGame();

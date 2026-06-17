@@ -10,53 +10,61 @@
           <span class="font-bold text-2xl block mb-2 mt-6">{{ message.header }}</span>
           <p class="mb-0">{{ message.message }}</p>
           <div class="flex items-center gap-2 mt-6">
-            <Button severity="contrast" label="Confirm" @click="acceptCallback"></Button>
-            <Button severity="secondary" label="Cancel" outlined @click="rejectCallback"></Button>
+            <Button severity="contrast" :label="t('common.confirm')" @click="acceptCallback"></Button>
+            <Button severity="secondary" :label="t('common.cancel')" outlined @click="rejectCallback"></Button>
           </div>
         </div>
       </template>
     </ConfirmDialog>
 
-    <h1 class="mb-6 text-3xl">Account</h1>
+    <h1 class="mb-6 text-3xl">{{ t('account.title') }}</h1>
 
     <div v-if="user" class="flex flex-col gap-4">
-      <p>Logged in as <strong>{{ user.email }}</strong></p>
+      <p>{{ t('account.loggedInAs') }} <strong>{{ user.email }}</strong></p>
 
-      <Button label="Sync now" icon="pi pi-sync" :loading="isSyncing" @click="handleSync"/>
-      <Button label="Log out" severity="danger" outlined icon="pi pi-sign-out" @click="handleLogout"/>
+      <Button :label="t('account.syncNow')" icon="pi pi-sync" :loading="isSyncing" @click="handleSync"/>
+      <Button :label="t('account.logOut')" severity="danger" outlined icon="pi pi-sign-out" @click="handleLogout"/>
     </div>
 
     <div v-else class="flex flex-col gap-4">
-      <p>Create an account to save your game history and player profiles to the cloud.</p>
+      <p>{{ t('account.createAccountPrompt') }}</p>
 
       <NuxtLink to="/account/login">
-        <Button label="Log in" icon="pi pi-sign-in" fluid/>
+        <Button :label="t('account.logIn')" icon="pi pi-sign-in" fluid/>
       </NuxtLink>
       <NuxtLink to="/account/signup">
-        <Button label="Sign up" icon="pi pi-user-plus" outlined fluid/>
+        <Button :label="t('account.signUp')" icon="pi pi-user-plus" outlined fluid/>
       </NuxtLink>
     </div>
 
-    <h2 class="mt-8 mb-4 text-xl">Preferences</h2>
+    <h2 class="mt-8 mb-4 text-xl">{{ t('account.preferences') }}</h2>
 
     <div class="flex flex-col gap-4">
       <div class="flex items-center justify-between">
-        <label for="dark-mode-switch">Dark mode</label>
+        <label for="language-select">{{ t('account.language') }}</label>
+        <Select id="language-select" v-model="selectedLocale" :options="availableLocales" optionLabel="name" optionValue="code" class="w-40"/>
+      </div>
+
+      <div class="flex items-center justify-between">
+        <label for="dark-mode-switch">{{ t('account.darkMode') }}</label>
         <ToggleSwitch v-model="isDarkMode" inputId="dark-mode-switch"/>
       </div>
 
       <div v-if="isWakeLockSupported" class="flex items-center justify-between">
-        <label for="wake-lock-switch">Keep screen on</label>
+        <label for="wake-lock-switch">{{ t('account.keepScreenOn') }}</label>
         <ToggleSwitch v-model="isWakeLockEnabled" inputId="wake-lock-switch"/>
       </div>
 
       <div class="flex items-center justify-between">
         <span class="inline-flex items-center gap-2">
-          <label for="duel-mode-switch">Duel mode</label>
+          <label for="duel-mode-switch">{{ t('account.duelMode') }}</label>
           <i
             class="pi pi-info-circle text-surface-500 cursor-help"
-            v-tooltip.top="'For 2-player games, displays the score cards face to face at the top and bottom of the screen. We recommend also enabling Keep screen on when using this mode.'"
+            @click="toggleDuelModePopover"
           />
+          <Popover ref="duelModePopover">
+            <p class="max-w-60">{{ t('account.duelModeTooltip') }}</p>
+          </Popover>
         </span>
         <ToggleSwitch v-model="isDuelModeEnabled" inputId="duel-mode-switch"/>
       </div>
@@ -65,11 +73,20 @@
 </template>
 
 <script setup lang="ts">
+const {t, locale, locales, setLocale} = useI18n();
+const duelModePopover = ref();
+const toggleDuelModePopover = (event: MouseEvent) => duelModePopover.value?.toggle(event);
 const supabase = useSupabaseClient();
 const user = useSupabaseUser();
 const toast = useToast();
 const confirm = useConfirm();
 const {isSyncing, pullRemote, importLocalToRemote} = useSupabaseSync();
+
+const availableLocales = computed(() => locales.value);
+const selectedLocale = computed({
+  get: () => locale.value,
+  set: (value) => setLocale(value as 'en' | 'fr'),
+});
 
 const {colorScheme, setColorScheme} = useColorScheme();
 const isDarkMode = computed({
@@ -93,17 +110,17 @@ const handleSync = async () => {
   try {
     await pullRemote();
     await importLocalToRemote();
-    toast.add({severity: 'success', summary: 'Synced', detail: 'Your data is up to date.', life: 3000});
+    toast.add({severity: 'success', summary: t('account.syncedTitle'), detail: t('account.syncedMessage'), life: 3000});
   } catch {
-    toast.add({severity: 'error', summary: 'Sync error', detail: 'Could not sync your data.', life: 4000});
+    toast.add({severity: 'error', summary: t('account.syncErrorTitle'), detail: t('account.syncErrorMessage'), life: 4000});
   }
 };
 
 const handleLogout = () => {
   confirm.require({
     group: 'logout',
-    header: 'Log out?',
-    message: 'You will need to log in again to access your saved games and players.',
+    header: t('account.logoutConfirmTitle'),
+    message: t('account.logoutConfirmMessage'),
     accept: () => {
       supabase.auth.signOut();
     },

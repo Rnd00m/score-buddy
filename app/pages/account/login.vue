@@ -10,8 +10,8 @@
           <span class="font-bold text-2xl block mb-2 mt-6">{{ message.header }}</span>
           <p class="mb-0">{{ message.message }}</p>
           <div class="flex items-center gap-2 mt-6">
-            <Button severity="contrast" label="Import" @click="acceptCallback"></Button>
-            <Button severity="secondary" label="Not now" outlined @click="rejectCallback"></Button>
+            <Button severity="contrast" :label="t('login.import')" @click="acceptCallback"></Button>
+            <Button severity="secondary" :label="t('login.notNow')" outlined @click="rejectCallback"></Button>
           </div>
         </div>
       </template>
@@ -21,12 +21,12 @@
       <NuxtLink to="/account">
         <Button severity="secondary" icon="pi pi-arrow-left"/>
       </NuxtLink>
-      <span class="text-3xl">Log in</span>
+      <span class="text-3xl">{{ t('login.title') }}</span>
     </h1>
 
     <Form v-slot="$form" :initialValues="credentials" :resolver :validateOnValueUpdate="false" :validateOnBlur="false" @submit="onFormSubmit" class="flex flex-col gap-4 w-full">
       <div class="flex flex-col gap-1">
-        <label for="email">Email</label>
+        <label for="email">{{ t('login.email') }}</label>
         <InputText id="email" name="email" type="email" fluid/>
         <Message v-if="$form.email?.invalid" severity="error" size="small" variant="simple">{{
             $form.email.error?.message
@@ -35,7 +35,7 @@
       </div>
 
       <div class="flex flex-col gap-1">
-        <label for="password">Password</label>
+        <label for="password">{{ t('login.password') }}</label>
         <Password id="password" name="password" :feedback="false" toggleMask fluid/>
         <Message v-if="$form.password?.invalid" severity="error" size="small" variant="simple">{{
             $form.password.error?.message
@@ -43,11 +43,11 @@
         </Message>
       </div>
 
-      <Button type="submit" severity="primary" label="Log in" :loading="isLoading"/>
+      <Button type="submit" severity="primary" :label="t('login.submit')" :loading="isLoading"/>
     </Form>
 
     <p class="mt-4 text-center">
-      No account yet? <NuxtLink to="/account/signup" class="text-primary">Sign up</NuxtLink>
+      {{ t('login.noAccountYet') }} <NuxtLink to="/account/signup" class="text-primary">{{ t('login.signUp') }}</NuxtLink>
     </p>
   </div>
 </template>
@@ -55,6 +55,7 @@
 <script setup lang="ts">
 import {ref} from 'vue';
 
+const {t} = useI18n();
 const supabase = useSupabaseClient();
 const router = useRouter();
 const toast = useToast();
@@ -74,11 +75,11 @@ const resolver = ({values}) => {
   const errors = {};
 
   if (!values.email?.trim()) {
-    errors.email = [{message: 'Email is required.'}];
+    errors.email = [{message: t('login.emailRequired')}];
   }
 
   if (!values.password) {
-    errors.password = [{message: 'Password is required.'}];
+    errors.password = [{message: t('login.passwordRequired')}];
   }
 
   return {
@@ -98,7 +99,7 @@ const onFormSubmit = async ({valid, states}) => {
 
   if (error) {
     isLoading.value = false;
-    toast.add({severity: 'error', summary: 'Error', detail: error.message, life: 4000});
+    toast.add({severity: 'error', summary: t('common.error'), detail: error.message, life: 4000});
     return;
   }
 
@@ -107,7 +108,7 @@ const onFormSubmit = async ({valid, states}) => {
   try {
     await pullRemote();
   } catch {
-    toast.add({severity: 'error', summary: 'Sync error', detail: 'Could not fetch your saved data.', life: 4000});
+    toast.add({severity: 'error', summary: t('login.syncErrorTitle'), detail: t('login.syncErrorMessage'), life: 4000});
   }
 
   isLoading.value = false;
@@ -119,11 +120,11 @@ const onFormSubmit = async ({valid, states}) => {
 
   confirm.require({
     group: 'import',
-    header: 'Import local data?',
-    message: 'You have games and/or saved players stored on this device. Do you want to add them to your account?',
+    header: t('login.importTitle'),
+    message: t('login.importMessage'),
     accept: () => {
       importLocalToRemote().catch(() => {
-        toast.add({severity: 'error', summary: 'Sync error', detail: 'Could not import your local data.', life: 4000});
+        toast.add({severity: 'error', summary: t('login.syncErrorTitle'), detail: t('login.importErrorMessage'), life: 4000});
       });
       router.push('/account');
     },

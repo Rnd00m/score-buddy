@@ -1,18 +1,18 @@
 <template>
   <div class="flex flex-col h-full">
     <h1 class="mb-6 flex justify-between items-center shrink-0">
-      <span class="text-3xl">History</span>
-      <span class="text-surface-500">{{ games.length }} games</span>
+      <span class="text-3xl">{{ t('userGamesHistory.title') }}</span>
+      <span class="text-surface-500">{{ t('userGamesHistory.gamesCount', { count: games.length }) }}</span>
     </h1>
 
     <div v-if="!user" class="flex flex-col gap-4">
-      <p>Log in to see the history of every game played on your account, across all devices.</p>
+      <p>{{ t('userGamesHistory.logInPrompt') }}</p>
 
       <NuxtLink to="/account/login">
-        <Button label="Log in" icon="pi pi-sign-in" fluid/>
+        <Button :label="t('account.logIn')" icon="pi pi-sign-in" fluid/>
       </NuxtLink>
       <NuxtLink to="/account/signup">
-        <Button label="Sign up" icon="pi pi-user-plus" outlined fluid/>
+        <Button :label="t('account.signUp')" icon="pi pi-user-plus" outlined fluid/>
       </NuxtLink>
     </div>
 
@@ -21,8 +21,8 @@
         group="replay"
         icon="pi pi-replay"
         icon-bg-class="bg-primary"
-        accept-label="Yes"
-        reject-label="No"
+        :accept-label="t('common.yes')"
+        :reject-label="t('common.no')"
       >
         <GameInfo v-if="selectedGame" :game="selectedGame" class="mt-2" />
       </BaseConfirmModal>
@@ -30,7 +30,7 @@
       <GameHistoryTable
           :games="games"
           :loading="isFetching"
-          empty-message="No games found."
+          :empty-message="t('userGamesHistory.noGamesFound')"
           @replay="handleReplayGame"
       />
     </template>
@@ -42,6 +42,7 @@ import { useQuery } from '@tanstack/vue-query';
 import type {Game} from "~/types/global";
 import { WinCondition } from "~/types/global";
 
+const {t} = useI18n();
 const supabase = useSupabaseClient();
 const user = useSupabaseUser();
 const roomStore = useRoomStore();
@@ -81,8 +82,8 @@ const handleReplayGame = (game: Game) => {
     group: 'replay',
     header: game.name,
     message: roomStore.currentGame !== null
-      ? 'Your current game will be canceled without being saved. Do you want to continue?'
-      : 'Do you want to start a new game with the same settings and your current lobby?',
+      ? t('gamesHistory.replayCurrentCanceled')
+      : t('gamesHistory.replayStartNew'),
     accept: () => {
       if (roomStore.currentGame !== null) {
         roomStore.cancelGame();
