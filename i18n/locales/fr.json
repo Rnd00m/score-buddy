@@ -1,0 +1,168 @@
+{
+  "common": {
+    "confirm": "Confirmer",
+    "cancel": "Annuler",
+    "yes": "Oui",
+    "no": "Non",
+    "error": "Erreur",
+    "name": "Nom",
+    "color": "Couleur",
+    "submit": "Valider",
+    "start": "Démarrer"
+  },
+  "menu": {
+    "play": "Jouer",
+    "history": "Historique",
+    "rooms": "Salons",
+    "myHistory": "Mon historique",
+    "account": "Compte"
+  },
+  "account": {
+    "title": "Compte",
+    "loggedInAs": "Connecté en tant que",
+    "syncNow": "Synchroniser",
+    "logOut": "Se déconnecter",
+    "createAccountPrompt": "Créez un compte pour sauvegarder votre historique de parties et vos profils de joueurs dans le cloud.",
+    "logIn": "Se connecter",
+    "signUp": "S'inscrire",
+    "preferences": "Préférences",
+    "darkMode": "Mode sombre",
+    "keepScreenOn": "Garder l'écran allumé",
+    "duelMode": "Mode duel",
+    "duelModeTooltip": "Pour les parties à 2 joueurs, affiche les scores face à face. Il est recommandé d'activer « Garder l'écran allumé » avec ce mode.",
+    "language": "Langue",
+    "logoutConfirmTitle": "Se déconnecter ?",
+    "logoutConfirmMessage": "Vous devrez vous reconnecter pour accéder à vos parties et joueurs sauvegardés.",
+    "syncedTitle": "Synchronisé",
+    "syncedMessage": "Vos données sont à jour.",
+    "syncErrorTitle": "Erreur de synchronisation",
+    "syncErrorMessage": "Impossible de synchroniser vos données."
+  },
+  "login": {
+    "title": "Connexion",
+    "email": "Email",
+    "password": "Mot de passe",
+    "submit": "Se connecter",
+    "noAccountYet": "Pas encore de compte ?",
+    "signUp": "S'inscrire",
+    "emailRequired": "L'email est requis.",
+    "passwordRequired": "Le mot de passe est requis.",
+    "importTitle": "Importer les données locales ?",
+    "importMessage": "Vous avez des parties et/ou des joueurs sauvegardés sur cet appareil. Voulez-vous les ajouter à votre compte ?",
+    "import": "Importer",
+    "notNow": "Plus tard",
+    "syncErrorTitle": "Erreur de synchronisation",
+    "syncErrorMessage": "Impossible de récupérer vos données sauvegardées.",
+    "importErrorMessage": "Impossible d'importer vos données locales."
+  },
+  "signup": {
+    "title": "Inscription",
+    "confirmPassword": "Confirmer le mot de passe",
+    "submit": "S'inscrire",
+    "alreadyHaveAccount": "Vous avez déjà un compte ?",
+    "logIn": "Se connecter",
+    "passwordMinLength": "Le mot de passe doit contenir au moins 6 caractères.",
+    "passwordsDoNotMatch": "Les mots de passe ne correspondent pas.",
+    "checkInboxTitle": "Vérifiez votre boîte mail",
+    "checkInboxMessage": "Confirmez votre adresse email pour finaliser la création de votre compte."
+  },
+  "game": {
+    "confirmTitle": "Êtes-vous sûr ?",
+    "endGameMessage": "Vous êtes sur le point de terminer la partie.",
+    "resetOrCancelTitle": "Réinitialiser ou annuler ?",
+    "resetOrCancelMessage": "Voulez-vous réinitialiser (tous les points seront remis au score minimum) ou annuler (la partie sera supprimée, aucun gagnant ne sera déclaré) la partie ?",
+    "reset": "Réinitialiser",
+    "startNewGame": "Voulez-vous démarrer une nouvelle partie ?",
+    "tie": "Égalité !",
+    "hasWon": "{name} a gagné !"
+  },
+  "newGame": {
+    "title": "Nouvelle partie",
+    "startScore": "Score de départ",
+    "endingScore": "Score de fin",
+    "winner": "Gagnant",
+    "lowestPossibleScore": "Score minimum possible",
+    "nameRequired": "Le nom est requis.",
+    "nameMinLength": "Le nom doit contenir au moins 1 caractère.",
+    "nameMaxLength": "Le nom doit contenir au maximum 64 caractères.",
+    "nameTaken": "Ce nom est déjà utilisé.",
+    "startScoreRequired": "Le score de départ est requis.",
+    "startScoreMin": "Le score de départ doit être d'au moins {min}.",
+    "endingScoreMin": "Le score de fin doit être d'au moins {min}.",
+    "endingScoreDifferent": "Le score de fin doit être différent du score de départ."
+  },
+  "home": {
+    "newGame": "Nouvelle partie",
+    "replay": "Rejouer",
+    "newLobby": "Nouveau salon",
+    "create": "Créer"
+  },
+  "gamesHistory": {
+    "title": "Historique",
+    "replayCurrentCanceled": "Votre partie en cours sera annulée sans être sauvegardée. Voulez-vous continuer ?",
+    "replayStartNew": "Voulez-vous démarrer une nouvelle partie avec les mêmes paramètres et votre salon actuel ?"
+  },
+  "room": {
+    "title": "Salon",
+    "noPlayers": "Aucun joueur pour le moment.",
+    "player": "Joueur",
+    "score": "Score",
+    "game": "Partie",
+    "rank": "Rang",
+    "points": "Points",
+    "date": "Date",
+    "cantRemovePlayer": "Vous ne pouvez pas retirer un joueur pendant qu'une partie est en cours.",
+    "confirmation": "Confirmation",
+    "removePlayerMessage": "Voulez-vous vraiment retirer ce joueur ?",
+    "deleteRoomMessage": "Voulez-vous vraiment supprimer le salon ? Tous les joueurs seront supprimés et toutes les parties seront perdues.",
+    "resetRoomMessage": "Voulez-vous vraiment réinitialiser le salon ? Toutes les parties seront perdues."
+  },
+  "addPlayer": {
+    "title": "Ajouter un joueur",
+    "playersPlayedWith": "Joueurs avec qui vous avez déjà joué",
+    "nameRequired": "Le nom est requis.",
+    "nameMinLength": "Le nom doit contenir au moins 2 caractères.",
+    "nameMaxLength": "Le nom doit contenir au maximum 20 caractères.",
+    "nameTaken": "Ce nom est déjà utilisé.",
+    "colorRequired": "La couleur est requise.",
+    "playerAddedTitle": "Joueur ajouté",
+    "playerAddedMessage": "{name} a été ajouté au salon."
+  },
+  "userGamesHistory": {
+    "title": "Historique",
+    "gamesCount": "{count} parties",
+    "logInPrompt": "Connectez-vous pour voir l'historique de toutes les parties jouées sur votre compte, sur tous vos appareils.",
+    "noGamesFound": "Aucune partie trouvée."
+  },
+  "gameHistoryTable": {
+    "name": "Nom",
+    "duration": "Durée",
+    "date": "Date",
+    "noPlayedGames": "Aucune partie jouée pour le moment.",
+    "rank": "Rang",
+    "player": "Joueur",
+    "score": "Score",
+    "replay": "Rejouer"
+  },
+  "gameInfo": {
+    "startScore": "Score de départ",
+    "endingScore": "Score de fin",
+    "lowestPossibleScore": "Score minimum possible",
+    "winCondition": "Condition de victoire"
+  },
+  "gameTypesTable": {
+    "game": "Partie",
+    "start": "Départ",
+    "ending": "Fin",
+    "manual": "Manuel",
+    "lowest": "Minimum",
+    "no": "Non",
+    "win": "Victoire",
+    "newGameTitle": "Nouvelle partie",
+    "newGameMessage": "Voulez-vous rejouer {name} ?"
+  },
+  "winCondition": {
+    "Most": "Plus de points",
+    "Least": "Moins de points"
+  }
+}

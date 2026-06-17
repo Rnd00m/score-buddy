@@ -11,6 +11,7 @@
               v-ripple
               :href="href"
               v-bind="props.action"
+              :aria-label="item.label"
               @click="navigate"
               :class="{ 'route-active': isActive }"
             >
@@ -27,6 +28,7 @@
 <script setup lang="ts">
 import { VueQueryDevtools } from '@tanstack/vue-query-devtools'
 
+const { t } = useI18n();
 const roomStore = useRoomStore();
 const user = useSupabaseUser();
 const route = useRoute();
@@ -34,11 +36,11 @@ const router = useRouter();
 
 const items = computed(() => {
   return [
-    { icon: 'pi pi-play', route: roomStore.currentGame !== null ? '/game' : '/games' },
-    { icon: 'pi pi-history', route: '/games/history' },
-    { icon: 'pi pi-users', route: '/rooms' },
-    { icon: 'pi pi-clock', route: '/users/games/history' },
-    { icon: 'pi pi-user', route: '/account' },
+    { icon: 'pi pi-play', label: t('menu.play'), route: roomStore.currentGame !== null ? '/game' : '/games' },
+    { icon: 'pi pi-history', label: t('menu.history'), route: '/games/history' },
+    { icon: 'pi pi-users', label: t('menu.rooms'), route: '/rooms' },
+    { icon: 'pi pi-clock', label: t('menu.myHistory'), route: '/users/games/history' },
+    { icon: 'pi pi-user', label: t('menu.account'), route: '/account' },
   ];
 });
 

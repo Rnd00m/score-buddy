@@ -10,8 +10,8 @@
           <span class="font-bold text-2xl block mb-2 mt-6">{{ message.header }}</span>
           <p class="mb-0">{{ message.message }}</p>
           <div class="flex items-center gap-2 mt-6">
-            <Button severity="contrast" label="Confirm" @click="acceptCallback"></Button>
-            <Button severity="secondary" label="Cancel" outlined @click="rejectCallback"></Button>
+            <Button severity="contrast" :label="t('common.confirm')" @click="acceptCallback"></Button>
+            <Button severity="secondary" :label="t('common.cancel')" outlined @click="rejectCallback"></Button>
           </div>
         </div>
       </template>
@@ -26,8 +26,8 @@
           <span class="font-bold text-2xl block mb-2 mt-6">{{ message.header }}</span>
           <p class="mb-0">{{ message.message }}</p>
           <div class="flex items-center gap-2 mt-6">
-            <Button severity="contrast" label="Confirm" @click="acceptCallback"></Button>
-            <Button severity="secondary" label="Cancel" outlined @click="rejectCallback"></Button>
+            <Button severity="contrast" :label="t('common.confirm')" @click="acceptCallback"></Button>
+            <Button severity="secondary" :label="t('common.cancel')" outlined @click="rejectCallback"></Button>
           </div>
         </div>
       </template>
@@ -42,15 +42,15 @@
           <span class="font-bold text-2xl block mb-2 mt-6">{{ message.header }}</span>
           <p class="mb-0">{{ message.message }}</p>
           <div class="flex items-center gap-2 mt-6">
-            <Button severity="contrast" label="Confirm" @click="acceptCallback"></Button>
-            <Button severity="secondary" label="Cancel" outlined @click="rejectCallback"></Button>
+            <Button severity="contrast" :label="t('common.confirm')" @click="acceptCallback"></Button>
+            <Button severity="secondary" :label="t('common.cancel')" outlined @click="rejectCallback"></Button>
           </div>
         </div>
       </template>
     </ConfirmDialog>
 
     <h1 class="mb-6 flex justify-between items-center shrink-0">
-      <span class="text-3xl">Room</span>
+      <span class="text-3xl">{{ t('room.title') }}</span>
       <span class="inline-flex gap-2">
         <Button raised severity="danger" icon="pi pi-trash" :disabled="roomStore.players.length === 0" @click="handleDeleteRoom" />
         <Button raised severity="contrast" icon="pi pi-undo" :disabled="roomStore.players.length === 0" @click="handleResetRoom" />
@@ -73,9 +73,9 @@
       scrollHeight="flex"
       size="small"
     >
-      <template #empty> Currently no players. </template>
+      <template #empty> {{ t('room.noPlayers') }} </template>
       <Column expander class="w-1" v-if="roomStore.games.length"/>
-      <Column field="name" header="Player" sortable>
+      <Column field="name" :header="t('room.player')" sortable>
         <template #body="slotProps">
           <div class="flex items-center gap-2">
             <div class="w-7 h-7 rounded-md" :style="{background: `${slotProps.data.color.value}`}"></div>
@@ -84,7 +84,7 @@
           </div>
         </template>
       </Column>
-      <Column field="score" header="Score" sortable></Column>
+      <Column field="score" :header="t('room.score')" sortable></Column>
       <Column class="w-8">
         <template #body="{ data }">
           <Button icon="pi pi-times" @click="handleRemovePlayer(data.uuid)" severity="danger" size="small" />
@@ -92,14 +92,14 @@
       </Column>
       <template #expansion="slotProps">
         <DataTable size="small" :value="userGamesScores(slotProps.data)" removableSort sortField="createdAtTime" :sortOrder="-1">
-          <Column field="name" header="Game" />
-          <Column header="Rank" >
+          <Column field="name" :header="t('room.game')" />
+          <Column :header="t('room.rank')" >
             <template #body="{ data }">
               {{ data.rank }} <i v-if="data.rank === 1" class="pi pi-trophy text-xs"></i>
             </template>
           </Column>
-          <Column field="finalScore" header="Points" />
-          <Column field="createdAtTime" header="Date" sortable>
+          <Column field="finalScore" :header="t('room.points')" />
+          <Column field="createdAtTime" :header="t('room.date')" sortable>
             <template #body="{ data }">
               {{ moment(data.createdAt).fromNow() }}
             </template>
@@ -114,6 +114,7 @@
 import type { Player } from "~/types/global";
 import moment from 'moment';
 
+const {t} = useI18n();
 const roomStore = useRoomStore();
 const confirm = useConfirm();
 const toast = useToast();
@@ -121,14 +122,14 @@ const { expandedRows, onRowClick } = useExpandableRow('uuid');
 
 const handleRemovePlayer = (playerUuid: string) => {
   if (roomStore.currentGame !== null) {
-    toast.add({ severity: 'error', summary: 'Error', detail: 'You can\'t remove player while a game is in progress.', life: 4000 });
+    toast.add({ severity: 'error', summary: t('common.error'), detail: t('room.cantRemovePlayer'), life: 4000 });
     return;
   }
 
   confirm.require({
     group: 'remove',
-    header: 'Confirmation',
-    message: 'Are you sure you want to remove this player?',
+    header: t('room.confirmation'),
+    message: t('room.removePlayerMessage'),
     accept: () => {
       roomStore.removePlayer(playerUuid);
     },
@@ -138,8 +139,8 @@ const handleRemovePlayer = (playerUuid: string) => {
 const handleDeleteRoom = () => {
   confirm.require({
     group: 'delete',
-    header: 'Confirmation',
-    message: 'Are you sure you want to remove the lobby? All players will be deleted and all games will be lost.',
+    header: t('room.confirmation'),
+    message: t('room.deleteRoomMessage'),
     accept: () => {
       roomStore.deleteRoom();
     },
@@ -149,8 +150,8 @@ const handleDeleteRoom = () => {
 const handleResetRoom = () => {
   confirm.require({
     group: 'reset',
-    header: 'Confirmation',
-    message: 'Are you sure you want to reset the lobby? All games will be lost.',
+    header: t('room.confirmation'),
+    message: t('room.resetRoomMessage'),
     accept: () => {
       roomStore.resetRoom();
     },

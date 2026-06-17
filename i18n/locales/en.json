@@ -1,0 +1,168 @@
+{
+  "common": {
+    "confirm": "Confirm",
+    "cancel": "Cancel",
+    "yes": "Yes",
+    "no": "No",
+    "error": "Error",
+    "name": "Name",
+    "color": "Color",
+    "submit": "Submit",
+    "start": "Start"
+  },
+  "menu": {
+    "play": "Play",
+    "history": "History",
+    "rooms": "Rooms",
+    "myHistory": "My history",
+    "account": "Account"
+  },
+  "account": {
+    "title": "Account",
+    "loggedInAs": "Logged in as",
+    "syncNow": "Sync now",
+    "logOut": "Log out",
+    "createAccountPrompt": "Create an account to save your game history and player profiles to the cloud.",
+    "logIn": "Log in",
+    "signUp": "Sign up",
+    "preferences": "Preferences",
+    "darkMode": "Dark mode",
+    "keepScreenOn": "Keep screen on",
+    "duelMode": "Duel mode",
+    "duelModeTooltip": "For 2-player games, displays the score cards face to face. It's recommend to enabling Keep screen on when using this mode.",
+    "language": "Language",
+    "logoutConfirmTitle": "Log out?",
+    "logoutConfirmMessage": "You will need to log in again to access your saved games and players.",
+    "syncedTitle": "Synced",
+    "syncedMessage": "Your data is up to date.",
+    "syncErrorTitle": "Sync error",
+    "syncErrorMessage": "Could not sync your data."
+  },
+  "login": {
+    "title": "Log in",
+    "email": "Email",
+    "password": "Password",
+    "submit": "Log in",
+    "noAccountYet": "No account yet?",
+    "signUp": "Sign up",
+    "emailRequired": "Email is required.",
+    "passwordRequired": "Password is required.",
+    "importTitle": "Import local data?",
+    "importMessage": "You have games and/or saved players stored on this device. Do you want to add them to your account?",
+    "import": "Import",
+    "notNow": "Not now",
+    "syncErrorTitle": "Sync error",
+    "syncErrorMessage": "Could not fetch your saved data.",
+    "importErrorMessage": "Could not import your local data."
+  },
+  "signup": {
+    "title": "Sign up",
+    "confirmPassword": "Confirm password",
+    "submit": "Sign up",
+    "alreadyHaveAccount": "Already have an account?",
+    "logIn": "Log in",
+    "passwordMinLength": "Password must be at least 6 characters.",
+    "passwordsDoNotMatch": "Passwords do not match.",
+    "checkInboxTitle": "Check your inbox",
+    "checkInboxMessage": "Confirm your email address to finish creating your account."
+  },
+  "game": {
+    "confirmTitle": "Are you sure?",
+    "endGameMessage": "You're about to end the game.",
+    "resetOrCancelTitle": "Reset or cancel?",
+    "resetOrCancelMessage": "Do you want to reset (all points will be set to min score) or cancel (game will be deleted no winner will be declared) the game?",
+    "reset": "Reset",
+    "startNewGame": "Do you want to start a new one?",
+    "tie": "It's a tie!",
+    "hasWon": "{name} has won!"
+  },
+  "newGame": {
+    "title": "New Game",
+    "startScore": "Start score",
+    "endingScore": "Ending score",
+    "winner": "Winner",
+    "lowestPossibleScore": "Lowest possible score",
+    "nameRequired": "Name is required.",
+    "nameMinLength": "Name must be at least 1 characters.",
+    "nameMaxLength": "Name must be at most 64 characters.",
+    "nameTaken": "Name is already taken.",
+    "startScoreRequired": "Start score is required.",
+    "startScoreMin": "Start score must be at least {min}.",
+    "endingScoreMin": "Ending score must be at least {min}.",
+    "endingScoreDifferent": "Ending score should be different than start score."
+  },
+  "home": {
+    "newGame": "New game",
+    "replay": "Replay",
+    "newLobby": "New lobby",
+    "create": "Create"
+  },
+  "gamesHistory": {
+    "title": "History",
+    "replayCurrentCanceled": "Your current game will be canceled without being saved. Do you want to continue?",
+    "replayStartNew": "Do you want to start a new game with the same settings and your current lobby?"
+  },
+  "room": {
+    "title": "Room",
+    "noPlayers": "Currently no players.",
+    "player": "Player",
+    "score": "Score",
+    "game": "Game",
+    "rank": "Rank",
+    "points": "Points",
+    "date": "Date",
+    "cantRemovePlayer": "You can't remove player while a game is in progress.",
+    "confirmation": "Confirmation",
+    "removePlayerMessage": "Are you sure you want to remove this player?",
+    "deleteRoomMessage": "Are you sure you want to remove the lobby? All players will be deleted and all games will be lost.",
+    "resetRoomMessage": "Are you sure you want to reset the lobby? All games will be lost."
+  },
+  "addPlayer": {
+    "title": "Add player",
+    "playersPlayedWith": "Players you've played with",
+    "nameRequired": "Name is required.",
+    "nameMinLength": "Name must be at least 2 characters.",
+    "nameMaxLength": "Name must be at most 20 characters.",
+    "nameTaken": "Name is already taken.",
+    "colorRequired": "Color is required.",
+    "playerAddedTitle": "Player added",
+    "playerAddedMessage": "{name} has been added to the lobby."
+  },
+  "userGamesHistory": {
+    "title": "History",
+    "gamesCount": "{count} games",
+    "logInPrompt": "Log in to see the history of every game played on your account, across all devices.",
+    "noGamesFound": "No games found."
+  },
+  "gameHistoryTable": {
+    "name": "Name",
+    "duration": "Duration",
+    "date": "Date",
+    "noPlayedGames": "Currently no played games.",
+    "rank": "Rank",
+    "player": "Player",
+    "score": "Score",
+    "replay": "Replay"
+  },
+  "gameInfo": {
+    "startScore": "Start score",
+    "endingScore": "Ending score",
+    "lowestPossibleScore": "Lowest possible score",
+    "winCondition": "Win condition"
+  },
+  "gameTypesTable": {
+    "game": "Game",
+    "start": "Start",
+    "ending": "Ending",
+    "manual": "Manual",
+    "lowest": "Lowest",
+    "no": "No",
+    "win": "Win",
+    "newGameTitle": "New game",
+    "newGameMessage": "Do you want to replay {name}?"
+  },
+  "winCondition": {
+    "Most": "Most points",
+    "Least": "Least points"
+  }
+}

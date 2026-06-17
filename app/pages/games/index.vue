@@ -2,8 +2,8 @@
   <div class="h-[calc(100vh-118px)] grid place-items-center">
     <div class="flex flex-col items-center w-full gap-8" v-if="roomStore.players.length">
       <GameCallToActionCard
-          headingText="New game"
-          buttonText="Start"
+          :headingText="t('home.newGame')"
+          :buttonText="t('common.start')"
           :buttonStyle="{
             backgroundColor: `var(--p-surface-900)`,
             borderColor: `var(--p-surface-900)`,
@@ -41,7 +41,7 @@
       <template v-if="roomStore.games.length">
         <GameCallToActionCard
           :headingText="roomStore.getLastCompletedGame.name"
-          buttonText="Replay"
+          :buttonText="t('home.replay')"
           :buttonStyle="{
             backgroundColor: `var(--p-surface-900)`,
             borderColor: `var(--p-surface-900)`,
@@ -89,8 +89,8 @@
     </div>
     <div class="flex flex-col items-center w-full" v-else>
       <GameCallToActionCard
-          headingText="New lobby"
-          buttonText="Create"
+          :headingText="t('home.newLobby')"
+          :buttonText="t('home.create')"
           :buttonStyle="{
             backgroundColor: `var(--p-surface-900)`,
             borderColor: `var(--p-surface-900)`,
@@ -149,6 +149,7 @@
 <script setup lang="ts">
 import GameCallToActionCard from "~/components/game/GameCallToActionCard.vue";
 
+const {t} = useI18n();
 const roomStore = useRoomStore();
 const router = useRouter();
 
