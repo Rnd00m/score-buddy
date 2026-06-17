@@ -48,6 +48,7 @@
 
 <script setup lang="ts">
 import {ref} from 'vue';
+import {Capacitor} from '@capacitor/core';
 
 const supabase = useSupabaseClient();
 const router = useRouter();
@@ -88,9 +89,14 @@ const onFormSubmit = async ({valid, states}) => {
 
   isLoading.value = true;
 
+  const emailRedirectTo = Capacitor.isNativePlatform()
+    ? 'com.scorebuddy.app://account/callback'
+    : `${window.location.origin}/auth/callback`;
+
   const {error} = await supabase.auth.signUp({
     email: states.email.value.trim(),
-    password: states.password.value
+    password: states.password.value,
+    options: {emailRedirectTo}
   });
 
   isLoading.value = false;

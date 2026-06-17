@@ -1,15 +1,7 @@
-import { existsSync, readFileSync } from 'node:fs'
+import {config} from 'dotenv'
 
-// .env.local is gitignored and overrides .env for local secrets (e.g. BGG_API_KEY)
-if (existsSync('.env.local')) {
-  for (const line of readFileSync('.env.local', 'utf-8').split('\n')) {
-    const match = line.match(/^\s*([\w.-]+)\s*=\s*(.*)$/)
-    if (!match) continue
-
-    const [, key, rawValue] = match
-    process.env[key] = rawValue.trim().replace(/^(['"])(.*)\1$/, '$2')
-  }
-}
+config({path: '.env.local', override: true})
+if (process.env.APP_ENV === 'production') config({path: '.env.production', override: true})
 
 export default defineNuxtConfig({
   compatibilityDate: '2025-01-01',
@@ -56,6 +48,7 @@ export default defineNuxtConfig({
   vite: {
     optimizeDeps: {
       include: [
+        '@capacitor/app',
         '@capacitor-community/keep-awake',
         '@tanstack/vue-query',
         '@tanstack/vue-query-devtools',
