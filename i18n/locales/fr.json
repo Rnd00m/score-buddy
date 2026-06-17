@@ -114,7 +114,8 @@
     "cantRemovePlayer": "Vous ne pouvez pas retirer un joueur pendant qu'une partie est en cours.",
     "confirmation": "Confirmation",
     "removePlayerMessage": "Voulez-vous vraiment retirer ce joueur ?",
-    "deleteRoomMessage": "Voulez-vous vraiment supprimer le salon ? Tous les joueurs seront supprimés et toutes les parties seront perdues.",
+    "endRoomTitle": "Fermer le salon ?",
+    "endRoomMessage": "Voulez-vous vraiment fermer le salon ?",
     "resetRoomMessage": "Voulez-vous vraiment réinitialiser le salon ? Toutes les parties seront perdues."
   },
   "addPlayer": {

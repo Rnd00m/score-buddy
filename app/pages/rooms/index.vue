@@ -17,11 +17,11 @@
       </template>
     </ConfirmDialog>
 
-    <ConfirmDialog group="delete" class="max-w-96 w-[calc(100%-6rem)]">
+    <ConfirmDialog group="end" class="max-w-96 w-[calc(100%-6rem)]">
       <template #container="{ message, acceptCallback, rejectCallback }">
         <div class="flex flex-col items-center p-8 bg-surface-0 dark:bg-surface-900 rounded">
           <div class="rounded-full bg-red-500 text-primary-contrast inline-flex justify-center items-center h-24 w-24 -mt-20">
-            <i class="pi pi-trash text-5xl"></i>
+            <i class="pi pi-stop-circle text-5xl"></i>
           </div>
           <span class="font-bold text-2xl block mb-2 mt-6">{{ message.header }}</span>
           <p class="mb-0">{{ message.message }}</p>
@@ -52,7 +52,7 @@
     <h1 class="mb-6 flex justify-between items-center shrink-0">
       <span class="text-3xl">{{ t('room.title') }}</span>
       <span class="inline-flex gap-2">
-        <Button raised severity="danger" icon="pi pi-trash" :disabled="roomStore.players.length === 0" @click="handleDeleteRoom" />
+        <Button raised severity="danger" icon="pi pi-stop-circle" :disabled="roomStore.players.length === 0" @click="handleEndRoom" />
         <Button raised severity="contrast" icon="pi pi-undo" :disabled="roomStore.players.length === 0" @click="handleResetRoom" />
         <NuxtLink to="/rooms/players/add">
             <Button raised severity="contrast" icon="pi pi-user-plus" />
@@ -136,11 +136,11 @@ const handleRemovePlayer = (playerUuid: string) => {
   });
 };
 
-const handleDeleteRoom = () => {
+const handleEndRoom = () => {
   confirm.require({
-    group: 'delete',
-    header: t('room.confirmation'),
-    message: t('room.deleteRoomMessage'),
+    group: 'end',
+    header: t('room.endRoomTitle'),
+    message: t('room.endRoomMessage'),
     accept: () => {
       roomStore.deleteRoom();
     },

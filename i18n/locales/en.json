@@ -114,7 +114,8 @@
     "cantRemovePlayer": "You can't remove player while a game is in progress.",
     "confirmation": "Confirmation",
     "removePlayerMessage": "Are you sure you want to remove this player?",
-    "deleteRoomMessage": "Are you sure you want to remove the lobby? All players will be deleted and all games will be lost.",
+    "endRoomTitle": "End lobby?",
+    "endRoomMessage": "Are you sure you want to end the lobby?",
     "resetRoomMessage": "Are you sure you want to reset the lobby? All games will be lost."
   },
   "addPlayer": {
