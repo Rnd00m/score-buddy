@@ -16,6 +16,7 @@
     "@capacitor/android": "^8.4.0",
     "@capacitor/app": "^8.1.0",
     "@capacitor/core": "^8.4.0",
+    "@capawesome/capacitor-android-edge-to-edge-support": "^8.0.8",
     "@nuxtjs/supabase": "^2.0.9",
     "@pinia/nuxt": "^0.11.3",
     "@primeuix/themes": "^2.0.3",
