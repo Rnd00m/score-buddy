@@ -60,8 +60,11 @@
           <label for="duel-mode-switch">{{ t('account.duelMode') }}</label>
           <i
             class="pi pi-info-circle text-surface-500 cursor-help"
-            v-tooltip.top="t('account.duelModeTooltip')"
+            @click="toggleDuelModePopover"
           />
+          <Popover ref="duelModePopover">
+            <p class="max-w-60">{{ t('account.duelModeTooltip') }}</p>
+          </Popover>
         </span>
         <ToggleSwitch v-model="isDuelModeEnabled" inputId="duel-mode-switch"/>
       </div>
@@ -71,6 +74,8 @@
 
 <script setup lang="ts">
 const {t, locale, locales, setLocale} = useI18n();
+const duelModePopover = ref();
+const toggleDuelModePopover = (event: MouseEvent) => duelModePopover.value?.toggle(event);
 const supabase = useSupabaseClient();
 const user = useSupabaseUser();
 const toast = useToast();
