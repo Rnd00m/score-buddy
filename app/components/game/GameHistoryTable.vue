@@ -27,7 +27,7 @@
     </Column>
     <Column field="createdAtTime" :header="t('gameHistoryTable.date')" sortable>
       <template #body="{ data }">
-        {{ moment(data.createdAt).fromNow() }}
+        {{ fromNow(data.createdAt) }}
       </template>
     </Column>
     <Column v-if="showReplayColumn" class="w-8">
@@ -53,10 +53,10 @@
 </template>
 
 <script setup lang="ts">
-import moment from 'moment';
 import type {Game} from "~/types/global";
 
 const {t} = useI18n();
+const {fromNow, formattedDuration} = useDateFormat();
 
 withDefaults(defineProps<{
   games: (Game & { createdAtTime: number })[];
@@ -75,23 +75,6 @@ const emit = defineEmits<{
 }>();
 
 const { expandedRows, onRowClick } = useExpandableRow('uuid');
-
-const formattedDuration = (start: Date, end: Date) => {
-  const duration = moment.duration(moment(end).diff(moment(start)));
-
-  const days = Math.floor(duration.asDays());
-  const hours = duration.hours();
-  const minutes = duration.minutes();
-  const seconds = duration.seconds();
-
-  return days > 0
-      ? `${days}j ${hours}h ${minutes}m`
-      : hours > 0
-          ? `${hours}h ${minutes}m`
-          : minutes > 0
-              ? `${minutes}m`
-              : `${seconds}s`;
-};
 </script>
 
 <style scoped>

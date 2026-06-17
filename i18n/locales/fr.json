@@ -164,5 +164,11 @@
   "winCondition": {
     "Most": "Plus de points",
     "Least": "Moins de points"
+  },
+  "units": {
+    "day": "j",
+    "hour": "h",
+    "minute": "m",
+    "second": "s"
   }
 }

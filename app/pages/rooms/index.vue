@@ -101,7 +101,7 @@
           <Column field="finalScore" :header="t('room.points')" />
           <Column field="createdAtTime" :header="t('room.date')" sortable>
             <template #body="{ data }">
-              {{ moment(data.createdAt).fromNow() }}
+              {{ fromNow(data.createdAt) }}
             </template>
           </Column>
         </DataTable>
@@ -112,9 +112,9 @@
 
 <script setup lang="ts">
 import type { Player } from "~/types/global";
-import moment from 'moment';
 
 const {t} = useI18n();
+const {fromNow} = useDateFormat();
 const roomStore = useRoomStore();
 const confirm = useConfirm();
 const toast = useToast();
