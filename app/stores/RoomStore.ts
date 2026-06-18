@@ -190,6 +190,12 @@ actions: {
   },
   getPlayerScore (player: Player): GameScore | null {
     return this.currentGame?.scores.find((score) => score.player.uuid === player.uuid) || null;
+  },
+  reorderPlayers(oldIndex: number, newIndex: number) {
+    const [player] = this.players.splice(oldIndex, 1);
+    if (!player) return;
+
+    this.players.splice(newIndex, 0, player);
   }
 },
 getters: {
