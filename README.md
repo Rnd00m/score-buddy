@@ -2,16 +2,6 @@
 
 Score Buddy is an application designed to make it easier to track points during your board game sessions. No more need for pen and paper—follow your scores in real-time and keep a history of your games during a session.
 
-## Features
-
-- [ ] Logo
-- [X] Mobile app with capacitor
-- [ ] Web responsive
-- [X] Disable mobile stand-by
-- [X] Duel mode
-- [X] French translation
-- [X] Game history and statistics
-
 ## Installation
 
 Make sure to install dependencies:
