@@ -6,22 +6,7 @@
       </div>
     </div>
     <div class="sticky bottom-0 w-full">
-      <Menubar :model="items" breakpoint="0" class="h-full flex justify-center rounded-none border-0">
-        <template #item="{ item, props }">
-          <RouterLink v-slot="{ href, navigate, isActive }" :to="item.route" custom>
-            <a
-              v-ripple
-              :href="href"
-              v-bind="props.action"
-              :aria-label="item.label"
-              @click="navigate"
-              :class="{ 'route-active': isActive }"
-            >
-              <span :class="item.icon" class="text-2xl"/>
-            </a>
-          </RouterLink>
-        </template>
-      </Menubar>
+      <BaseBottomNav :items="items"/>
     </div>
   </div>
   <VueQueryDevtools />

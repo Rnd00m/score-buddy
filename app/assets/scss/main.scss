@@ -47,50 +47,50 @@ body {
 }
 
 :root {
-  --p-menubar-gap: 0.5rem;
-  --p-menubar-background: var(--p-primary-500);
+  //--bottom-nav-gap: 0.5rem;
+  --bottom-nav-background: var(--p-primary-500);
 }
 
 // -------------------- Main menu -------------------- >
-.p-menubar {
-  padding: 0;
-}
-
-.p-menubar-item-link {
-  background: transparent;
-  padding: 0.4rem 0.4rem;
+.bottom-nav {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 100%;
+  background: var(--bottom-nav-background);
 }
 
-.p-menubar-item-link .text-2xl {
+.bottom-nav-link {
+  padding: 0.425rem 0.3rem 0.3rem 0.3rem;
+  color: var(--p-text-color);
+}
+
+.bottom-nav-icon {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 3rem;
-  height: 2.25rem;
+  width: 3.125rem;
+  height: 2rem;
   border-radius: 999px;
+  font-size: 1rem;
   transition: background-color 0.2s ease, color 0.2s ease;
 }
 
-.p-menubar-item-link.route-active .text-2xl {
+.bottom-nav-link.route-active .bottom-nav-icon {
   background: rgba(0, 0, 0, 0.12);
 }
 
 // pi-play's triangle glyph is optically off-center within its bounding box;
 // shift only the glyph (::before), not the circular background, to recenter it
-.p-menubar-item-link .pi-play::before {
+.bottom-nav-icon.pi-play::before {
   display: inline-block;
   transform: translateX(0.1rem);
 }
 
 :root.app-dark {
-  --p-menubar-background: var(--p-dark-secondary-900);
+  --bottom-nav-background: var(--p-dark-secondary-900);
 }
 
-.app-dark .p-menubar-item-link.route-active .text-2xl {
+.app-dark .bottom-nav-link.route-active .bottom-nav-icon {
   background: var(--p-primary-500);
   color: var(--p-dark-secondary-900);
 }
