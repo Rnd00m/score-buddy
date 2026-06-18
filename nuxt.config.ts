@@ -16,7 +16,8 @@ export default defineNuxtConfig({
   runtimeConfig: {
     bggApiKey: process.env.BGG_API_KEY,
     public: {
-      bggApiBaseUrl: 'https://boardgamegeek.com/xmlapi2'
+      bggApiBaseUrl: 'https://boardgamegeek.com/xmlapi2',
+      siteUrl: 'https://score-buddy.vercel.app'
     }
   },
   css: ['@/assets/scss/main.scss'],

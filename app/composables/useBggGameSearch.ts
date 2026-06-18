@@ -1,12 +1,17 @@
 import { useQuery } from '@tanstack/vue-query'
+import { Capacitor } from '@capacitor/core'
 import type { Ref } from 'vue'
 import type {BggGame, BggSearchItem, BggSearchResponse} from '~/types/bgg'
 
 export const useBggGameSearch = (query: Ref<string>) => {
+  const config = useRuntimeConfig()
+
   return useQuery({
     queryKey: ['bgg-game-search', query],
     queryFn: async (): Promise<BggGame[]> => {
-      const response = await $fetch('/api/bgg/search', {
+      const baseUrl = Capacitor.isNativePlatform() ? config.public.siteUrl : ''
+
+      const response = await $fetch(`${baseUrl}/api/bgg/search`, {
         query: {
           query: query.value,
           type: 'boardgame',

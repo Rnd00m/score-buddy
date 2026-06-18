@@ -1,7 +1,9 @@
 <template>
   <div class="flex flex-col h-dvh">
     <div ref="mainContent" class="p-6 overflow-y-auto flex-1 min-h-0">
-      <NuxtPage/>
+      <div class="max-w-3xl mx-auto">
+        <NuxtPage/>
+      </div>
     </div>
     <div class="sticky bottom-0 w-full">
       <Menubar :model="items" breakpoint="0" class="h-full flex justify-center rounded-none border-0">
