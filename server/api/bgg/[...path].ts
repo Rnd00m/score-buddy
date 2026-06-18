@@ -29,6 +29,10 @@ const parser = new XMLParser({
 })
 
 export default defineEventHandler(async (event) => {
+  // Capacitor's native WebView runs on a different origin than the deployed
+  // site, so the response needs explicit CORS headers to be readable there.
+  setResponseHeader(event, 'Access-Control-Allow-Origin', '*')
+
   const config = useRuntimeConfig()
   const path = event.context.params?.path ?? ''
   const query = getQuery(event)
