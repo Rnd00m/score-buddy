@@ -13,10 +13,10 @@ export default defineNuxtPlugin(async () => {
     if (code) {
       await supabase.auth.exchangeCodeForSession(code);
     }
-    router.push('/account');
+    await router.push('/account');
   };
 
-  App.addListener('appUrlOpen', ({ url }) => handleUrl(url));
+  void App.addListener('appUrlOpen', ({ url }) => handleUrl(url));
 
   const launchData = await App.getLaunchUrl();
   if (launchData?.url) {
