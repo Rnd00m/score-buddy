@@ -58,22 +58,30 @@ body {
 
 .p-menubar-item-link {
   background: transparent;
+  padding: 0.4rem 0.4rem;
 }
 
-.p-menubar-item:has(.p-menubar-item-link.route-active) {
-  border-bottom: var(--p-dark-secondary-900) 0.2rem solid;
+.p-menubar-item-link .text-2xl {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 3rem;
+  height: 2.25rem;
+  border-radius: 999px;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.p-menubar-item-link.route-active .text-2xl {
+  background: rgba(0, 0, 0, 0.12);
 }
 
 :root.app-dark {
   --p-menubar-background: var(--p-dark-secondary-900);
 }
 
-.app-dark .p-menubar-item:has(.p-menubar-item-link.route-active) {
-  border-bottom: var(--p-primary-500) 0.15rem solid;
-
-  .p-menubar-item-link.route-active {
-    color: var(--p-primary-500);
-  }
+.app-dark .p-menubar-item-link.route-active .text-2xl {
+  background: var(--p-primary-500);
+  color: var(--p-dark-secondary-900);
 }
 
 // -------------------- AutoComplete -------------------- >
