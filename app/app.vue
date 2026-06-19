@@ -63,18 +63,20 @@ useSwipe(mainContent, {
   onSwipeLeft: () => {
     const routes = items.value.map(item => item.route);
     const index = routes.indexOf(route.path);
+    const nextRoute = index !== -1 ? routes[index + 1] : undefined;
 
-    if (index === -1 || index === routes.length - 1) return;
+    if (!nextRoute) return;
 
-    router.push(routes[index + 1]);
+    router.push(nextRoute);
   },
   onSwipeRight: () => {
     const routes = items.value.map(item => item.route);
     const index = routes.indexOf(route.path);
+    const previousRoute = index > 0 ? routes[index - 1] : undefined;
 
-    if (index <= 0) return;
+    if (!previousRoute) return;
 
-    router.push(routes[index - 1]);
+    router.push(previousRoute);
   },
 });
 </script>

@@ -88,8 +88,8 @@
 </template>
 
 <script setup lang="ts">
+import type {FormResolverOptions, FormSubmitEvent} from '@primevue/forms';
 import { WinCondition } from '~/types/global';
-import { ref, computed } from 'vue';
 
 const {t} = useI18n();
 const roomStore = useRoomStore();
@@ -127,8 +127,8 @@ const player = ref({
 const winConditions = ref([WinCondition.MostPoints, WinCondition.LeastPoints]);
 const winConditionLabel = (option: WinCondition) => t(`winCondition.${option}`);
 
-const resolver = ({values}) => {
-  const errors = {};
+const resolver = ({values}: FormResolverOptions) => {
+  const errors: Record<string, {message: string}[]> = {};
 
   const name = values.name.trim();
 
@@ -169,14 +169,14 @@ const resolver = ({values}) => {
   };
 };
 
-const onFormSubmit = ({valid, states}) => {
+const onFormSubmit = ({valid, states}: FormSubmitEvent) => {
   if (valid) {
     roomStore.startGame(
-        states.name.value.trim(),
-        states.startScore.value,
-        states.endingScore.value,
-        states.winCondition.value,
-        states.lowestPossibleScore.value
+        states.name?.value.trim(),
+        states.startScore?.value,
+        states.endingScore?.value,
+        states.winCondition?.value,
+        states.lowestPossibleScore?.value
     );
     router.push('/game');
   }

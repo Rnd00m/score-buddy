@@ -6,8 +6,9 @@
 
 <script lang="ts" setup>
 const router = useRouter();
+const roomStore = useRoomStore();
 
-router.push('/games');
+router.push(roomStore.currentGame !== null ? '/game' : '/games');
 </script>
 
 <style scoped>

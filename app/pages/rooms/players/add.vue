@@ -68,7 +68,7 @@
 </template>
 
 <script setup lang="ts">
-import {ref} from 'vue';
+import type {FormResolverOptions, FormSubmitEvent} from '@primevue/forms';
 import type {PlayerProfile} from '~/types/global';
 import {PLAYER_COLORS} from '~/utils/color';
 
@@ -112,8 +112,8 @@ const addFromProfile = (profile: PlayerProfile) => {
   notifyPlayerAdded(profile.name);
 };
 
-const resolver = ({values}) => {
-  const errors = {};
+const resolver = ({values}: FormResolverOptions) => {
+  const errors: Record<string, {message: string}[]> = {};
 
   const name = values.name.trim();
 
@@ -142,11 +142,11 @@ const resolver = ({values}) => {
   };
 };
 
-const onFormSubmit = ({valid, states}) => {
+const onFormSubmit = ({valid, states}: FormSubmitEvent) => {
   if (!valid) return;
 
-  const name = states.name.value.trim();
-  const color = states.color.value;
+  const name = states.name?.value.trim();
+  const color = states.color?.value;
 
   roomStore.addPlayer(name, color);
   notifyPlayerAdded(name);
