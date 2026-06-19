@@ -5,6 +5,7 @@ import type {BggGame, BggSearchItem, BggSearchResponse} from '~/types/bgg'
 
 export const useBggGameSearch = (query: Ref<string>) => {
   const config = useRuntimeConfig()
+  const user = useSupabaseUser()
 
   return useQuery({
     queryKey: ['bgg-game-search', query],
@@ -32,7 +33,7 @@ export const useBggGameSearch = (query: Ref<string>) => {
         }
       })
     },
-    enabled: computed(() => query.value.trim().length > 1),
+    enabled: computed(() => !!user.value && query.value.trim().length > 1),
     staleTime: 1000 * 60 * 1440,
   })
 }

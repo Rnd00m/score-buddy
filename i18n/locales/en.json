@@ -89,7 +89,8 @@
     "startScoreRequired": "Start score is required.",
     "startScoreMin": "Start score must be at least {min}.",
     "endingScoreMin": "Ending score must be at least {min}.",
-    "endingScoreDifferent": "Ending score should be different than start score."
+    "endingScoreDifferent": "Ending score should be different than start score.",
+    "noGameNameResults": "No results found."
   },
   "home": {
     "newGame": "New game",

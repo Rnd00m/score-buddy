@@ -89,7 +89,8 @@
     "startScoreRequired": "Le score de départ est requis.",
     "startScoreMin": "Le score de départ doit être d'au moins {min}.",
     "endingScoreMin": "Le score de fin doit être d'au moins {min}.",
-    "endingScoreDifferent": "Le score de fin doit être différent du score de départ."
+    "endingScoreDifferent": "Le score de fin doit être différent du score de départ.",
+    "noGameNameResults": "Aucun résultat trouvé."
   },
   "home": {
     "newGame": "Nouvelle partie",

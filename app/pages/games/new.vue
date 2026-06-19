@@ -10,10 +10,19 @@
     <Form v-slot="$form" :initialValues="player" :resolver :validateOnValueUpdate="false" :validateOnBlur="false" @submit="onFormSubmit" class="flex flex-col gap-4 w-full">
       <div class="flex flex-col gap-1">
         <label for="name">{{ t('common.name') }}</label>
+        <InputText
+            v-if="!user"
+            id="name"
+            name="name"
+            type="text"
+            fluid
+        />
         <AutoComplete
+            v-else
             id="name"
             :suggestions="suggestedGameNames"
             :loading="isSearchingBggGames"
+            :empty-search-message="t('newGame.noGameNameResults')"
             @complete="searchGameName"
             name="name"
             type="text"
@@ -94,6 +103,7 @@ import { WinCondition } from '~/types/global';
 const {t} = useI18n();
 const roomStore = useRoomStore();
 const router = useRouter();
+const user = useSupabaseUser();
 
 const gameNameQuery = ref('');
 const { data: bggGames, isFetching: isSearchingBggGames } = useBggGameSearch(gameNameQuery);
