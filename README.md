@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="public/logo.svg" alt="Score Buddy logo" width="96" height="96">
+</p>
+
 # Score Buddy
 
 Score Buddy is an application designed to make it easier to track points during your board game sessions. No more need for pen and paper—follow your scores in real-time and keep a history of your games during a session.
