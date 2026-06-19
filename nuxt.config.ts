@@ -12,6 +12,14 @@ export default defineNuxtConfig({
       name: 'slide',
       mode: 'out-in'
     },
+    head: {
+      script: [
+        {
+          key: 'color-scheme-init',
+          innerHTML: `(function(){try{var s=localStorage.getItem('colorScheme');var isDark=s?s==='dark':window.matchMedia('(prefers-color-scheme: dark)').matches;if(isDark){document.documentElement.classList.add('app-dark');}}catch(e){}})();`,
+        },
+      ],
+    },
   },
   runtimeConfig: {
     bggApiKey: process.env.BGG_API_KEY,
