@@ -3,29 +3,13 @@
     <div
       v-for="player in roomStore.players"
       :key="player.uuid"
-      class="player-score-card flex justify-between p-3 rounded-lg shadow-xl cursor-grab"
+      class="player-score-card flex-1 flex flex-col p-3 rounded-lg shadow-xl cursor-grab"
+      :class="roomStore.players[0]?.uuid === player.uuid ? 'rotate-180' : ''"
       :style="{ backgroundColor: player.color.value }"
     >
-      <Button
-        icon="pi pi-minus"
-        severity="contrast"
-        variant="text"
-        raised
-        :style="{
-          backgroundColor: getButtonColor(player.color.value, 'dark'),
-          color: getTextColorContrasted(player.color.value),
-        }"
-        class="rounded-lg min-w-[68px] touch-none no-drag"
-        @mousedown="!isTouchDevice ? handleStartPress(() => handleDecrementScore(player)) : null"
-        @mouseup="!isTouchDevice ? handleStopPress() : null"
-        @mouseleave="!isTouchDevice ? handleStopPress() : null"
-        @touchstart="handleStartPress(() => handleDecrementScore(player))"
-        @touchend="handleStopPress"
-        @touchcancel="handleStopPress"
-      />
+      <h3 :style="{ color: getTextColorContrasted(player.color.value) }" class="w-full truncate text-center font-bold text-5xl">{{ player.name }}</h3>
 
-      <div class="flex flex-col items-center flex-1 mx-4 min-w-0">
-        <h3 :style="{ color: getTextColorContrasted(player.color.value) }" class="w-full truncate text-center font-semibold text-xl">{{ player.name }}</h3>
+      <div class="flex-1 flex items-center justify-center">
         <InputText
           v-if="editingPlayerUuid === player.uuid"
           v-focus
@@ -34,7 +18,7 @@
           inputmode="tel"
           unstyled
           :style="{ color: getTextColorContrasted(player.color.value) }"
-          class="no-drag font-bold text-4xl text-center bg-transparent border-none w-28 outline-none"
+          class="no-drag font-bold text-6xl text-center bg-transparent border-none outline-none"
           @blur="applyScoreEdit(player)"
           @keyup.enter="applyScoreEdit(player)"
         />
@@ -42,28 +26,50 @@
           v-else
           v-ripple
           :style="{ color: getTextColorContrasted(player.color.value) }"
-          class="no-drag p-ripple font-bold text-4xl cursor-pointer select-none rounded-lg px-3"
+          class="no-drag p-ripple font-bold text-7xl cursor-pointer select-none rounded-lg px-3"
           @click="startEditingScore(player)"
         >{{ roomStore.getPlayerScore(player)?.score || 0 }}</p>
       </div>
 
-      <Button
-        icon="pi pi-plus"
-        severity="contrast"
-        variant="text"
-        raised
-        :style="{
-          backgroundColor: getButtonColor(player.color.value, 'dark'),
-          color: getTextColorContrasted(player.color.value),
-        }"
-        class="rounded-lg min-w-[68px] touch-none no-drag"
-        @mousedown="!isTouchDevice ? handleStartPress(() => handleIncrementScore(player)) : null"
-        @mouseup="!isTouchDevice ? handleStopPress() : null"
-        @mouseleave="!isTouchDevice ? handleStopPress() : null"
-        @touchstart="handleStartPress(() => handleIncrementScore(player))"
-        @touchend="handleStopPress"
-        @touchcancel="handleStopPress"
-      />
+      <div class="flex items-center gap-4">
+        <Button
+          icon="pi pi-minus"
+          severity="contrast"
+          variant="text"
+          raised
+          size="large"
+          :style="{
+            backgroundColor: getButtonColor(player.color.value, 'dark'),
+            color: getTextColorContrasted(player.color.value),
+          }"
+          class="rounded-lg flex-1 h-16 touch-none no-drag"
+          @mousedown="!isTouchDevice ? handleStartPress(() => handleDecrementScore(player)) : null"
+          @mouseup="!isTouchDevice ? handleStopPress() : null"
+          @mouseleave="!isTouchDevice ? handleStopPress() : null"
+          @touchstart="handleStartPress(() => handleDecrementScore(player))"
+          @touchend="handleStopPress"
+          @touchcancel="handleStopPress"
+        />
+
+        <Button
+          icon="pi pi-plus"
+          severity="contrast"
+          variant="text"
+          raised
+          size="large"
+          :style="{
+            backgroundColor: getButtonColor(player.color.value, 'dark'),
+            color: getTextColorContrasted(player.color.value),
+          }"
+          class="rounded-lg flex-1 h-16 touch-none no-drag"
+          @mousedown="!isTouchDevice ? handleStartPress(() => handleIncrementScore(player)) : null"
+          @mouseup="!isTouchDevice ? handleStopPress() : null"
+          @mouseleave="!isTouchDevice ? handleStopPress() : null"
+          @touchstart="handleStartPress(() => handleIncrementScore(player))"
+          @touchend="handleStopPress"
+          @touchcancel="handleStopPress"
+        />
+      </div>
     </div>
   </div>
 </template>
