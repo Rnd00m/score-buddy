@@ -71,7 +71,7 @@
 </template>
 
 <script lang="ts" setup>
-import {Sortable} from "@shopify/draggable";
+import type {Sortable} from "@shopify/draggable";
 
 const roomStore = useRoomStore();
 
@@ -94,10 +94,12 @@ const isTouchDevice = ref(false);
 const cardsContainer = ref<HTMLElement | null>(null);
 let sortable: Sortable | null = null;
 
-onMounted(() => {
+onMounted(async () => {
   isTouchDevice.value = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
 
   if (cardsContainer.value) {
+    const {Sortable} = await import("@shopify/draggable");
+
     sortable = new Sortable(cardsContainer.value, {
       draggable: '.player-score-card',
       delay: { mouse: 0, drag: 0, touch: 100 },
