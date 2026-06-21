@@ -74,7 +74,8 @@
     </h1>
 
     <div class="flex flex-col gap-4" :class="isDuelModeActive ? 'flex-1 min-h-0' : ''">
-      <GamePlayerCounterCard :duel-mode="isDuelModeActive"/>
+      <GamePlayerDuelCounterCard v-if="isDuelModeActive"/>
+      <GamePlayerCounterCard v-else/>
     </div>
   </div>
 </template>

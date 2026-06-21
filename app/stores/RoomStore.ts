@@ -2,6 +2,9 @@ import type {Player, Color, Game, GameScore} from "~/types/global";
 import { v4 as uuidv4 } from 'uuid';
 import { WinCondition } from "~/types/global";
 
+export const MAX_SCORE = 9_999_999_999;
+export const MIN_SCORE = -MAX_SCORE;
+
 export const useRoomStore = defineStore('room', {
 state: () => (
   {
@@ -12,7 +15,7 @@ state: () => (
 ),
 persist: {
   key: 'roomStore',
-  storage: localStorage
+  storage: piniaPluginPersistedstate.localStorage()
 },
 actions: {
   addPlayer(name: string, color: Color) {
@@ -115,14 +118,12 @@ actions: {
     });
 
     let previousScore: number | null = null;
+    let previousRank = 1;
     rankings.forEach((score: GameScore, index) => {
-      if (previousScore === score.score) {
-        score.rank = rankings[index - 1].rank;
-      } else {
-        score.rank = index + 1;
-      }
+      score.rank = previousScore === score.score ? previousRank : index + 1;
 
       previousScore = score.score;
+      previousRank = score.rank;
     });
   },
   calculatePlayersEndScore(game: Game) {
@@ -146,7 +147,8 @@ actions: {
       return;
     }
 
-    if (this.currentGame.endingScore === null || playerScore.score !== this.currentGame.endingScore) {
+    if (playerScore.score < MAX_SCORE
+      && (this.currentGame.endingScore === null || playerScore.score !== this.currentGame.endingScore)) {
       playerScore.score++;
     }
 
@@ -163,9 +165,10 @@ actions: {
       return;
     }
 
-    if (this.currentGame.lowestPossibleScore === null
+    if (playerScore.score > MIN_SCORE
+      && (this.currentGame.lowestPossibleScore === null
       || playerScore.score > this.currentGame.lowestPossibleScore
-      && (this.currentGame.endingScore === null || playerScore.score !== this.currentGame.endingScore)) {
+      && (this.currentGame.endingScore === null || playerScore.score !== this.currentGame.endingScore))) {
       playerScore.score--;
     }
 
@@ -182,9 +185,11 @@ actions: {
       return;
     }
 
+    const clampedScore = Math.min(Math.max(score, MIN_SCORE), MAX_SCORE);
+
     playerScore.score = this.currentGame.lowestPossibleScore !== null
-      ? Math.max(score, this.currentGame.lowestPossibleScore)
-      : score;
+      ? Math.max(clampedScore, this.currentGame.lowestPossibleScore)
+      : clampedScore;
 
     this.calculateRankings(this.currentGame);
   },

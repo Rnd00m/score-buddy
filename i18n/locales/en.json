@@ -1,4 +1,7 @@
 {
+  "seo": {
+    "description": "Score Buddy makes it easy to track points during your board game sessions. No more pen and paper—follow your scores in real time and keep a history of your games."
+  },
   "common": {
     "confirm": "Confirm",
     "cancel": "Cancel",
@@ -9,6 +12,12 @@
     "color": "Color",
     "submit": "Submit",
     "start": "Start"
+  },
+  "androidApp": {
+    "title": "Get the app",
+    "message": "Score Buddy is available on the Play Store for a better experience on Android.",
+    "openButton": "Open Play Store",
+    "continueButton": "Continue in browser"
   },
   "menu": {
     "play": "Play",
@@ -30,6 +39,7 @@
     "keepScreenOn": "Keep screen on",
     "duelMode": "Duel mode",
     "duelModeTooltip": "For 2-player games, displays the score cards face to face. It's recommend to enabling Keep screen on when using this mode.",
+    "duelModeTooltipNoWakeLock": "For 2-player games, displays the score cards face to face.",
     "language": "Language",
     "logoutConfirmTitle": "Log out?",
     "logoutConfirmMessage": "You will need to log in again to access your saved games and players.",
