@@ -51,7 +51,7 @@ export default defineNuxtConfig({
   runtimeConfig: {
     bggApiKey: process.env.BGG_API_KEY,
     public: {
-      bggApiBaseUrl: 'https://boardgamegeek.com/xmlapi2',
+      bggApiBaseUrl: process.env.BGG_API_BASE_URL,
       siteUrl: process.env.APP_BASE_URL
     }
   },
