@@ -9,7 +9,7 @@ export const usePlayerProfilesStore = defineStore('playerProfiles', {
   ),
   persist: {
     key: 'playerProfilesStore',
-    storage: localStorage
+    storage: piniaPluginPersistedstate.localStorage()
   },
   actions: {
     addProfile(name: string, color: Color): PlayerProfile {

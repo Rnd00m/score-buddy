@@ -6,7 +6,7 @@ if (process.env.APP_ENV === 'production') config({path: '.env.production', overr
 export default defineNuxtConfig({
   compatibilityDate: '2025-01-01',
   devtools: {enabled: true},
-  ssr: false,
+  ssr: true,
   app: {
     pageTransition: {
       name: 'slide',

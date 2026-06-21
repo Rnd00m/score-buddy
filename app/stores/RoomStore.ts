@@ -15,7 +15,7 @@ state: () => (
 ),
 persist: {
   key: 'roomStore',
-  storage: localStorage
+  storage: piniaPluginPersistedstate.localStorage()
 },
 actions: {
   addPlayer(name: string, color: Color) {
