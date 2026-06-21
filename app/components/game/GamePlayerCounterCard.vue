@@ -5,11 +5,11 @@
       v-for="player in roomStore.players"
       :key="player.uuid"
       class="player-score-card p-3 rounded-lg shadow-xl cursor-grab"
-      :class="duelMode ? [roomStore.players[0]?.uuid === player.uuid ? 'rotate-180' : '', 'flex-1'] : ''"
+      :class="duelMode ? [roomStore.players[0]?.uuid === player.uuid ? 'rotate-180' : '', 'flex-1 flex flex-col'] : ''"
       :style="{ backgroundColor: player.color.value }"
     >
       <h3 v-if="duelMode" :style="{ color: getTextColorContrasted(player.color.value) }" class="w-full truncate text-center font-bold text-5xl my-3">{{ player.name }}</h3>
-      <div class="flex justify-between h-full">
+      <div class="flex justify-between items-center" :class="duelMode ? 'flex-1' : 'h-full'">
         <Button
           icon="pi pi-minus"
           severity="contrast"
