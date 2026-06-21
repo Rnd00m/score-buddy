@@ -1,74 +1,78 @@
 <template>
   <div v-if="roomStore.currentGame !== null" ref="cardsContainer" class="contents">
+
     <div
       v-for="player in roomStore.players"
       :key="player.uuid"
-      class="player-score-card flex justify-between p-3 rounded-lg shadow-xl cursor-grab"
+      class="player-score-card p-3 rounded-lg shadow-xl cursor-grab"
       :class="duelMode ? [roomStore.players[0]?.uuid === player.uuid ? 'rotate-180' : '', 'flex-1'] : ''"
       :style="{ backgroundColor: player.color.value }"
     >
-      <Button
-        icon="pi pi-minus"
-        severity="contrast"
-        variant="text"
-        raised
-        :size="duelMode ? 'large' : undefined"
-        :style="{
+      <h3 v-if="duelMode" :style="{ color: getTextColorContrasted(player.color.value) }" class="w-full truncate text-center font-bold text-5xl my-3">{{ player.name }}</h3>
+      <div class="flex justify-between h-full">
+        <Button
+          icon="pi pi-minus"
+          severity="contrast"
+          variant="text"
+          raised
+          :size="duelMode ? 'large' : undefined"
+          :style="{
           backgroundColor: getButtonColor(player.color.value, 'dark'),
           color: getTextColorContrasted(player.color.value),
         }"
-        :class="duelMode ? 'rounded-lg min-w-24 touch-none no-drag' : 'rounded-lg min-w-[68px] touch-none no-drag'"
-        @mousedown="!isTouchDevice ? handleStartPress(() => handleDecrementScore(player)) : null"
-        @mouseup="!isTouchDevice ? handleStopPress() : null"
-        @mouseleave="!isTouchDevice ? handleStopPress() : null"
-        @touchstart="handleStartPress(() => handleDecrementScore(player))"
-        @touchend="handleStopPress"
-        @touchcancel="handleStopPress"
-      />
-
-      <div class="flex flex-col items-center flex-1 mx-4 min-w-0" :class="duelMode ? 'justify-center' : ''">
-        <h3 :style="{ color: getTextColorContrasted(player.color.value) }" class="w-full truncate text-center" :class="duelMode ? 'font-semibold text-3xl' : 'font-semibold text-xl'">{{ player.name }}</h3>
-        <InputText
-          v-if="editingPlayerUuid === player.uuid"
-          v-focus
-          v-model="editValue"
-          type="text"
-          inputmode="tel"
-          unstyled
-          :style="{ color: getTextColorContrasted(player.color.value) }"
-          class="no-drag"
-          :class="duelMode ? 'font-bold text-6xl text-center bg-transparent border-none w-40 outline-none' : 'font-bold text-4xl text-center bg-transparent border-none w-28 outline-none'"
-          @blur="applyScoreEdit(player)"
-          @keyup.enter="applyScoreEdit(player)"
+          :class="duelMode ? 'rounded-lg min-w-24 touch-none no-drag' : 'rounded-lg min-w-[68px] touch-none no-drag'"
+          @mousedown="!isTouchDevice ? handleStartPress(() => handleDecrementScore(player)) : null"
+          @mouseup="!isTouchDevice ? handleStopPress() : null"
+          @mouseleave="!isTouchDevice ? handleStopPress() : null"
+          @touchstart="handleStartPress(() => handleDecrementScore(player))"
+          @touchend="handleStopPress"
+          @touchcancel="handleStopPress"
         />
-        <p
-          v-else
-          v-ripple
-          :style="{ color: getTextColorContrasted(player.color.value) }"
-          class="no-drag"
-          :class="duelMode ? 'p-ripple font-bold text-7xl cursor-pointer select-none rounded-lg px-3' : 'p-ripple font-bold text-4xl cursor-pointer select-none rounded-lg px-3'"
-          @click="startEditingScore(player)"
-        >{{ roomStore.getPlayerScore(player)?.score || 0 }}</p>
-      </div>
 
-      <Button
-        icon="pi pi-plus"
-        severity="contrast"
-        variant="text"
-        raised
-        :size="duelMode ? 'large' : undefined"
-        :style="{
+        <div class="flex flex-col items-center flex-1 mx-4 min-w-0" :class="duelMode ? 'justify-center' : ''">
+          <h3 v-if="!duelMode" :style="{ color: getTextColorContrasted(player.color.value) }" class="w-full truncate text-center font-semibold text-xl">{{ player.name }}</h3>
+          <InputText
+            v-if="editingPlayerUuid === player.uuid"
+            v-focus
+            v-model="editValue"
+            type="text"
+            inputmode="tel"
+            unstyled
+            :style="{ color: getTextColorContrasted(player.color.value) }"
+            class="no-drag"
+            :class="duelMode ? 'font-bold text-6xl text-center bg-transparent border-none w-40 outline-none' : 'font-bold text-4xl text-center bg-transparent border-none w-28 outline-none'"
+            @blur="applyScoreEdit(player)"
+            @keyup.enter="applyScoreEdit(player)"
+          />
+          <p
+            v-else
+            v-ripple
+            :style="{ color: getTextColorContrasted(player.color.value) }"
+            class="no-drag"
+            :class="duelMode ? 'p-ripple font-bold text-7xl cursor-pointer select-none rounded-lg px-3' : 'p-ripple font-bold text-4xl cursor-pointer select-none rounded-lg px-3'"
+            @click="startEditingScore(player)"
+          >{{ roomStore.getPlayerScore(player)?.score || 0 }}</p>
+        </div>
+
+        <Button
+          icon="pi pi-plus"
+          severity="contrast"
+          variant="text"
+          raised
+          :size="duelMode ? 'large' : undefined"
+          :style="{
           backgroundColor: getButtonColor(player.color.value, 'dark'),
           color: getTextColorContrasted(player.color.value),
         }"
-        :class="duelMode ? 'rounded-lg min-w-24 touch-none no-drag' : 'rounded-lg min-w-[68px] touch-none no-drag'"
-        @mousedown="!isTouchDevice ? handleStartPress(() => handleIncrementScore(player)) : null"
-        @mouseup="!isTouchDevice ? handleStopPress() : null"
-        @mouseleave="!isTouchDevice ? handleStopPress() : null"
-        @touchstart="handleStartPress(() => handleIncrementScore(player))"
-        @touchend="handleStopPress"
-        @touchcancel="handleStopPress"
-      />
+          :class="duelMode ? 'rounded-lg min-w-24 touch-none no-drag' : 'rounded-lg min-w-[68px] touch-none no-drag'"
+          @mousedown="!isTouchDevice ? handleStartPress(() => handleIncrementScore(player)) : null"
+          @mouseup="!isTouchDevice ? handleStopPress() : null"
+          @mouseleave="!isTouchDevice ? handleStopPress() : null"
+          @touchstart="handleStartPress(() => handleIncrementScore(player))"
+          @touchend="handleStopPress"
+          @touchcancel="handleStopPress"
+        />
+      </div>
     </div>
   </div>
 </template>
