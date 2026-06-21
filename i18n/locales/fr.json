@@ -10,6 +10,12 @@
     "submit": "Valider",
     "start": "Démarrer"
   },
+  "androidApp": {
+    "title": "Téléchargez l'application",
+    "message": "Score Buddy est disponible sur le Play Store pour une meilleure expérience sur Android.",
+    "openButton": "Ouvrir le Play Store",
+    "continueButton": "Continuer dans le navigateur"
+  },
   "menu": {
     "play": "Jouer",
     "history": "Historique",

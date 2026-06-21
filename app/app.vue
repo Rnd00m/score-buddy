@@ -10,6 +10,22 @@
     </div>
   </div>
   <VueQueryDevtools />
+
+  <ConfirmDialog group="androidApp" class="max-w-96 w-[calc(100%-6rem)]">
+    <template #container="{ message, acceptCallback, rejectCallback }">
+      <div class="flex flex-col items-center p-8 bg-surface-0 dark:bg-surface-900 rounded">
+        <div class="rounded-full bg-primary text-primary-contrast inline-flex justify-center items-center h-24 w-24 -mt-20">
+          <i class="pi pi-android text-5xl"></i>
+        </div>
+        <span class="font-bold text-2xl block mb-2 mt-6">{{ message.header }}</span>
+        <p class="mb-0 text-center">{{ message.message }}</p>
+        <div class="flex items-center gap-2 mt-6">
+          <Button severity="contrast" :label="t('androidApp.openButton')" @click="acceptCallback"></Button>
+          <Button severity="secondary" :label="t('androidApp.continueButton')" outlined @click="rejectCallback"></Button>
+        </div>
+      </div>
+    </template>
+  </ConfirmDialog>
 </template>
 
 <script setup lang="ts">
@@ -34,11 +50,24 @@ const items = computed(() => {
 const { init: initColorScheme } = useColorScheme();
 const { init: initWakeLock } = useScreenWakeLock();
 const { init: initDuelMode } = useDuelMode();
+const { isAndroidWebBrowser, openPlayStore } = useAndroidAppPrompt();
+const confirm = useConfirm();
 
 onMounted(() => {
   initColorScheme();
   initWakeLock();
   initDuelMode();
+
+  if (isAndroidWebBrowser()) {
+    confirm.require({
+      group: 'androidApp',
+      header: t('androidApp.title'),
+      message: t('androidApp.message'),
+      accept: () => {
+        openPlayStore();
+      },
+    });
+  }
 });
 
 router.beforeEach((to, from) => {
