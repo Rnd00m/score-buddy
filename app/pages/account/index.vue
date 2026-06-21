@@ -63,7 +63,7 @@
             @click="toggleDuelModePopover"
           />
           <Popover ref="duelModePopover">
-            <p class="max-w-60">{{ t('account.duelModeTooltip') }}</p>
+            <p class="max-w-60">{{ isWakeLockSupported ? t('account.duelModeTooltip') : t('account.duelModeTooltipNoWakeLock') }}</p>
           </Popover>
         </span>
         <ToggleSwitch v-model="isDuelModeEnabled" inputId="duel-mode-switch"/>
@@ -73,7 +73,11 @@
 </template>
 
 <script setup lang="ts">
-const {t, locale, locales, setLocale} = useI18n();
+import type {LocaleObject} from '@nuxtjs/i18n';
+const {t, locale, locales, setLocale} = useI18n() as ReturnType<typeof useI18n> & {
+  locales: ComputedRef<LocaleObject[]>;
+  setLocale: (locale: string) => Promise<void>;
+};
 const duelModePopover = ref();
 const toggleDuelModePopover = (event: MouseEvent) => duelModePopover.value?.toggle(event);
 const supabase = useSupabaseClient();
