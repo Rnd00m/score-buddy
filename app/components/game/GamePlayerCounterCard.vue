@@ -29,20 +29,22 @@
         <InputText
           v-if="editingPlayerUuid === player.uuid"
           v-focus
+          v-auto-fit-font-size="editValue"
           v-model="editValue"
           type="text"
           inputmode="tel"
           unstyled
           :style="{ color: getTextColorContrasted(player.color.value) }"
-          class="no-drag font-bold text-4xl text-center bg-transparent border-none w-28 outline-none"
+          class="no-drag font-bold text-4xl text-center bg-transparent border-none w-28 max-w-full outline-none"
           @blur="applyScoreEdit(player)"
           @keyup.enter="applyScoreEdit(player)"
         />
         <p
           v-else
           v-ripple
+          v-auto-fit-font-size="roomStore.getPlayerScore(player)?.score"
           :style="{ color: getTextColorContrasted(player.color.value) }"
-          class="no-drag p-ripple font-bold text-4xl cursor-pointer select-none rounded-lg px-3"
+          class="no-drag p-ripple font-bold text-4xl cursor-pointer select-none rounded-lg px-3 max-w-full"
           @click="startEditingScore(player)"
         >{{ roomStore.getPlayerScore(player)?.score || 0 }}</p>
       </div>
@@ -85,6 +87,8 @@ const {
   applyScoreEdit,
   getButtonColor,
 } = useScoreCounterActions();
+
+const {vAutoFitFontSize} = useAutoFitFontSize();
 
 const isTouchDevice = ref(false);
 const cardsContainer = ref<HTMLElement | null>(null);
