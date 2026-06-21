@@ -1,4 +1,7 @@
 {
+  "seo": {
+    "description": "Score Buddy facilite le suivi des scores pendant vos parties de jeux de société. Plus besoin de papier et crayon : suivez vos scores en temps réel et gardez un historique de vos parties."
+  },
   "common": {
     "confirm": "Confirmer",
     "cancel": "Annuler",

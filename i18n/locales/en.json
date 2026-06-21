@@ -1,4 +1,7 @@
 {
+  "seo": {
+    "description": "Score Buddy makes it easy to track points during your board game sessions. No more pen and paper—follow your scores in real time and keep a history of your games."
+  },
   "common": {
     "confirm": "Confirm",
     "cancel": "Cancel",

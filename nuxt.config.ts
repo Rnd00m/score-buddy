@@ -13,9 +13,32 @@ export default defineNuxtConfig({
       mode: 'out-in'
     },
     head: {
+      htmlAttrs: {
+        lang: 'fr',
+      },
+      title: 'Score Buddy',
+      meta: [
+        {name: 'description', content: 'Score Buddy facilite le suivi des scores pendant vos parties de jeux de société. Plus besoin de papier et crayon : suivez vos scores en temps réel et gardez un historique de vos parties.'},
+        {name: 'theme-color', content: '#FFCE00'},
+        {property: 'og:type', content: 'website'},
+        {property: 'og:site_name', content: 'Score Buddy'},
+        {property: 'og:title', content: 'Score Buddy'},
+        {property: 'og:description', content: 'Score Buddy facilite le suivi des scores pendant vos parties de jeux de société. Plus besoin de papier et crayon : suivez vos scores en temps réel et gardez un historique de vos parties.'},
+        {property: 'og:image', content: `${process.env.APP_BASE_URL}/og-image.png`},
+        {property: 'og:image:width', content: '1024'},
+        {property: 'og:image:height', content: '1024'},
+        {property: 'og:url', content: process.env.APP_BASE_URL},
+        {property: 'og:locale', content: 'fr_FR'},
+        {property: 'og:locale:alternate', content: 'en_US'},
+        {name: 'twitter:card', content: 'summary'},
+        {name: 'twitter:title', content: 'Score Buddy'},
+        {name: 'twitter:description', content: 'Score Buddy facilite le suivi des scores pendant vos parties de jeux de société. Plus besoin de papier et crayon : suivez vos scores en temps réel et gardez un historique de vos parties.'},
+        {name: 'twitter:image', content: `${process.env.APP_BASE_URL}/og-image.png`},
+      ],
       link: [
         {rel: 'icon', type: 'image/svg+xml', href: '/logo.svg'},
         {rel: 'alternate icon', type: 'image/x-icon', href: '/favicon.ico'},
+        {rel: 'canonical', href: process.env.APP_BASE_URL},
       ],
       script: [
         {
@@ -29,7 +52,7 @@ export default defineNuxtConfig({
     bggApiKey: process.env.BGG_API_KEY,
     public: {
       bggApiBaseUrl: 'https://boardgamegeek.com/xmlapi2',
-      siteUrl: 'https://score-buddy.vercel.app'
+      siteUrl: process.env.APP_BASE_URL
     }
   },
   css: ['@/assets/scss/main.scss'],

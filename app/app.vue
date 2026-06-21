@@ -31,7 +31,20 @@
 <script setup lang="ts">
 import { VueQueryDevtools } from '@tanstack/vue-query-devtools'
 
-const { t } = useI18n();
+const { t, locale } = useI18n();
+
+useHead({
+  htmlAttrs: {
+    lang: locale,
+  },
+  meta: [
+    {name: 'description', content: () => t('seo.description')},
+    {property: 'og:description', content: () => t('seo.description')},
+    {property: 'og:locale', content: () => locale.value === 'fr' ? 'fr_FR' : 'en_US'},
+    {name: 'twitter:description', content: () => t('seo.description')},
+  ],
+});
+
 const roomStore = useRoomStore();
 const user = useSupabaseUser();
 const route = useRoute();
