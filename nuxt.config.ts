@@ -52,7 +52,8 @@ export default defineNuxtConfig({
     bggApiKey: process.env.BGG_API_KEY,
     public: {
       bggApiBaseUrl: process.env.BGG_API_BASE_URL,
-      siteUrl: process.env.APP_BASE_URL
+      siteUrl: process.env.APP_BASE_URL,
+      contactEmail: process.env.CONTACT_EMAIL
     }
   },
   css: ['@/assets/scss/main.scss'],
@@ -99,9 +100,9 @@ export default defineNuxtConfig({
     optimizeDeps: {
       include: [
         '@capacitor-community/keep-awake',
+        '@capacitor-community/safe-area',
         '@capacitor/app',
         '@capacitor/core',
-        '@capawesome/capacitor-android-edge-to-edge-support',
         '@tanstack/vue-query',
         '@tanstack/vue-query-devtools',
         '@vue/devtools-api',

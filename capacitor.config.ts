@@ -1,5 +1,3 @@
-/// <reference types="@capawesome/capacitor-android-edge-to-edge-support" />
-
 import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
@@ -7,17 +5,14 @@ const config: CapacitorConfig = {
   appName: 'Score Buddy',
   webDir: '.output/public',
   android: {
+    adjustMarginsForEdgeToEdge: 'disable',
     buildOptions: {
-      releaseType: 'APK',
+      releaseType: 'AAB',
     },
   },
   plugins: {
     SystemBars: {
       insetsHandling: 'disable',
-    },
-    EdgeToEdge: {
-      statusBarColor: '#ffffff',
-      navigationBarColor: '#FFCE00',
     },
   },
 };

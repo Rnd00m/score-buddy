@@ -9,7 +9,10 @@
     "generate:prod": "APP_ENV=production nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
-    "tailwind": "npx tailwindcss build app/assets/scss/main.scss -o .tailwind/tailwind.css"
+    "tailwind": "npx tailwindcss build app/assets/scss/main.scss -o .tailwind/tailwind.css",
+    "build:android:dev": "pnpm generate && npx cap sync android && cd android && ./gradlew assembleDebug",
+    "build:android:dev:bundle": "pnpm generate && npx cap sync android && cd android && ./gradlew bundleRelease",
+    "build:android:prod": "pnpm generate:prod && npx cap sync android && cd android && ./gradlew bundleRelease"
   },
   "dependencies": {
     "@capacitor-community/keep-awake": "^8.0.1",

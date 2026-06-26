@@ -6,25 +6,37 @@ const DARK_CLASS = 'app-dark';
 
 type ColorScheme = 'light' | 'dark';
 
-const BACKGROUND_COLOR: Record<ColorScheme, string> = {
-  light: '#ffffff',
-  dark: '#07203C',
-};
-
-const MENUBAR_COLOR: Record<ColorScheme, string> = {
-  light: '#FFCE00',
-  dark: '#243E57',
-};
-
 const colorScheme = ref<ColorScheme>('light');
 
+const rgbToHex = (rgb: string) => {
+  const match = rgb.match(/\d+/g);
+  if (!match) return '#000000';
+
+  const [r, g, b] = match.map(Number);
+  return `#${[r, g, b].map(v => v.toString(16).padStart(2, '0')).join('')}`;
+};
+
+// the status bar must match the app's actual background, which is themed via CSS vars
+const getStatusBarColor = () => rgbToHex(getComputedStyle(document.body).backgroundColor);
+
+// the navigation bar must match the bottom nav's actual background, which is themed via CSS vars
+const getNavigationBarColor = () => {
+  const navigationBarElement = document.querySelector('.bottom-nav');
+  if (!navigationBarElement) return '#000000';
+
+  return rgbToHex(getComputedStyle(navigationBarElement).backgroundColor);
+};
+
 export const useColorScheme = () => {
-  const applySystemBars = (scheme: ColorScheme) => {
+  const applySystemBars = async (scheme: ColorScheme) => {
     if (!Capacitor.isNativePlatform()) return;
 
-    EdgeToEdge.setStatusBarColor({ color: BACKGROUND_COLOR[scheme] });
-    EdgeToEdge.setNavigationBarColor({ color: MENUBAR_COLOR[scheme] });
-    SystemBars.setStyle({ style: scheme === 'dark' ? SystemBarsStyle.Dark : SystemBarsStyle.Light });
+    const style = scheme === 'dark' ? SystemBarsStyle.Dark : SystemBarsStyle.Light;
+
+    await EdgeToEdge.enable();
+    await EdgeToEdge.setStatusBarColor({ color: getStatusBarColor() });
+    await EdgeToEdge.setNavigationBarColor({ color: getNavigationBarColor() });
+    await SystemBars.setStyle({ style });
   };
 
   const applyColorScheme = (scheme: ColorScheme) => {
