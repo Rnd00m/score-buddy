@@ -11,7 +11,13 @@ export default defineNuxtPlugin(async () => {
     if (!url.includes('account/callback')) return;
     const code = new URL(url).searchParams.get('code');
     if (code) {
-      await supabase.auth.exchangeCodeForSession(code);
+      // Best-effort: if Supabase is unreachable (no connection, paused project),
+      // the app must still start and work offline rather than getting stuck here.
+      try {
+        await supabase.auth.exchangeCodeForSession(code);
+      } catch {
+        return;
+      }
     }
     await router.push('/account');
   };
