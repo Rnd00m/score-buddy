@@ -1,0 +1,63 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="288dp"
+    android:height="288dp"
+    android:viewportWidth="512"
+    android:viewportHeight="512">
+
+    <!-- Scaled down around the center so every stroke (incl. round caps) stays inside
+         the 192dp safe-zone circle required for icons without a background layer:
+         https://developer.android.com/develop/ui/views/launch/splash-screen -->
+    <group
+        android:pivotX="256"
+        android:pivotY="256"
+        android:scaleX="0.92"
+        android:scaleY="0.92">
+
+        <path
+            android:name="line1"
+            android:pathData="M180.2,153.9 L157.4,340.3"
+            android:strokeColor="#07203C"
+            android:strokeWidth="28"
+            android:strokeLineCap="round"
+            android:trimPathStart="0"
+            android:trimPathEnd="0" />
+
+        <path
+            android:name="line2"
+            android:pathData="M240.8,163.9 L226.2,344.9"
+            android:strokeColor="#07203C"
+            android:strokeWidth="28"
+            android:strokeLineCap="round"
+            android:trimPathStart="0"
+            android:trimPathEnd="0" />
+
+        <path
+            android:name="line3"
+            android:pathData="M306.1,165.7 L289.7,351.0"
+            android:strokeColor="#07203C"
+            android:strokeWidth="28"
+            android:strokeLineCap="round"
+            android:trimPathStart="0"
+            android:trimPathEnd="0" />
+
+        <path
+            android:name="line4"
+            android:pathData="M361.7,170.4 L342.8,358.1"
+            android:strokeColor="#07203C"
+            android:strokeWidth="28"
+            android:strokeLineCap="round"
+            android:trimPathStart="0"
+            android:trimPathEnd="0" />
+
+        <path
+            android:name="line5"
+            android:pathData="M113.6,295.9 L398.4,184.8"
+            android:strokeColor="#07203C"
+            android:strokeWidth="28"
+            android:strokeLineCap="round"
+            android:trimPathStart="0"
+            android:trimPathEnd="0" />
+
+    </group>
+
+</vector>
