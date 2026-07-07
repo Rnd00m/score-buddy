@@ -119,10 +119,16 @@ if (roomStore.currentGame === null) {
   router.push('/games');
 }
 
-const endGameIconStyle = computed(() => {
-  if (!roomStore.winners || roomStore.winners.length > 1) return {};
+const soleWinner = computed(() => {
+  if (!roomStore.winners || roomStore.winners.length > 1) return null;
 
-  const winnerColor = roomStore.winners[0].player.color.value;
+  return roomStore.winners[0] ?? null;
+});
+
+const endGameIconStyle = computed(() => {
+  if (!soleWinner.value) return {};
+
+  const winnerColor = soleWinner.value.player.color.value;
 
   return {
     background: winnerColor,
@@ -131,9 +137,9 @@ const endGameIconStyle = computed(() => {
 });
 
 const endGameYesButtonStyle = computed(() => {
-  if (!roomStore.winners || roomStore.winners.length > 1) return {};
+  if (!soleWinner.value) return {};
 
-  const winnerColor = roomStore.winners[0].player.color.value;
+  const winnerColor = soleWinner.value.player.color.value;
 
   return {
     background: winnerColor,
@@ -142,9 +148,9 @@ const endGameYesButtonStyle = computed(() => {
   }
 });
 const endGameNoButtonStyle = computed(() => {
-  if (!roomStore.winners || roomStore.winners.length > 1) return {};
+  if (!soleWinner.value) return {};
 
-  const winnerColor = roomStore.winners[0].player.color.value;
+  const winnerColor = soleWinner.value.player.color.value;
 
   return {
     color: winnerColor,
@@ -199,9 +205,9 @@ const finishGame = () => {
 const handleGameFinished = () => {
   if (!roomStore.winners) return;
 
-  const endMessage = roomStore.winners.length > 1
-    ? t('game.tie')
-    : t('game.hasWon', {name: roomStore.winners[0].player.name});
+  const endMessage = soleWinner.value
+    ? t('game.hasWon', {name: soleWinner.value.player.name})
+    : t('game.tie');
 
   confirm.require({
     group: 'end',
