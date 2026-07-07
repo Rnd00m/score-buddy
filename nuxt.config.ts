@@ -106,6 +106,7 @@ export default defineNuxtConfig({
         '@tanstack/vue-query',
         '@tanstack/vue-query-devtools',
         '@vue/devtools-api',
+        'luxon',
         'uuid',
       ]
     }

@@ -64,12 +64,13 @@
       <GameInfo :game="roomStore.currentGame" />
     </Dialog>
 
+    <Menu ref="gameMenu" :model="gameMenuItems" popup/>
+
     <h1 class="mb-6 flex justify-between items-center">
       <span class="text-3xl truncate w-full pr-2">{{ roomStore.currentGame.name }}</span>
       <span class="inline-flex gap-2">
-      <Button @click="isGameInfoDialogOpened = !isGameInfoDialogOpened" raised severity="info" icon="pi pi-info" />
-      <Button @click="handleResetGame" raised severity="contrast" icon="pi pi-replay" />
       <Button @click="handleEndGame" raised severity="contrast" icon="pi pi-stop" />
+      <Button @click="toggleGameMenu" raised severity="contrast" icon="pi pi-ellipsis-v" :aria-label="t('common.menu')" />
     </span>
     </h1>
 
@@ -88,6 +89,28 @@ const router = useRouter();
 const user = useSupabaseUser();
 const {syncGame} = useSupabaseSync();
 const isGameInfoDialogOpened = ref(false);
+
+const gameMenu = ref();
+const gameMenuItems = computed(() => [
+  {
+    label: t('game.info'),
+    icon: 'pi pi-info',
+    command: () => {
+      isGameInfoDialogOpened.value = true;
+    }
+  },
+  {
+    label: t('game.reset'),
+    icon: 'pi pi-replay',
+    command: () => {
+      handleResetGame();
+    }
+  }
+]);
+
+const toggleGameMenu = (event: Event) => {
+  gameMenu.value.toggle(event);
+};
 
 const {isEnabled: isDuelModeEnabled} = useDuelMode();
 const isDuelModeActive = computed(() => isDuelModeEnabled.value && roomStore.players.length === 2);

@@ -11,7 +11,8 @@
     "name": "Nom",
     "color": "Couleur",
     "submit": "Valider",
-    "start": "Démarrer"
+    "start": "Démarrer",
+    "menu": "Menu"
   },
   "androidApp": {
     "title": "Téléchargez l'application",
@@ -83,6 +84,7 @@
     "resetOrCancelTitle": "Réinitialiser ou annuler ?",
     "resetOrCancelMessage": "Voulez-vous réinitialiser (tous les points seront remis au score minimum) ou annuler (la partie sera supprimée, aucun gagnant ne sera déclaré) la partie ?",
     "reset": "Réinitialiser",
+    "info": "Info",
     "startNewGame": "Voulez-vous démarrer une nouvelle partie ?",
     "tie": "Égalité !",
     "hasWon": "{name} a gagné !"
