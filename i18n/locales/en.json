@@ -87,7 +87,9 @@
     "info": "Info",
     "startNewGame": "Do you want to start a new one?",
     "tie": "It's a tie!",
-    "hasWon": "{name} has won!"
+    "hasWon": "{name} has won!",
+    "quickRemovePoints": "Quick point removal",
+    "quickAddPoints": "Quick point addition"
   },
   "newGame": {
     "title": "New Game",

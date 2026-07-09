@@ -87,7 +87,9 @@
     "info": "Info",
     "startNewGame": "Voulez-vous démarrer une nouvelle partie ?",
     "tie": "Égalité !",
-    "hasWon": "{name} a gagné !"
+    "hasWon": "{name} a gagné !",
+    "quickRemovePoints": "Retrait rapide de points",
+    "quickAddPoints": "Ajout rapide de points"
   },
   "newGame": {
     "title": "Nouvelle partie",

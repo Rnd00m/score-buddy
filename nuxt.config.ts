@@ -100,9 +100,10 @@ export default defineNuxtConfig({
     optimizeDeps: {
       include: [
         '@capacitor-community/keep-awake',
-        '@capacitor-community/safe-area',
         '@capacitor/app',
         '@capacitor/core',
+        '@capawesome/capacitor-android-edge-to-edge-support',
+        '@shopify/draggable',
         '@tanstack/vue-query',
         '@tanstack/vue-query-devtools',
         '@vue/devtools-api',
