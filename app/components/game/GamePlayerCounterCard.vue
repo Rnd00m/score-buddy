@@ -9,8 +9,8 @@
       <div class="flex justify-between">
         <div
           class="flex flex-col items-center no-drag"
-          @mousedown.capture="updateDirection($event, `${player.uuid}-dec`, 'down')"
-          @touchstart.capture="updateDirection($event, `${player.uuid}-dec`, 'down')"
+          @mousedown.capture="updateDirection($event, `${player.uuid}-dec`, 'down', getQuickDecrementItems(player).length)"
+          @touchstart.capture="updateDirection($event, `${player.uuid}-dec`, 'down', getQuickDecrementItems(player).length)"
         >
           <Button
             icon="pi pi-minus"
@@ -49,15 +49,18 @@
             </template>
             <template #item="{ item }">
               <div class="contents">
-                <button
+                <Button
+                  severity="contrast"
+                  variant="text"
+                  raised
                   type="button"
-                  class="quick-score-action flex items-center justify-center rounded-full text-xs font-bold shadow"
+                  class="flex items-center justify-center text-center leading-none rounded-full text-base font-bold p-3"
                   :style="{
                     backgroundColor: getButtonColor(player.color.value, 'dark'),
                     color: getTextColorContrasted(player.color.value),
                   }"
                   @click.stop="item.command?.({ originalEvent: $event, item })"
-                >{{ item.label }}</button>
+                >{{ item.label }}</Button>
               </div>
             </template>
           </SpeedDial>
@@ -90,8 +93,8 @@
 
         <div
           class="flex flex-col items-center no-drag"
-          @mousedown.capture="updateDirection($event, `${player.uuid}-inc`, 'down')"
-          @touchstart.capture="updateDirection($event, `${player.uuid}-inc`, 'down')"
+          @mousedown.capture="updateDirection($event, `${player.uuid}-inc`, 'down', getQuickIncrementItems(player).length)"
+          @touchstart.capture="updateDirection($event, `${player.uuid}-inc`, 'down', getQuickIncrementItems(player).length)"
         >
           <Button
             icon="pi pi-plus"
@@ -130,12 +133,15 @@
             </template>
             <template #item="{ item }">
               <div class="contents">
-                <button
+                <Button
+                  severity="contrast"
+                  variant="text"
+                  raised
                   type="button"
-                  class="quick-score-action flex items-center justify-center rounded-full text-xs font-bold shadow"
+                  class="flex items-center justify-center text-center leading-none rounded-full text-base font-bold p-3"
                   :style="{ backgroundColor: getButtonColor(player.color.value, 'dark'), color: getTextColorContrasted(player.color.value) }"
                   @click.stop="item.command?.({ originalEvent: $event, item })"
-                >{{ item.label }}</button>
+                >{{ item.label }}</Button>
               </div>
             </template>
           </SpeedDial>
@@ -228,13 +234,6 @@ onBeforeUnmount(() => {
 
 .player-score-card:active {
   cursor: grabbing;
-}
-
-.quick-score-action {
-  min-width: 2.25rem;
-  height: 2.25rem;
-  padding: 0 0.375rem;
-  white-space: nowrap;
 }
 
 :deep(.speed-dial-glued) {
