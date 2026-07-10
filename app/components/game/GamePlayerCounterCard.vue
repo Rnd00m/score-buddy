@@ -7,7 +7,11 @@
       :style="{ backgroundColor: player.color.value }"
     >
       <div class="flex justify-between">
-        <div class="flex flex-col items-center no-drag">
+        <div
+          class="flex flex-col items-center no-drag"
+          @mousedown.capture="updateDirection($event, `${player.uuid}-dec`, 'down-right')"
+          @touchstart.capture="updateDirection($event, `${player.uuid}-dec`, 'down-right')"
+        >
           <Button
             icon="pi pi-minus"
             severity="contrast"
@@ -30,7 +34,7 @@
             button-class="rounded-b-lg rounded-t-none min-w-[68px] h-8"
             :model="getQuickDecrementItems(player)"
             type="quarter-circle"
-            direction="down-right"
+            :direction="getDirection(`${player.uuid}-dec`, 'down-right')"
             :radius="80"
             :rotate-animation="false"
             :aria-label="t('game.quickRemovePoints')"
@@ -82,7 +86,11 @@
           >{{ roomStore.getPlayerScore(player)?.score || 0 }}</p>
         </div>
 
-        <div class="flex flex-col items-center no-drag">
+        <div
+          class="flex flex-col items-center no-drag"
+          @mousedown.capture="updateDirection($event, `${player.uuid}-inc`, 'down-left')"
+          @touchstart.capture="updateDirection($event, `${player.uuid}-inc`, 'down-left')"
+        >
           <Button
             icon="pi pi-plus"
             severity="contrast"
@@ -105,7 +113,7 @@
             button-class="rounded-b-lg rounded-t-none min-w-[68px] h-8"
             :model="getQuickIncrementItems(player)"
             type="quarter-circle"
-            direction="down-left"
+            :direction="getDirection(`${player.uuid}-inc`, 'down-left')"
             :radius="80"
             :rotate-animation="false"
             :aria-label="t('game.quickAddPoints')"
@@ -158,6 +166,7 @@ const {
 } = useScoreCounterActions();
 
 const {vAutoFitFontSize} = useAutoFitFontSize();
+const {updateDirection, getDirection} = useSpeedDialDirection();
 
 const isTouchDevice = ref(false);
 const cardsContainer = ref<HTMLElement | null>(null);
