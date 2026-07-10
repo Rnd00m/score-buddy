@@ -9,8 +9,8 @@
       <div class="flex justify-between">
         <div
           class="flex flex-col items-center no-drag"
-          @mousedown.capture="updateDirection($event, `${player.uuid}-dec`, 'down-right')"
-          @touchstart.capture="updateDirection($event, `${player.uuid}-dec`, 'down-right')"
+          @mousedown.capture="updateDirection($event, `${player.uuid}-dec`, 'down')"
+          @touchstart.capture="updateDirection($event, `${player.uuid}-dec`, 'down')"
         >
           <Button
             icon="pi pi-minus"
@@ -30,12 +30,11 @@
             @touchcancel="handleStopPress"
           />
           <SpeedDial
-            class="relative speed-dial-glued"
+            class="speed-dial-glued"
             button-class="rounded-b-lg rounded-t-none min-w-[68px] h-8"
             :model="getQuickDecrementItems(player)"
-            type="quarter-circle"
-            :direction="getDirection(`${player.uuid}-dec`, 'down-right')"
-            :radius="80"
+            type="linear"
+            :direction="getDirection(`${player.uuid}-dec`, 'down')"
             :rotate-animation="false"
             :aria-label="t('game.quickRemovePoints')"
             :button-props="{
@@ -53,7 +52,10 @@
                 <button
                   type="button"
                   class="quick-score-action flex items-center justify-center rounded-full text-xs font-bold shadow"
-                  :style="{ backgroundColor: getButtonColor(player.color.value, 'dark'), color: getTextColorContrasted(player.color.value) }"
+                  :style="{
+                    backgroundColor: getButtonColor(player.color.value, 'dark'),
+                    color: getTextColorContrasted(player.color.value),
+                  }"
                   @click.stop="item.command?.({ originalEvent: $event, item })"
                 >{{ item.label }}</button>
               </div>
@@ -88,8 +90,8 @@
 
         <div
           class="flex flex-col items-center no-drag"
-          @mousedown.capture="updateDirection($event, `${player.uuid}-inc`, 'down-left')"
-          @touchstart.capture="updateDirection($event, `${player.uuid}-inc`, 'down-left')"
+          @mousedown.capture="updateDirection($event, `${player.uuid}-inc`, 'down')"
+          @touchstart.capture="updateDirection($event, `${player.uuid}-inc`, 'down')"
         >
           <Button
             icon="pi pi-plus"
@@ -109,12 +111,11 @@
             @touchcancel="handleStopPress"
           />
           <SpeedDial
-            class="relative speed-dial-glued"
+            class="speed-dial-glued"
             button-class="rounded-b-lg rounded-t-none min-w-[68px] h-8"
             :model="getQuickIncrementItems(player)"
-            type="quarter-circle"
-            :direction="getDirection(`${player.uuid}-inc`, 'down-left')"
-            :radius="80"
+            type="linear"
+            :direction="getDirection(`${player.uuid}-inc`, 'down')"
             :rotate-animation="false"
             :aria-label="t('game.quickAddPoints')"
             :button-props="{
@@ -237,7 +238,22 @@ onBeforeUnmount(() => {
 }
 
 :deep(.speed-dial-glued) {
+  position: relative;
   gap: 0 !important;
+}
+
+:deep(.speed-dial-glued.p-speeddial-linear .p-speeddial-list) {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+:deep(.speed-dial-glued.p-speeddial-direction-down .p-speeddial-list) {
+  top: 125%;
+}
+
+:deep(.speed-dial-glued.p-speeddial-direction-up .p-speeddial-list) {
+  bottom: 125%;
 }
 
 .quick-score-toggle-icon {
