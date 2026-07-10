@@ -35,31 +35,12 @@
 
       <div class="flex items-center gap-4">
         <div class="flex flex-1 no-drag">
-          <Button
-            icon="pi pi-minus"
-            severity="contrast"
-            variant="text"
-            raised
-            size="large"
-            :style="{
-              backgroundColor: getButtonColor(player.color.value, 'dark'),
-              color: getTextColorContrasted(player.color.value),
-            }"
-            class="rounded-l-lg rounded-r-none flex-1 h-16 touch-none no-drag"
-            @mousedown="!isTouchDevice ? handleStartPress(() => handleDecrementScore(player)) : null"
-            @mouseup="!isTouchDevice ? handleStopPress() : null"
-            @mouseleave="!isTouchDevice ? handleStopPress() : null"
-            @touchstart="handleStartPress(() => handleDecrementScore(player))"
-            @touchend="handleStopPress"
-            @touchcancel="handleStopPress"
-          />
           <SpeedDial
             class="relative speed-dial-glued"
-            button-class="quick-score-toggle rounded-r-lg rounded-l-none"
+            button-class="rounded-l-lg rounded-r-none h-16"
             :model="getQuickDecrementItems(player)"
-            type="quarter-circle"
-            direction="up-right"
-            :radius="80"
+            type="linear"
+            direction="up"
             :rotate-animation="false"
             :aria-label="t('game.quickRemovePoints')"
             :button-props="{
@@ -74,25 +55,63 @@
             </template>
             <template #item="{ item }">
               <div class="contents">
-                <button
+                <Button
+                  severity="contrast"
+                  variant="text"
+                  raised
                   type="button"
-                  class="quick-score-action flex items-center justify-center rounded-full text-xs font-bold shadow"
+                  class="flex items-center justify-center text-center leading-none rounded-full text-base font-bold p-3"
                   :style="{ backgroundColor: getButtonColor(player.color.value, 'dark'), color: getTextColorContrasted(player.color.value) }"
                   @click.stop="item.command?.({ originalEvent: $event, item })"
-                >{{ item.label }}</button>
+                >{{ item.label }}</Button>
               </div>
             </template>
           </SpeedDial>
+          <Button
+            icon="pi pi-minus"
+            severity="contrast"
+            variant="text"
+            raised
+            size="large"
+            :style="{
+              backgroundColor: getButtonColor(player.color.value, 'dark'),
+              color: getTextColorContrasted(player.color.value),
+            }"
+            class="rounded-r-lg rounded-l-none flex-1 h-16 touch-none no-drag"
+            @mousedown="!isTouchDevice ? handleStartPress(() => handleDecrementScore(player)) : null"
+            @mouseup="!isTouchDevice ? handleStopPress() : null"
+            @mouseleave="!isTouchDevice ? handleStopPress() : null"
+            @touchstart="handleStartPress(() => handleDecrementScore(player))"
+            @touchend="handleStopPress"
+            @touchcancel="handleStopPress"
+          />
         </div>
 
         <div class="flex flex-1 no-drag">
+          <Button
+            icon="pi pi-plus"
+            severity="contrast"
+            variant="text"
+            raised
+            size="large"
+            :style="{
+              backgroundColor: getButtonColor(player.color.value, 'dark'),
+              color: getTextColorContrasted(player.color.value),
+            }"
+            class="rounded-l-lg rounded-r-none flex-1 h-16 touch-none no-drag"
+            @mousedown="!isTouchDevice ? handleStartPress(() => handleIncrementScore(player)) : null"
+            @mouseup="!isTouchDevice ? handleStopPress() : null"
+            @mouseleave="!isTouchDevice ? handleStopPress() : null"
+            @touchstart="handleStartPress(() => handleIncrementScore(player))"
+            @touchend="handleStopPress"
+            @touchcancel="handleStopPress"
+          />
           <SpeedDial
             class="relative speed-dial-glued"
-            button-class="quick-score-toggle rounded-l-lg rounded-r-none"
+            button-class="rounded-r-lg rounded-l-none h-16"
             :model="getQuickIncrementItems(player)"
-            type="quarter-circle"
-            direction="up-left"
-            :radius="80"
+            type="linear"
+            direction="up"
             :rotate-animation="false"
             :aria-label="t('game.quickAddPoints')"
             :button-props="{
@@ -107,33 +126,18 @@
             </template>
             <template #item="{ item }">
               <div class="contents">
-                <button
+                <Button
+                  severity="contrast"
+                  variant="text"
+                  raised
                   type="button"
-                  class="quick-score-action flex items-center justify-center rounded-full text-xs font-bold shadow"
+                  class="flex items-center justify-center text-center leading-none rounded-full text-base font-bold p-3"
                   :style="{ backgroundColor: getButtonColor(player.color.value, 'dark'), color: getTextColorContrasted(player.color.value) }"
                   @click.stop="item.command?.({ originalEvent: $event, item })"
-                >{{ item.label }}</button>
+                >{{ item.label }}</Button>
               </div>
             </template>
           </SpeedDial>
-          <Button
-            icon="pi pi-plus"
-            severity="contrast"
-            variant="text"
-            raised
-            size="large"
-            :style="{
-              backgroundColor: getButtonColor(player.color.value, 'dark'),
-              color: getTextColorContrasted(player.color.value),
-            }"
-            class="rounded-r-lg rounded-l-none flex-1 h-16 touch-none no-drag"
-            @mousedown="!isTouchDevice ? handleStartPress(() => handleIncrementScore(player)) : null"
-            @mouseup="!isTouchDevice ? handleStopPress() : null"
-            @mouseleave="!isTouchDevice ? handleStopPress() : null"
-            @touchstart="handleStartPress(() => handleIncrementScore(player))"
-            @touchend="handleStopPress"
-            @touchcancel="handleStopPress"
-          />
         </div>
       </div>
     </div>
@@ -224,20 +228,15 @@ onBeforeUnmount(() => {
   cursor: grabbing;
 }
 
-.quick-score-action {
-  min-width: 2.25rem;
-  height: 2.25rem;
-  padding: 0 0.375rem;
-  white-space: nowrap;
-}
-
-.quick-score-toggle {
-  width: 1.75rem;
-  min-width: 1.75rem;
-}
-
 :deep(.speed-dial-glued) {
   gap: 0 !important;
+}
+
+:deep(.speed-dial-glued.p-speeddial-linear .p-speeddial-list) {
+  position: absolute;
+  left: 50%;
+  bottom: 115%;
+  transform: translateX(-50%);
 }
 
 .quick-score-toggle-icon {
