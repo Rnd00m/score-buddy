@@ -16,6 +16,7 @@ export default defineNuxtConfig({
       htmlAttrs: {
         lang: 'fr',
       },
+      viewport: 'width=device-width, initial-scale=1, viewport-fit=cover',
       title: 'Score Buddy',
       meta: [
         {name: 'description', content: 'Score Buddy facilite le suivi des scores pendant vos parties de jeux de société. Plus besoin de papier et crayon : suivez vos scores en temps réel et gardez un historique de vos parties.'},
