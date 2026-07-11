@@ -47,10 +47,15 @@ pnpm preview
 - A device connected via USB with USB debugging enabled (for `run` only)
 - `android/local.properties` must point to the SDK: `sdk.dir=/mnt/c/Users/<you>/AppData/Local/Android/Sdk`
 
-### Debug build
+### Dev build (debug APK, dev database)
 
-Generates a debug APK, no signing required. Install it directly on any device with "Unknown sources" enabled.
+Generates a debug APK signed with the default debug key (no setup required), using `.env.local` (dev Supabase). Install it directly on any device with "Unknown sources" enabled.
 
+```bash
+pnpm build:android:dev
+```
+
+Equivalent to:
 ```bash
 pnpm generate
 pnpm exec cap sync android
@@ -67,26 +72,63 @@ Accessible from Windows at:
 \\wsl$\Ubuntu\home\jboilevin\dev\score-buddy\android\app\build\outputs\apk\debug\app-debug.apk
 ```
 
-### Release build
+### Dev bundle (signed AAB, dev database, for Play Store internal testing)
 
-Generates an unsigned release APK. Requires a keystore to sign it before publishing to the Play Store.
+Same as the prod build below, but using `.env.local` (dev Supabase). Useful to upload to a Play Store internal/closed testing track without touching production data.
 
 ```bash
-pnpm generate
+pnpm build:android:dev:bundle
+```
+
+AAB output:
+```
+android/app/build/outputs/bundle/release/app-release.aab
+```
+
+Requires the same signing setup as the prod build (see below).
+
+### Prod build (signed AAB, prod database)
+
+Generates a signed Android App Bundle (`.aab`), using `.env.production` (prod Supabase). This is the artifact uploaded to the Play Store.
+
+```bash
+pnpm build:android:prod
+```
+
+Equivalent to:
+```bash
+pnpm generate:prod
 pnpm exec cap sync android
-cd android && ./gradlew assembleRelease
+cd android && ./gradlew bundleRelease
 ```
 
-APK output:
+AAB output:
 ```
-android/app/build/outputs/apk/release/app-release-unsigned.apk
+android/app/build/outputs/bundle/release/app-release.aab
 ```
 
-To sign the APK, use `apksigner` from the Android SDK build-tools:
+#### Signing setup (one-time)
+
+The release build is signed using `android/keystore.properties`, which is gitignored. Generate the keystore once and keep it (and its passwords) safe — losing it means you can no longer publish updates to the same Play Store listing.
 
 ```bash
-apksigner sign --ks my-release-key.jks --out app-release.apk app-release-unsigned.apk
+keytool -genkey -v -keystore android/score-buddy-release.keystore -alias scorebuddy -keyalg RSA -keysize 2048 -validity 10000
 ```
+
+Then copy the template and fill in the real values:
+
+```bash
+cp android/keystore.properties.example android/keystore.properties
+```
+
+```
+storeFile=score-buddy-release.keystore
+storePassword=<your store password>
+keyAlias=scorebuddy
+keyPassword=<your key password>
+```
+
+Without `android/keystore.properties`, `bundleRelease` produces an unsigned AAB.
 
 ### App info
 

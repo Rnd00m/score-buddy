@@ -34,43 +34,111 @@
       </div>
 
       <div class="flex items-center gap-4">
-        <Button
-          icon="pi pi-minus"
-          severity="contrast"
-          variant="text"
-          raised
-          size="large"
-          :style="{
-            backgroundColor: getButtonColor(player.color.value, 'dark'),
-            color: getTextColorContrasted(player.color.value),
-          }"
-          class="rounded-lg flex-1 h-16 touch-none no-drag"
-          @mousedown="!isTouchDevice ? handleStartPress(() => handleDecrementScore(player)) : null"
-          @mouseup="!isTouchDevice ? handleStopPress() : null"
-          @mouseleave="!isTouchDevice ? handleStopPress() : null"
-          @touchstart="handleStartPress(() => handleDecrementScore(player))"
-          @touchend="handleStopPress"
-          @touchcancel="handleStopPress"
-        />
+        <div class="flex flex-1 no-drag">
+          <SpeedDial
+            class="relative speed-dial-glued"
+            button-class="rounded-l-lg rounded-r-none h-16"
+            :model="getQuickDecrementItems(player)"
+            type="linear"
+            direction="up"
+            :rotate-animation="false"
+            :aria-label="t('game.quickRemovePoints')"
+            :button-props="{
+              severity: 'contrast',
+              variant: 'text',
+              raised: true,
+              style: { backgroundColor: getButtonColor(player.color.value, 'dark'), color: getTextColorContrasted(player.color.value) }
+            }"
+          >
+            <template #icon="{ visible }">
+              <i class="pi pi-bolt quick-score-toggle-icon" :class="{ 'quick-score-toggle-icon-open': visible }" />
+            </template>
+            <template #item="{ item }">
+              <div class="contents">
+                <Button
+                  severity="contrast"
+                  variant="text"
+                  raised
+                  type="button"
+                  class="flex items-center justify-center text-center leading-none rounded-full text-base font-bold p-3"
+                  :style="{ backgroundColor: getButtonColor(player.color.value, 'dark'), color: getTextColorContrasted(player.color.value) }"
+                  @click.stop="item.command?.({ originalEvent: $event, item })"
+                >{{ item.label }}</Button>
+              </div>
+            </template>
+          </SpeedDial>
+          <Button
+            icon="pi pi-minus"
+            severity="contrast"
+            variant="text"
+            raised
+            size="large"
+            :style="{
+              backgroundColor: getButtonColor(player.color.value, 'dark'),
+              color: getTextColorContrasted(player.color.value),
+            }"
+            class="rounded-r-lg rounded-l-none flex-1 h-16 touch-none no-drag"
+            @mousedown="!isTouchDevice ? handleStartPress(() => handleDecrementScore(player)) : null"
+            @mouseup="!isTouchDevice ? handleStopPress() : null"
+            @mouseleave="!isTouchDevice ? handleStopPress() : null"
+            @touchstart="handleStartPress(() => handleDecrementScore(player))"
+            @touchend="handleStopPress"
+            @touchcancel="handleStopPress"
+          />
+        </div>
 
-        <Button
-          icon="pi pi-plus"
-          severity="contrast"
-          variant="text"
-          raised
-          size="large"
-          :style="{
-            backgroundColor: getButtonColor(player.color.value, 'dark'),
-            color: getTextColorContrasted(player.color.value),
-          }"
-          class="rounded-lg flex-1 h-16 touch-none no-drag"
-          @mousedown="!isTouchDevice ? handleStartPress(() => handleIncrementScore(player)) : null"
-          @mouseup="!isTouchDevice ? handleStopPress() : null"
-          @mouseleave="!isTouchDevice ? handleStopPress() : null"
-          @touchstart="handleStartPress(() => handleIncrementScore(player))"
-          @touchend="handleStopPress"
-          @touchcancel="handleStopPress"
-        />
+        <div class="flex flex-1 no-drag">
+          <Button
+            icon="pi pi-plus"
+            severity="contrast"
+            variant="text"
+            raised
+            size="large"
+            :style="{
+              backgroundColor: getButtonColor(player.color.value, 'dark'),
+              color: getTextColorContrasted(player.color.value),
+            }"
+            class="rounded-l-lg rounded-r-none flex-1 h-16 touch-none no-drag"
+            @mousedown="!isTouchDevice ? handleStartPress(() => handleIncrementScore(player)) : null"
+            @mouseup="!isTouchDevice ? handleStopPress() : null"
+            @mouseleave="!isTouchDevice ? handleStopPress() : null"
+            @touchstart="handleStartPress(() => handleIncrementScore(player))"
+            @touchend="handleStopPress"
+            @touchcancel="handleStopPress"
+          />
+          <SpeedDial
+            class="relative speed-dial-glued"
+            button-class="rounded-r-lg rounded-l-none h-16"
+            :model="getQuickIncrementItems(player)"
+            type="linear"
+            direction="up"
+            :rotate-animation="false"
+            :aria-label="t('game.quickAddPoints')"
+            :button-props="{
+              severity: 'contrast',
+              variant: 'text',
+              raised: true,
+              style: { backgroundColor: getButtonColor(player.color.value, 'dark'), color: getTextColorContrasted(player.color.value) }
+            }"
+          >
+            <template #icon="{ visible }">
+              <i class="pi pi-bolt quick-score-toggle-icon" :class="{ 'quick-score-toggle-icon-open': visible }" />
+            </template>
+            <template #item="{ item }">
+              <div class="contents">
+                <Button
+                  severity="contrast"
+                  variant="text"
+                  raised
+                  type="button"
+                  class="flex items-center justify-center text-center leading-none rounded-full text-base font-bold p-3"
+                  :style="{ backgroundColor: getButtonColor(player.color.value, 'dark'), color: getTextColorContrasted(player.color.value) }"
+                  @click.stop="item.command?.({ originalEvent: $event, item })"
+                >{{ item.label }}</Button>
+              </div>
+            </template>
+          </SpeedDial>
+        </div>
       </div>
     </div>
   </div>
@@ -79,6 +147,7 @@
 <script lang="ts" setup>
 import type {Sortable} from "@shopify/draggable";
 
+const {t} = useI18n();
 const roomStore = useRoomStore();
 
 const {
@@ -92,6 +161,8 @@ const {
   startEditingScore,
   applyScoreEdit,
   getButtonColor,
+  getQuickDecrementItems,
+  getQuickIncrementItems,
 } = useScoreCounterActions();
 
 const {vAutoFitFontSize} = useAutoFitFontSize();
@@ -155,5 +226,25 @@ onBeforeUnmount(() => {
 
 .player-score-card:active {
   cursor: grabbing;
+}
+
+:deep(.speed-dial-glued) {
+  gap: 0 !important;
+}
+
+:deep(.speed-dial-glued.p-speeddial-linear .p-speeddial-list) {
+  position: absolute;
+  left: 50%;
+  bottom: 115%;
+  transform: translateX(-50%);
+}
+
+.quick-score-toggle-icon {
+  display: inline-block;
+  transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.quick-score-toggle-icon-open {
+  transform: rotate(45deg);
 }
 </style>

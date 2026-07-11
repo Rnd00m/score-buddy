@@ -1,4 +1,7 @@
+import type {MenuItem} from "primevue/menuitem";
 import type {Player} from "~/types/global";
+
+const QUICK_SCORE_VALUES = [5, 10, 20, 50, 100];
 
 export const useScoreCounterActions = () => {
   const roomStore = useRoomStore();
@@ -58,7 +61,7 @@ export const useScoreCounterActions = () => {
   const parseScoreInput = (value: string, currentScore: number): number | null => {
     const trimmed = value.replace(/\s+/g, '');
 
-    const calcMatch = trimmed.match(/^(\d+)?([+-])(\d+)$/);
+    const calcMatch = trimmed.match(/^(-?\d+)?([+-])(\d+)$/);
     if (calcMatch) {
       const [, base, sign, amount] = calcMatch;
       const baseValue = base !== undefined ? parseInt(base, 10) : currentScore;
@@ -90,6 +93,21 @@ export const useScoreCounterActions = () => {
     return adjustColor(color, type);
   };
 
+  const handleQuickScoreChange = (player: Player, delta: number) => {
+    const currentScore = roomStore.getPlayerScore(player)?.score ?? 0;
+    roomStore.setScore(player, currentScore + delta);
+  };
+
+  const getQuickDecrementItems = (player: Player): MenuItem[] => QUICK_SCORE_VALUES.map((value) => ({
+    label: `-${value}`,
+    command: () => handleQuickScoreChange(player, -value),
+  }));
+
+  const getQuickIncrementItems = (player: Player): MenuItem[] => QUICK_SCORE_VALUES.map((value) => ({
+    label: `+${value}`,
+    command: () => handleQuickScoreChange(player, value),
+  }));
+
   return {
     handleIncrementScore,
     handleDecrementScore,
@@ -101,5 +119,7 @@ export const useScoreCounterActions = () => {
     startEditingScore,
     applyScoreEdit,
     getButtonColor,
+    getQuickDecrementItems,
+    getQuickIncrementItems,
   };
 };

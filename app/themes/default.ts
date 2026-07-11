@@ -71,35 +71,22 @@ const MyPreset = definePreset(Aura, {
       950: "{green.950}"
     },
     navigation: {
-      list: {
-        padding: "0.5rem 0",
-        gap: "0"
-      },
       item: {
-        padding: "1rem 1rem",
-        borderRadius: "0",
-        gap: "0"
+        padding: "0.75rem",
       },
-      submenuLabel: {
-        padding: "0.625rem 1rem",
-        fontWeight: "600"
-      },
-      submenuIcon: {
-        size: "0.875rem"
-      }
     },
     colorScheme: {
       light: {
         navigation: {
           item: {
-            focusBackground: "transparent",
+            focusBackground: "{surface.100}",
             activeBackground: "{primary.500}",
             color: "{text.color}",
             focusColor: "{text.color}",
             activeColor: "{surface.900}",
             icon: {
               color: "{primary.500}",
-              focusColor: "transparent",
+              focusColor: "{primary.500}",
               activeColor: "{surface.400}"
             }
           },
@@ -133,14 +120,14 @@ const MyPreset = definePreset(Aura, {
         },
         navigation: {
           item: {
-            focusBackground: "transparent",
+            focusBackground: "{surface.800}",
             activeBackground: "{primary.500}",
             color: "{text.color}",
             focusColor: "{text.color}",
             activeColor: "{surface.900}",
             icon: {
               color: "{primary.500}",
-              focusColor: "transparent",
+              focusColor: "{primary.500}",
               activeColor: "{surface.400}"
             }
           },

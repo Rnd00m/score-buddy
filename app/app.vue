@@ -1,6 +1,6 @@
 <template>
   <div class="flex flex-col h-dvh">
-    <div ref="mainContent" class="p-6 overflow-y-auto flex-1 min-h-0">
+    <div ref="mainContent" class="px-6 pb-6 pt-[calc(env(safe-area-inset-top)+1.5rem)] overflow-y-auto flex-1 min-h-0">
       <div class="max-w-3xl mx-auto h-full">
         <NuxtPage/>
       </div>

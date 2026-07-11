@@ -11,7 +11,8 @@
     "name": "Name",
     "color": "Color",
     "submit": "Submit",
-    "start": "Start"
+    "start": "Start",
+    "menu": "Menu"
   },
   "androidApp": {
     "title": "Get the app",
@@ -46,7 +47,8 @@
     "syncedTitle": "Synced",
     "syncedMessage": "Your data is up to date.",
     "syncErrorTitle": "Sync error",
-    "syncErrorMessage": "Could not sync your data."
+    "syncErrorMessage": "Could not sync your data.",
+    "privacyPolicy": "Privacy Policy"
   },
   "login": {
     "title": "Log in",
@@ -82,9 +84,12 @@
     "resetOrCancelTitle": "Reset or cancel?",
     "resetOrCancelMessage": "Do you want to reset (all points will be set to min score) or cancel (game will be deleted no winner will be declared) the game?",
     "reset": "Reset",
+    "info": "Info",
     "startNewGame": "Do you want to start a new one?",
     "tie": "It's a tie!",
-    "hasWon": "{name} has won!"
+    "hasWon": "{name} has won!",
+    "quickRemovePoints": "Quick point removal",
+    "quickAddPoints": "Quick point addition"
   },
   "newGame": {
     "title": "New Game",
@@ -182,5 +187,44 @@
     "hour": "h",
     "minute": "m",
     "second": "s"
+  },
+  "privacy": {
+    "title": "Privacy Policy",
+    "lastUpdated": "Last updated: {date}",
+    "intro": {
+      "title": "Introduction",
+      "body": "Score Buddy (\"the app\") respects your privacy. This page explains what data we collect, how it is used, and your rights regarding that data."
+    },
+    "dataCollected": {
+      "title": "Data we collect",
+      "intro": "We collect the following data:",
+      "account": "Account data: if you create an account, we collect your email address and password (handled securely by our authentication provider, Supabase) to let you log in.",
+      "gameData": "Game data: game history, scores, and player profile names that you enter while using the app, so they can be synced to your account when you are logged in.",
+      "localData": "Local data: if you do not create an account, your game history and preferences are stored only on your device and are never sent to our servers."
+    },
+    "dataUse": {
+      "title": "How we use your data",
+      "body": "Your data is used solely to provide the app's features: tracking scores, keeping a history of your games, and syncing that history across your devices when you are logged in. We do not use your data for advertising and we do not run analytics or tracking SDKs in the app."
+    },
+    "dataSharing": {
+      "title": "Data sharing",
+      "body": "We do not sell or share your personal data with third parties. Account and game data are stored with Supabase, our backend and authentication provider, which acts solely as our data processor."
+    },
+    "dataRetention": {
+      "title": "Data retention",
+      "body": "Your account and game data are kept for as long as your account exists. You can request deletion of your account and all associated data at any time by contacting us."
+    },
+    "security": {
+      "title": "Security",
+      "body": "We rely on industry-standard security practices provided by Supabase, including encrypted connections, to protect your data."
+    },
+    "rights": {
+      "title": "Your rights",
+      "body": "You may access, correct, or delete your personal data at any time. You can delete game data from within the app, or request full account deletion by contacting us."
+    },
+    "contact": {
+      "title": "Contact us",
+      "body": "If you have any questions about this privacy policy or your data, you can contact us at:"
+    }
   }
 }

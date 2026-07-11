@@ -11,7 +11,8 @@
     "name": "Nom",
     "color": "Couleur",
     "submit": "Valider",
-    "start": "Démarrer"
+    "start": "Démarrer",
+    "menu": "Menu"
   },
   "androidApp": {
     "title": "Téléchargez l'application",
@@ -46,7 +47,8 @@
     "syncedTitle": "Synchronisé",
     "syncedMessage": "Vos données sont à jour.",
     "syncErrorTitle": "Erreur de synchronisation",
-    "syncErrorMessage": "Impossible de synchroniser vos données."
+    "syncErrorMessage": "Impossible de synchroniser vos données.",
+    "privacyPolicy": "Politique de confidentialité"
   },
   "login": {
     "title": "Connexion",
@@ -82,9 +84,12 @@
     "resetOrCancelTitle": "Réinitialiser ou annuler ?",
     "resetOrCancelMessage": "Voulez-vous réinitialiser (tous les points seront remis au score minimum) ou annuler (la partie sera supprimée, aucun gagnant ne sera déclaré) la partie ?",
     "reset": "Réinitialiser",
+    "info": "Info",
     "startNewGame": "Voulez-vous démarrer une nouvelle partie ?",
     "tie": "Égalité !",
-    "hasWon": "{name} a gagné !"
+    "hasWon": "{name} a gagné !",
+    "quickRemovePoints": "Retrait rapide de points",
+    "quickAddPoints": "Ajout rapide de points"
   },
   "newGame": {
     "title": "Nouvelle partie",
@@ -182,5 +187,44 @@
     "hour": "h",
     "minute": "m",
     "second": "s"
+  },
+  "privacy": {
+    "title": "Politique de confidentialité",
+    "lastUpdated": "Dernière mise à jour : {date}",
+    "intro": {
+      "title": "Introduction",
+      "body": "Score Buddy (« l'application ») respecte votre vie privée. Cette page explique quelles données nous collectons, comment elles sont utilisées et quels sont vos droits à leur sujet."
+    },
+    "dataCollected": {
+      "title": "Données collectées",
+      "intro": "Nous collectons les données suivantes :",
+      "account": "Données de compte : si vous créez un compte, nous collectons votre adresse e-mail et votre mot de passe (gérés de manière sécurisée par notre prestataire d'authentification, Supabase) afin de vous permettre de vous connecter.",
+      "gameData": "Données de jeu : historique des parties, scores et noms de profils de joueurs que vous saisissez en utilisant l'application, afin qu'ils puissent être synchronisés avec votre compte lorsque vous êtes connecté.",
+      "localData": "Données locales : si vous ne créez pas de compte, votre historique de parties et vos préférences sont stockés uniquement sur votre appareil et ne sont jamais envoyés à nos serveurs."
+    },
+    "dataUse": {
+      "title": "Utilisation de vos données",
+      "body": "Vos données sont utilisées uniquement pour fournir les fonctionnalités de l'application : suivi des scores, conservation d'un historique de vos parties, et synchronisation de cet historique entre vos appareils lorsque vous êtes connecté. Nous n'utilisons pas vos données à des fins publicitaires et n'intégrons aucun SDK d'analyse ou de suivi dans l'application."
+    },
+    "dataSharing": {
+      "title": "Partage des données",
+      "body": "Nous ne vendons ni ne partageons vos données personnelles avec des tiers. Les données de compte et de jeu sont stockées chez Supabase, notre prestataire de backend et d'authentification, qui agit uniquement en tant que sous-traitant de données."
+    },
+    "dataRetention": {
+      "title": "Conservation des données",
+      "body": "Vos données de compte et de jeu sont conservées tant que votre compte existe. Vous pouvez demander la suppression de votre compte et de toutes les données associées à tout moment en nous contactant."
+    },
+    "security": {
+      "title": "Sécurité",
+      "body": "Nous nous appuyons sur les pratiques de sécurité standard fournies par Supabase, y compris des connexions chiffrées, pour protéger vos données."
+    },
+    "rights": {
+      "title": "Vos droits",
+      "body": "Vous pouvez accéder à vos données personnelles, les corriger ou les supprimer à tout moment. Vous pouvez supprimer vos données de jeu depuis l'application, ou demander la suppression complète de votre compte en nous contactant."
+    },
+    "contact": {
+      "title": "Nous contacter",
+      "body": "Pour toute question concernant cette politique de confidentialité ou vos données, vous pouvez nous contacter à :"
+    }
   }
 }

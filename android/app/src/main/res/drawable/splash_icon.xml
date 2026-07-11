@@ -1,0 +1,20 @@
+<animated-vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:drawable="@drawable/splash_icon_mark">
+
+    <target
+        android:name="line1"
+        android:animation="@animator/splash_trim_line1" />
+    <target
+        android:name="line2"
+        android:animation="@animator/splash_trim_line2" />
+    <target
+        android:name="line3"
+        android:animation="@animator/splash_trim_line3" />
+    <target
+        android:name="line4"
+        android:animation="@animator/splash_trim_line4" />
+    <target
+        android:name="line5"
+        android:animation="@animator/splash_trim_line5" />
+
+</animated-vector>

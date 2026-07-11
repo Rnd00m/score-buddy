@@ -69,6 +69,8 @@
         <ToggleSwitch v-model="isDuelModeEnabled" inputId="duel-mode-switch"/>
       </div>
     </div>
+
+    <NuxtLink to="/privacy" class="mt-8 block underline text-sm text-surface-500">{{ t('account.privacyPolicy') }}</NuxtLink>
   </div>
 </template>
 
