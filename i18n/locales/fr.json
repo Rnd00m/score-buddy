@@ -41,6 +41,7 @@
     "duelMode": "Mode duel",
     "duelModeTooltip": "Pour les parties à 2 joueurs, affiche les scores face à face. Il est recommandé d'activer « Garder l'écran allumé » avec ce mode.",
     "duelModeTooltipNoWakeLock": "Pour les parties à 2 joueurs, affiche les scores face à face.",
+    "quickScoreValues": "Valeurs du score rapide",
     "language": "Langue",
     "logoutConfirmTitle": "Se déconnecter ?",
     "logoutConfirmMessage": "Vous devrez vous reconnecter pour accéder à vos parties et joueurs sauvegardés.",

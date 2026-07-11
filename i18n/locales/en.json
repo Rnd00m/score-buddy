@@ -41,6 +41,7 @@
     "duelMode": "Duel mode",
     "duelModeTooltip": "For 2-player games, displays the score cards face to face. It's recommend to enabling Keep screen on when using this mode.",
     "duelModeTooltipNoWakeLock": "For 2-player games, displays the score cards face to face.",
+    "quickScoreValues": "Quick score values",
     "language": "Language",
     "logoutConfirmTitle": "Log out?",
     "logoutConfirmMessage": "You will need to log in again to access your saved games and players.",

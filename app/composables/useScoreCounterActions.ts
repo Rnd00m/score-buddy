@@ -1,10 +1,9 @@
 import type {MenuItem} from "primevue/menuitem";
 import type {Player} from "~/types/global";
 
-const QUICK_SCORE_VALUES = [5, 10, 20, 50, 100];
-
 export const useScoreCounterActions = () => {
   const roomStore = useRoomStore();
+  const {values: quickScoreValues} = useQuickScoreValues();
 
   const interval = ref<ReturnType<typeof setInterval> | null>(null);
   const timeout = ref<ReturnType<typeof setTimeout> | null>(null);
@@ -98,12 +97,12 @@ export const useScoreCounterActions = () => {
     roomStore.setScore(player, currentScore + delta);
   };
 
-  const getQuickDecrementItems = (player: Player): MenuItem[] => QUICK_SCORE_VALUES.map((value) => ({
+  const getQuickDecrementItems = (player: Player): MenuItem[] => quickScoreValues.value.map((value) => ({
     label: `-${value}`,
     command: () => handleQuickScoreChange(player, -value),
   }));
 
-  const getQuickIncrementItems = (player: Player): MenuItem[] => QUICK_SCORE_VALUES.map((value) => ({
+  const getQuickIncrementItems = (player: Player): MenuItem[] => quickScoreValues.value.map((value) => ({
     label: `+${value}`,
     command: () => handleQuickScoreChange(player, value),
   }));
