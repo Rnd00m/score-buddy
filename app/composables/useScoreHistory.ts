@@ -1,4 +1,4 @@
-const DEBOUNCE_MS = 600;
+const DEBOUNCE_MS = 1500;
 
 interface ScoreHistoryEntry {
   playerUuid: string;
@@ -25,8 +25,11 @@ const commitPending = () => {
 };
 
 export const useScoreHistory = () => {
-  // Consecutive changes on the same player within DEBOUNCE_MS collapse into
-  // a single undo entry (rapid clicks, held +/- repeat, etc).
+  // A change on the same player as the current pending entry resets the
+  // DEBOUNCE_MS window (still the same action). A change on a different
+  // player immediately commits the pending entry (a different action). If
+  // the window elapses with no further change, the entry commits, and any
+  // later change on that same player starts a brand new entry.
   const record = (playerUuid: string, before: number, after: number) => {
     if (pendingEntry && pendingEntry.playerUuid === playerUuid) {
       pendingEntry.after = after;
