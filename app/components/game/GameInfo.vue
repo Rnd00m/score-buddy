@@ -19,6 +19,13 @@
     <span>
       <Tag severity="contrast" :value="t(`winCondition.${game.winCondition}`)" />
     </span>
+
+    <template v-if="(game.winningRounds ?? 1) > 1">
+      <label class="text-left">{{ t('gameInfo.winningRounds') }}</label>
+      <span>
+        <Tag severity="contrast" :value="game.winningRounds" />
+      </span>
+    </template>
   </div>
 </template>
 

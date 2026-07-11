@@ -67,6 +67,22 @@
       </div>
 
       <div class="flex flex-col gap-1">
+        <label for="winningRounds">{{ t('newGame.winningRounds') }}</label>
+        <InputNumber id="winningRounds" name="winningRounds" :min="1" showButtons buttonLayout="horizontal" :step="1" fluid>
+          <template #incrementbuttonicon>
+            <span class="pi pi-plus" />
+          </template>
+          <template #decrementbuttonicon>
+            <span class="pi pi-minus" />
+          </template>
+        </InputNumber>
+        <Message v-if="$form.winningRounds?.invalid" severity="error" size="small" variant="simple">{{
+            $form.winningRounds.error?.message
+          }}
+        </Message>
+      </div>
+
+      <div class="flex flex-col gap-1">
         <label for="winCondition">{{ t('newGame.winner') }}</label>
         <SelectButton id="winCondition" name="winCondition" :options="winConditions" :optionLabel="winConditionLabel" />
         <Message v-if="$form.winCondition?.invalid" severity="error" size="small" variant="simple">{{
@@ -130,6 +146,7 @@ const player = ref({
   name: '',
   startScore: 0,
   endingScore: null,
+  winningRounds: 1,
   winCondition: WinCondition.MostPoints,
   lowestPossibleScore: null
 });
@@ -174,6 +191,14 @@ const resolver = ({values}: FormResolverOptions) => {
     errors.endingScore = [{message: t('newGame.endingScoreDifferent')}];
   }
 
+  if (values.winningRounds === null) {
+    errors.winningRounds = [{message: t('newGame.winningRoundsRequired')}];
+  }
+
+  if (values.winningRounds !== null && values.winningRounds < 1) {
+    errors.winningRounds = [{message: t('newGame.winningRoundsMin')}];
+  }
+
   return {
     errors
   };
@@ -186,7 +211,8 @@ const onFormSubmit = ({valid, states}: FormSubmitEvent) => {
         states.startScore?.value,
         states.endingScore?.value,
         states.winCondition?.value,
-        states.lowestPossibleScore?.value
+        states.lowestPossibleScore?.value,
+        states.winningRounds?.value
     );
     router.push('/game');
   }

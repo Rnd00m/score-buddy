@@ -68,6 +68,21 @@
         </span>
         <ToggleSwitch v-model="isDuelModeEnabled" inputId="duel-mode-switch"/>
       </div>
+
+      <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+        <label>{{ t('account.quickScoreValues') }}</label>
+        <div class="flex flex-wrap gap-2">
+          <InputNumber
+            v-for="(value, index) in quickScoreValues"
+            :key="index"
+            :model-value="value"
+            :min="1"
+            :use-grouping="false"
+            input-class="w-16 text-center"
+            @update:model-value="(newValue) => handleQuickScoreValueChange(index, newValue)"
+          />
+        </div>
+      </div>
     </div>
 
     <NuxtLink to="/privacy" class="mt-8 block underline text-sm text-surface-500">{{ t('account.privacyPolicy') }}</NuxtLink>
@@ -111,6 +126,15 @@ const isDuelModeEnabled = computed({
   get: () => isDuelModeEnabledState.value,
   set: (value: boolean) => setDuelModeEnabled(value),
 });
+
+const {values: quickScoreValues, setValues: setQuickScoreValues} = useQuickScoreValues();
+const handleQuickScoreValueChange = (index: number, newValue: number | null) => {
+  if (newValue === null || newValue <= 0) return;
+
+  const updated = [...quickScoreValues.value];
+  updated[index] = Math.trunc(newValue);
+  setQuickScoreValues(updated);
+};
 
 const handleSync = async () => {
   try {

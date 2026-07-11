@@ -12,7 +12,10 @@
     "color": "Couleur",
     "submit": "Valider",
     "start": "Démarrer",
-    "menu": "Menu"
+    "menu": "Menu",
+    "continue": "Continuer",
+    "undo": "Annuler",
+    "redo": "Rétablir"
   },
   "androidApp": {
     "title": "Téléchargez l'application",
@@ -41,6 +44,7 @@
     "duelMode": "Mode duel",
     "duelModeTooltip": "Pour les parties à 2 joueurs, affiche les scores face à face. Il est recommandé d'activer « Garder l'écran allumé » avec ce mode.",
     "duelModeTooltipNoWakeLock": "Pour les parties à 2 joueurs, affiche les scores face à face.",
+    "quickScoreValues": "Valeurs du score rapide",
     "language": "Langue",
     "logoutConfirmTitle": "Se déconnecter ?",
     "logoutConfirmMessage": "Vous devrez vous reconnecter pour accéder à vos parties et joueurs sauvegardés.",
@@ -81,6 +85,7 @@
   "game": {
     "confirmTitle": "Êtes-vous sûr ?",
     "endGameMessage": "Vous êtes sur le point de terminer la partie.",
+    "endRoundMessage": "Vous êtes sur le point de terminer la manche en cours.",
     "resetOrCancelTitle": "Réinitialiser ou annuler ?",
     "resetOrCancelMessage": "Voulez-vous réinitialiser (tous les points seront remis au score minimum) ou annuler (la partie sera supprimée, aucun gagnant ne sera déclaré) la partie ?",
     "reset": "Réinitialiser",
@@ -88,6 +93,9 @@
     "startNewGame": "Voulez-vous démarrer une nouvelle partie ?",
     "tie": "Égalité !",
     "hasWon": "{name} a gagné !",
+    "roundTie": "Cette manche est une égalité !",
+    "roundHasWon": "{name} remporte la manche !",
+    "roundWinsTallyMessage": "Score actuel : {tally}",
     "quickRemovePoints": "Retrait rapide de points",
     "quickAddPoints": "Ajout rapide de points"
   },
@@ -95,6 +103,7 @@
     "title": "Nouvelle partie",
     "startScore": "Score de départ",
     "endingScore": "Score de fin",
+    "winningRounds": "Manches gagnantes",
     "winner": "Gagnant",
     "lowestPossibleScore": "Score minimum possible",
     "nameRequired": "Le nom est requis.",
@@ -105,6 +114,8 @@
     "startScoreMin": "Le score de départ doit être d'au moins {min}.",
     "endingScoreMin": "Le score de fin doit être d'au moins {min}.",
     "endingScoreDifferent": "Le score de fin doit être différent du score de départ.",
+    "winningRoundsRequired": "Le nombre de manches gagnantes est requis.",
+    "winningRoundsMin": "Le nombre de manches gagnantes doit être d'au moins 1.",
     "noGameNameResults": "Aucun résultat trouvé."
   },
   "home": {
@@ -159,13 +170,15 @@
     "rank": "Rang",
     "player": "Joueur",
     "score": "Score",
-    "replay": "Rejouer"
+    "replay": "Rejouer",
+    "round": "Manche {number}"
   },
   "gameInfo": {
     "startScore": "Score de départ",
     "endingScore": "Score de fin",
     "lowestPossibleScore": "Score minimum possible",
-    "winCondition": "Condition de victoire"
+    "winCondition": "Condition de victoire",
+    "winningRounds": "Manches gagnantes"
   },
   "gameTypesTable": {
     "game": "Partie",

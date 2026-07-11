@@ -1,9 +1,17 @@
-import type {Player, Color, Game, GameScore} from "~/types/global";
+import type {Player, Color, Game, GameScore, GameRound} from "~/types/global";
 import { v4 as uuidv4 } from 'uuid';
 import { WinCondition } from "~/types/global";
 
 export const MAX_SCORE = 9_999_999_999;
 export const MIN_SCORE = -MAX_SCORE;
+
+// A shallow copy is enough: resetGame() always replaces currentGame.scores
+// with brand-new GameScore objects rather than mutating existing ones, so a
+// past round's snapshot is never retroactively altered by later rounds.
+const buildRoundSnapshot = (game: Game): GameRound => ({
+  scores: [...game.scores],
+  endedAt: new Date(),
+});
 
 export const useRoomStore = defineStore('room', {
 state: () => (
@@ -51,7 +59,8 @@ actions: {
     startScore: number,
     endingScore: number | null,
     winCondition: WinCondition,
-    lowestPossibleScore: number | null
+    lowestPossibleScore: number | null,
+    winningRounds: number = 1
   ) {
     this.currentGame = {
       uuid: uuidv4(),
@@ -60,6 +69,7 @@ actions: {
       endingScore,
       winCondition,
       lowestPossibleScore,
+      winningRounds,
       scores: this.players.map((player: Player) => {
         return {
           player: player,
@@ -67,17 +77,25 @@ actions: {
           rank: 1
         }
       }),
+      rounds: [],
       createdAt: new Date(),
       endedAt: null
     };
   },
   endGame() {
     if (this.currentGame) {
+      (this.currentGame.rounds ??= []).push(buildRoundSnapshot(this.currentGame));
       this.currentGame.endedAt = new Date();
       this.calculatePlayersEndScore(this.currentGame);
       this.games.push(this.currentGame);
 
       this.currentGame = null;
+    }
+  },
+  endRound() {
+    if (this.currentGame) {
+      (this.currentGame.rounds ??= []).push(buildRoundSnapshot(this.currentGame));
+      this.resetGame();
     }
   },
   resetGame() {
@@ -220,6 +238,29 @@ getters: {
     if (state.currentGame.endingScore === null) return false;
 
     return state.currentGame.scores.some(playerScore => playerScore.score === state.currentGame?.endingScore);
+  },
+  currentRoundWinsTally: (state): Record<string, number> => {
+    const tally: Record<string, number> = {};
+    if (state.currentGame === null) return tally;
+
+    const creditRound = (scores: GameScore[]) => {
+      scores.filter(playerScore => playerScore.rank === 1).forEach(playerScore => {
+        tally[playerScore.player.uuid] = (tally[playerScore.player.uuid] ?? 0) + 1;
+      });
+    };
+
+    (state.currentGame.rounds ?? []).forEach(round => creditRound(round.scores));
+    creditRound(state.currentGame.scores);
+
+    return tally;
+  },
+  isCurrentRoundDecisive(): boolean {
+    if (this.currentGame === null) return false;
+
+    const winningRounds = this.currentGame.winningRounds ?? 1;
+    if (winningRounds <= 1) return true;
+
+    return Object.values(this.currentRoundWinsTally).some(count => count >= winningRounds);
   }
 }
 })

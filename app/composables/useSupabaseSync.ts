@@ -1,4 +1,4 @@
-import type { Game, GameScore, PlayerProfile } from "~/types/global";
+import type { Game, GameRound, GameScore, PlayerProfile } from "~/types/global";
 import { WinCondition } from "~/types/global";
 
 export const useSupabaseSync = () => {
@@ -21,7 +21,9 @@ export const useSupabaseSync = () => {
       ending_score: game.endingScore ?? null,
       lowest_possible_score: game.lowestPossibleScore ?? null,
       win_condition: game.winCondition ?? WinCondition.MostPoints,
+      winning_rounds: game.winningRounds ?? 1,
       scores: game.scores,
+      rounds: game.rounds ?? [],
       created_at: game.createdAt,
       ended_at: game.endedAt,
     }, { onConflict: 'owner_id,local_uuid' });
@@ -76,7 +78,9 @@ export const useSupabaseSync = () => {
           endingScore: row.ending_score,
           lowestPossibleScore: row.lowest_possible_score,
           winCondition: row.win_condition as WinCondition,
+          winningRounds: row.winning_rounds ?? 1,
           scores: row.scores as GameScore[],
+          rounds: (row.rounds ?? []) as GameRound[],
           createdAt: new Date(row.created_at),
           endedAt: row.ended_at ? new Date(row.ended_at) : null,
         });

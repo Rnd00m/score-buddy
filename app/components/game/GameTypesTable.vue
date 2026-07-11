@@ -78,7 +78,8 @@ const gameTypes = computed(() => {
           g.startScore === game.startScore &&
           g.endingScore === game.endingScore &&
           g.lowestPossibleScore === game.lowestPossibleScore &&
-          g.winCondition === game.winCondition
+          g.winCondition === game.winCondition &&
+          (g.winningRounds ?? 1) === (game.winningRounds ?? 1)
       )
   );
 })
@@ -94,7 +95,8 @@ const handleGameSelected = (event: {data: Game}) => {
           event.data.startScore,
           event.data.endingScore,
           event.data.winCondition,
-          event.data.lowestPossibleScore
+          event.data.lowestPossibleScore,
+          event.data.winningRounds ?? 1
       );
       router.push('/game');
     },

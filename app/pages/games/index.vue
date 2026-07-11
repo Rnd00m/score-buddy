@@ -161,7 +161,8 @@ const handleReplayGame = () => {
       lastCompletedGame.startScore,
       lastCompletedGame.endingScore,
       lastCompletedGame.winCondition,
-      lastCompletedGame.lowestPossibleScore
+      lastCompletedGame.lowestPossibleScore,
+      lastCompletedGame.winningRounds ?? 1
   );
 
   router.push('/game');

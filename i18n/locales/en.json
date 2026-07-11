@@ -12,7 +12,10 @@
     "color": "Color",
     "submit": "Submit",
     "start": "Start",
-    "menu": "Menu"
+    "menu": "Menu",
+    "continue": "Continue",
+    "undo": "Undo",
+    "redo": "Redo"
   },
   "androidApp": {
     "title": "Get the app",
@@ -41,6 +44,7 @@
     "duelMode": "Duel mode",
     "duelModeTooltip": "For 2-player games, displays the score cards face to face. It's recommend to enabling Keep screen on when using this mode.",
     "duelModeTooltipNoWakeLock": "For 2-player games, displays the score cards face to face.",
+    "quickScoreValues": "Quick score values",
     "language": "Language",
     "logoutConfirmTitle": "Log out?",
     "logoutConfirmMessage": "You will need to log in again to access your saved games and players.",
@@ -81,6 +85,7 @@
   "game": {
     "confirmTitle": "Are you sure?",
     "endGameMessage": "You're about to end the game.",
+    "endRoundMessage": "You're about to end the current round.",
     "resetOrCancelTitle": "Reset or cancel?",
     "resetOrCancelMessage": "Do you want to reset (all points will be set to min score) or cancel (game will be deleted no winner will be declared) the game?",
     "reset": "Reset",
@@ -88,6 +93,9 @@
     "startNewGame": "Do you want to start a new one?",
     "tie": "It's a tie!",
     "hasWon": "{name} has won!",
+    "roundTie": "This round is a tie!",
+    "roundHasWon": "{name} wins the round!",
+    "roundWinsTallyMessage": "Score so far: {tally}",
     "quickRemovePoints": "Quick point removal",
     "quickAddPoints": "Quick point addition"
   },
@@ -95,6 +103,7 @@
     "title": "New Game",
     "startScore": "Start score",
     "endingScore": "Ending score",
+    "winningRounds": "Winning rounds",
     "winner": "Winner",
     "lowestPossibleScore": "Lowest possible score",
     "nameRequired": "Name is required.",
@@ -105,6 +114,8 @@
     "startScoreMin": "Start score must be at least {min}.",
     "endingScoreMin": "Ending score must be at least {min}.",
     "endingScoreDifferent": "Ending score should be different than start score.",
+    "winningRoundsRequired": "Winning rounds is required.",
+    "winningRoundsMin": "Winning rounds must be at least 1.",
     "noGameNameResults": "No results found."
   },
   "home": {
@@ -159,13 +170,15 @@
     "rank": "Rank",
     "player": "Player",
     "score": "Score",
-    "replay": "Replay"
+    "replay": "Replay",
+    "round": "Round {number}"
   },
   "gameInfo": {
     "startScore": "Start score",
     "endingScore": "Ending score",
     "lowestPossibleScore": "Lowest possible score",
-    "winCondition": "Win condition"
+    "winCondition": "Win condition",
+    "winningRounds": "Winning rounds"
   },
   "gameTypesTable": {
     "game": "Game",

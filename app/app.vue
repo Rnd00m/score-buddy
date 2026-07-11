@@ -63,6 +63,7 @@ const items = computed(() => {
 const { init: initColorScheme } = useColorScheme();
 const { init: initWakeLock } = useScreenWakeLock();
 const { init: initDuelMode } = useDuelMode();
+const { init: initQuickScoreValues } = useQuickScoreValues();
 const { isAndroidWebBrowser, openPlayStore } = useAndroidAppPrompt();
 const confirm = useConfirm();
 
@@ -70,6 +71,7 @@ onMounted(() => {
   initColorScheme();
   initWakeLock();
   initDuelMode();
+  initQuickScoreValues();
 
   if (isAndroidWebBrowser()) {
     confirm.require({
