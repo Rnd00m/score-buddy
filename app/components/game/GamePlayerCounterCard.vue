@@ -221,6 +221,10 @@ onBeforeUnmount(() => {
   transition: opacity 0.15s ease, box-shadow 0.15s ease, outline 0.15s ease;
 }
 
+.player-score-card:last-child {
+  margin-bottom: 1rem;
+}
+
 .player-score-card.draggable-source--is-dragging {
   opacity: 0.35;
 }
@@ -243,6 +247,30 @@ onBeforeUnmount(() => {
 :deep(.speed-dial-glued) {
   position: relative;
   gap: 0 !important;
+}
+
+/* PrimeVue keeps the popup list in the DOM even when closed (items are just
+   scaled to 0), which otherwise inflates the nearest scrollable ancestor's
+   overflow with an invisible, full-sized, absolutely-positioned block.
+   Collapsing it via max-height/width (instead of display:none) keeps it
+   rendered so the item open/close transitions still have a state to
+   animate from/to. The collapse itself is delayed on close (so the item
+   fade-out is visible before it's clipped) but instant on open. */
+:deep(.speed-dial-glued .p-speeddial-list) {
+  transition: max-width 0s linear 0.3s, max-height 0s linear 0.3s;
+}
+
+:deep(.speed-dial-glued:not(.p-speeddial-open) .p-speeddial-list) {
+  max-width: 0;
+  max-height: 0;
+  overflow: hidden;
+}
+
+:deep(.speed-dial-glued.p-speeddial-open .p-speeddial-list) {
+  max-width: 100vw;
+  max-height: 100vh;
+  overflow: visible;
+  transition-delay: 0s;
 }
 
 :deep(.speed-dial-glued.p-speeddial-linear .p-speeddial-list) {
