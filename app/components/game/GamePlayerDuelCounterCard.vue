@@ -36,8 +36,8 @@
       <div class="flex items-center gap-4">
         <div class="flex flex-1 no-drag">
           <SpeedDial
-            class="relative speed-dial-glued"
-            button-class="rounded-l-lg rounded-r-none h-16"
+            class="relative speed-dial-glued flex-none w-1/4"
+            button-class="rounded-l-lg rounded-r-none h-16 w-full"
             :model="getQuickDecrementItems(player)"
             type="linear"
             direction="up"
@@ -107,8 +107,8 @@
             @touchcancel="handleStopPress"
           />
           <SpeedDial
-            class="relative speed-dial-glued"
-            button-class="rounded-r-lg rounded-l-none h-16"
+            class="relative speed-dial-glued flex-none w-1/4"
+            button-class="rounded-r-lg rounded-l-none h-16 w-full"
             :model="getQuickIncrementItems(player)"
             type="linear"
             direction="up"
