@@ -57,6 +57,9 @@ body {
   align-items: center;
   justify-content: center;
   background: var(--bottom-nav-background);
+  // extend the nav's own background into the gesture-nav safe area instead
+  // of relying solely on the native navigation bar color to match
+  padding-bottom: env(safe-area-inset-bottom);
 }
 
 .bottom-nav-link {

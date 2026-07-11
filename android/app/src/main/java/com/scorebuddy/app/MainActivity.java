@@ -8,6 +8,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.view.View;
 import androidx.core.splashscreen.SplashScreen;
+import androidx.core.view.WindowCompat;
 import com.getcapacitor.BridgeActivity;
 
 public class MainActivity extends BridgeActivity {
@@ -20,6 +21,15 @@ public class MainActivity extends BridgeActivity {
     public void onCreate(Bundle savedInstanceState) {
         SplashScreen splashScreen = SplashScreen.installSplashScreen(this);
         super.onCreate(savedInstanceState);
+
+        // Android only forces edge-to-edge automatically on API 35+ (targetSdk).
+        // On older versions (e.g. Android 14) the window never actually goes
+        // edge-to-edge on its own, so the WindowInsetsCompat system-bar insets
+        // the capacitor-android-edge-to-edge-support plugin relies on stay at
+        // 0, and its status/navigation bar color overlays collapse to zero
+        // height. Forcing it here makes the plugin's color calls take effect
+        // consistently across OS versions.
+        WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
 
         // Dismiss the splash once the icon animation finishes, no sooner and no
         // later: the exit listener can fire before the animation is done, so we
