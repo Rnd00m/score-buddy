@@ -177,6 +177,10 @@ onMounted(async () => {
   if (cardsContainer.value) {
     const {Sortable} = await import("@shopify/draggable");
 
+    // cardsContainer may have been unmounted while the dynamic import was
+    // still loading (e.g. duel mode toggling right after mount)
+    if (!cardsContainer.value) return;
+
     sortable = new Sortable(cardsContainer.value, {
       draggable: '.player-score-card',
       delay: { mouse: 0, drag: 0, touch: 100 },
