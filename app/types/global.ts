@@ -15,7 +15,9 @@ export interface Game {
   endingScore: number | null;
   lowestPossibleScore: number | null;
   winCondition: WinCondition;
+  winningRounds: number;
   scores: GameScore[];
+  rounds: GameRound[];
   createdAt: Date;
   endedAt: Date | null;
 }
@@ -24,6 +26,11 @@ export interface GameScore {
   player: Player;
   score: number;
   rank: number;
+}
+
+export interface GameRound {
+  scores: GameScore[];
+  endedAt: Date;
 }
 
 export interface Player {

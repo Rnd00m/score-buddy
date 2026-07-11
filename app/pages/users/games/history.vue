@@ -66,7 +66,9 @@ const games = computed(() => (data.value ?? []).map((row): Game & { createdAtTim
   endingScore: row.ending_score,
   lowestPossibleScore: row.lowest_possible_score,
   winCondition: row.win_condition as WinCondition,
+  winningRounds: row.winning_rounds ?? 1,
   scores: row.scores,
+  rounds: row.rounds ?? [],
   createdAt: new Date(row.created_at),
   endedAt: row.ended_at ? new Date(row.ended_at) : null,
   createdAtTime: new Date(row.created_at).getTime(),
@@ -94,7 +96,8 @@ const handleReplayGame = (game: Game) => {
         game.startScore,
         game.endingScore,
         game.winCondition,
-        game.lowestPossibleScore
+        game.lowestPossibleScore,
+        game.winningRounds ?? 1
       );
 
       router.push('/game');

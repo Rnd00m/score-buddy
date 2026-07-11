@@ -25,9 +25,11 @@ export type Database = {
           lowest_possible_score: number | null
           name: string
           owner_id: string
+          rounds: Json
           scores: Json
           start_score: number
           win_condition: string
+          winning_rounds: number
         }
         Insert: {
           created_at: string
@@ -39,9 +41,11 @@ export type Database = {
           lowest_possible_score?: number | null
           name: string
           owner_id: string
+          rounds?: Json
           scores: Json
           start_score: number
           win_condition: string
+          winning_rounds?: number
         }
         Update: {
           created_at?: string
@@ -53,9 +57,11 @@ export type Database = {
           lowest_possible_score?: number | null
           name?: string
           owner_id?: string
+          rounds?: Json
           scores?: Json
           start_score?: number
           win_condition?: string
+          winning_rounds?: number
         }
         Relationships: []
       }

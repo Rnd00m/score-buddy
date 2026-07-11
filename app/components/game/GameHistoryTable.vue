@@ -37,17 +37,13 @@
     </Column>
 
     <template #expansion="slotProps">
-      <DataTable size="small" :value="slotProps.data.scores" removableSort sortField="rank" :sortOrder="1">
-        <Column field="rank" :header="t('gameHistoryTable.rank')" sortable>
-          <template #body="{ data }">
-            {{ data.rank }} <i v-if="data.rank === 1" class="pi pi-trophy text-xs"></i>
-          </template>
-        </Column>
-        <Column field="player" :header="t('gameHistoryTable.player')" #body="{ data }">
-          {{ data.player.name }}
-        </Column>
-        <Column field="score" :header="t('gameHistoryTable.score')" />
-      </DataTable>
+      <template v-if="(slotProps.data.rounds?.length ?? 0) > 1">
+        <div v-for="(round, index) in slotProps.data.rounds" :key="index" class="mb-2 last:mb-0">
+          <span class="text-sm font-semibold px-2">{{ t('gameHistoryTable.round', { number: index + 1 }) }}</span>
+          <GameRoundScoresTable :scores="round.scores" />
+        </div>
+      </template>
+      <GameRoundScoresTable v-else :scores="slotProps.data.scores" />
     </template>
   </DataTable>
 </template>

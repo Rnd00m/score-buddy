@@ -60,6 +60,24 @@
         </div>
       </template>
     </ConfirmDialog>
+    <ConfirmDialog group="roundEnd" class="max-w-96 w-[calc(100%-6rem)]">
+      <template #container="{ message, acceptCallback }" v-if="roomStore.winners">
+        <div class="flex flex-col items-center p-8 bg-surface-0 dark:bg-surface-900 rounded">
+          <div
+              class="rounded-full bg-primary text-primary-contrast inline-flex justify-center items-center h-24 w-24 -mt-20"
+              :style="endGameIconStyle"
+          >
+            <i class="pi pi-flag-fill text-5xl"></i>
+          </div>
+          <span class="font-bold text-2xl block mb-2 mt-6">{{ message.header }}</span>
+          <p class="mb-0">{{ message.message }}</p>
+          <div class="flex items-center gap-2 mt-6">
+            <Button severity="contrast" :label="t('common.continue')" @click="acceptCallback"></Button>
+          </div>
+        </div>
+      </template>
+    </ConfirmDialog>
+
     <Dialog v-model:visible="isGameInfoDialogOpened" :header="roomStore.currentGame.name" class="max-w-96 w-[calc(100%-6rem)]" :modal="true" :draggable="false" close-on-escape>
       <GameInfo :game="roomStore.currentGame" />
     </Dialog>
@@ -162,18 +180,53 @@ watch(
   () => roomStore.isGameFinished,
   (isGameFinished) => {
     if (isGameFinished) {
-      handleGameFinished();
+      handleRoundOrGameFinished();
     }
   }
 );
 
 const handleEndGame = () => {
+  const isRoundEnd = !roomStore.isCurrentRoundDecisive;
+
   confirm.require({
     group: 'confirm',
     header: t('game.confirmTitle'),
-    message: t('game.endGameMessage'),
+    message: isRoundEnd ? t('game.endRoundMessage') : t('game.endGameMessage'),
     accept: () => {
-      handleGameFinished();
+      handleRoundOrGameFinished();
+    },
+  });
+};
+
+const roundWinsTallyText = computed(() => {
+  const tally = roomStore.currentRoundWinsTally;
+
+  return roomStore.players
+    .map(player => `${player.name}: ${tally[player.uuid] ?? 0}`)
+    .join(' · ');
+});
+
+const handleRoundOrGameFinished = () => {
+  if (roomStore.isCurrentRoundDecisive) {
+    handleGameFinished();
+  } else {
+    handleRoundFinished();
+  }
+};
+
+const handleRoundFinished = () => {
+  if (!roomStore.winners) return;
+
+  const header = soleWinner.value
+    ? t('game.roundHasWon', {name: soleWinner.value.player.name})
+    : t('game.roundTie');
+
+  confirm.require({
+    group: 'roundEnd',
+    header,
+    message: t('game.roundWinsTallyMessage', {tally: roundWinsTallyText.value}),
+    accept: () => {
+      roomStore.endRound();
     },
   });
 };
