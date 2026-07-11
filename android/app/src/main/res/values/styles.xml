@@ -13,6 +13,13 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="android:background">@null</item>
+        <!-- Without an explicit value here, androidx.core.splashscreen's exit
+             handler resolves this theme's inherited AppCompat default (not
+             transparent) and paints it directly via Window.setStatusBarColor,
+             overriding the edge-to-edge plugin's color overlay. Navigation bar
+             isn't affected the same way, hence only this one is needed. -->
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
     </style>
 
 
