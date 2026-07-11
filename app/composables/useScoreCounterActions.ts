@@ -4,18 +4,27 @@ import type {Player} from "~/types/global";
 export const useScoreCounterActions = () => {
   const roomStore = useRoomStore();
   const {values: quickScoreValues} = useQuickScoreValues();
+  const {record: recordScoreChange} = useScoreHistory();
 
   const interval = ref<ReturnType<typeof setInterval> | null>(null);
   const timeout = ref<ReturnType<typeof setTimeout> | null>(null);
   const speedUpTimeout = ref<ReturnType<typeof setTimeout> | null>(null);
   const intervalSpeed = ref(100);
 
+  const applyScoreMutation = (player: Player, mutate: () => void) => {
+    const before = roomStore.getPlayerScore(player)?.score ?? 0;
+    mutate();
+    const after = roomStore.getPlayerScore(player)?.score ?? before;
+
+    if (after !== before) recordScoreChange(player.uuid, before, after);
+  };
+
   const handleIncrementScore = (player: Player) => {
-    roomStore.incrementScore(player);
+    applyScoreMutation(player, () => roomStore.incrementScore(player));
   };
 
   const handleDecrementScore = (player: Player) => {
-    roomStore.decrementScore(player);
+    applyScoreMutation(player, () => roomStore.decrementScore(player));
   };
 
   const handleStartPress = (action: () => void) => {
@@ -82,7 +91,7 @@ export const useScoreCounterActions = () => {
     const newScore = parseScoreInput(editValue.value, currentScore);
 
     if (newScore !== null) {
-      roomStore.setScore(player, newScore);
+      applyScoreMutation(player, () => roomStore.setScore(player, newScore));
     }
 
     editingPlayerUuid.value = null;
@@ -94,7 +103,7 @@ export const useScoreCounterActions = () => {
 
   const handleQuickScoreChange = (player: Player, delta: number) => {
     const currentScore = roomStore.getPlayerScore(player)?.score ?? 0;
-    roomStore.setScore(player, currentScore + delta);
+    applyScoreMutation(player, () => roomStore.setScore(player, currentScore + delta));
   };
 
   const getQuickDecrementItems = (player: Player): MenuItem[] => quickScoreValues.value.map((value) => ({

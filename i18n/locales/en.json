@@ -13,7 +13,9 @@
     "submit": "Submit",
     "start": "Start",
     "menu": "Menu",
-    "continue": "Continue"
+    "continue": "Continue",
+    "undo": "Undo",
+    "redo": "Redo"
   },
   "androidApp": {
     "title": "Get the app",

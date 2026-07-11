@@ -87,6 +87,8 @@
     <h1 class="mb-6 flex justify-between items-center">
       <span class="text-3xl truncate w-full pr-2">{{ roomStore.currentGame.name }}</span>
       <span class="inline-flex gap-2">
+      <Button @click="handleUndo" :disabled="!canUndo" raised variant="outlined" severity="secondary" icon="pi pi-undo" :aria-label="t('common.undo')" />
+      <Button @click="handleRedo" :disabled="!canRedo" raised variant="outlined" severity="secondary" icon="pi pi-undo redo-icon" :aria-label="t('common.redo')" />
       <Button @click="handleEndGame" raised severity="contrast" icon="pi pi-stop" />
       <Button @click="toggleGameMenu" raised severity="contrast" icon="pi pi-ellipsis-v" :aria-label="t('common.menu')" />
     </span>
@@ -132,6 +134,31 @@ const toggleGameMenu = (event: Event) => {
 
 const {isEnabled: isDuelModeEnabled} = useDuelMode();
 const isDuelModeActive = computed(() => isDuelModeEnabled.value && roomStore.players.length === 2);
+
+const {undo, redo, canUndo, canRedo, clear: clearScoreHistory} = useScoreHistory();
+
+const handleUndo = () => {
+  const entry = undo();
+  if (!entry) return;
+
+  const player = roomStore.players.find(p => p.uuid === entry.playerUuid);
+  if (player) roomStore.setScore(player, entry.before);
+};
+
+const handleRedo = () => {
+  const entry = redo();
+  if (!entry) return;
+
+  const player = roomStore.players.find(p => p.uuid === entry.playerUuid);
+  if (player) roomStore.setScore(player, entry.after);
+};
+
+// A new game (different uuid) or a new round within the same match
+// (rounds.length changed) invalidates any in-flight undo/redo history.
+watch(
+  () => [roomStore.currentGame?.uuid, roomStore.currentGame?.rounds?.length],
+  () => clearScoreHistory(),
+);
 
 if (roomStore.currentGame === null) {
   router.push('/games');
@@ -238,6 +265,7 @@ const handleResetGame = () => {
     message: t('game.resetOrCancelMessage'),
     accept: () => {
       roomStore.resetGame();
+      clearScoreHistory();
     },
     reject: () => {
       roomStore.cancelGame();
@@ -277,3 +305,10 @@ const handleGameFinished = () => {
   });
 };
 </script>
+
+<style scoped>
+:deep(.redo-icon) {
+  display: inline-block;
+  transform: scaleX(-1);
+}
+</style>
