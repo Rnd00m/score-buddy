@@ -96,6 +96,8 @@
     "roundTie": "Cette manche est une égalité !",
     "roundHasWon": "{name} remporte la manche !",
     "roundWinsTallyMessage": "Score actuel : {tally}",
+    "tieNotAllowedTitle": "Un vainqueur est requis",
+    "tieNotAllowedMessage": "Dans ce mode, une égalité n'est pas autorisée. Continuez à jouer jusqu'à ce qu'il y ait un vainqueur.",
     "quickRemovePoints": "Retrait rapide de points",
     "quickAddPoints": "Ajout rapide de points"
   },
@@ -103,6 +105,8 @@
     "title": "Nouvelle partie",
     "startScore": "Score de départ",
     "endingScore": "Score de fin",
+    "enableWinningRounds": "Activer les manches gagnantes",
+    "winningRoundsTooltip": "Active un mode multi-manches : le premier joueur à remporter le nombre de manches indiqué remporte la partie. Dans ce mode, une égalité n'est pas autorisée : chaque manche doit obligatoirement se terminer par un vainqueur.",
     "winningRounds": "Manches gagnantes",
     "winner": "Gagnant",
     "lowestPossibleScore": "Score minimum possible",

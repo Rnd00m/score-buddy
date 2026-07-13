@@ -96,6 +96,8 @@
     "roundTie": "This round is a tie!",
     "roundHasWon": "{name} wins the round!",
     "roundWinsTallyMessage": "Score so far: {tally}",
+    "tieNotAllowedTitle": "A winner is required",
+    "tieNotAllowedMessage": "In this mode, a tie is not allowed. Keep playing until there is a winner.",
     "quickRemovePoints": "Quick point removal",
     "quickAddPoints": "Quick point addition"
   },
@@ -103,6 +105,8 @@
     "title": "New Game",
     "startScore": "Start score",
     "endingScore": "Ending score",
+    "enableWinningRounds": "Enable winning rounds",
+    "winningRoundsTooltip": "Enables a multi-round mode: the first player to win the specified number of rounds wins the game. In this mode, a tie is not allowed — every round must always end with a winner.",
     "winningRounds": "Winning rounds",
     "winner": "Winner",
     "lowestPossibleScore": "Lowest possible score",
