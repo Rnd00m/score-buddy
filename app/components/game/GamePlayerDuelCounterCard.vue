@@ -37,6 +37,7 @@
         <div class="flex flex-1 no-drag">
           <SpeedDial
             class="relative speed-dial-glued flex-none w-1/4"
+            :transition-delay="0"
             button-class="rounded-l-lg rounded-r-none h-16 w-full"
             :model="getQuickDecrementItems(player)"
             type="linear"
@@ -108,6 +109,7 @@
           />
           <SpeedDial
             class="relative speed-dial-glued flex-none w-1/4"
+            :transition-delay="0"
             button-class="rounded-r-lg rounded-l-none h-16 w-full"
             :model="getQuickIncrementItems(player)"
             type="linear"

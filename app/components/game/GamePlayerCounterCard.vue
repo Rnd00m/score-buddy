@@ -31,6 +31,7 @@
           />
           <SpeedDial
             class="speed-dial-glued"
+            :transition-delay="0"
             button-class="rounded-b-lg rounded-t-none min-w-[68px] h-8"
             :model="getQuickDecrementItems(player)"
             type="linear"
@@ -115,6 +116,7 @@
           />
           <SpeedDial
             class="speed-dial-glued"
+            :transition-delay="0"
             button-class="rounded-b-lg rounded-t-none min-w-[68px] h-8"
             :model="getQuickIncrementItems(player)"
             type="linear"
