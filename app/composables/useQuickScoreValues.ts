@@ -1,6 +1,6 @@
 const STORAGE_KEY = 'quickScoreValues';
 
-export const DEFAULT_QUICK_SCORE_VALUES = [5, 10, 20, 50, 100];
+export const DEFAULT_QUICK_SCORE_VALUES = [1, 5, 10, 20, 50];
 
 const values = ref<number[]>([...DEFAULT_QUICK_SCORE_VALUES]);
 
