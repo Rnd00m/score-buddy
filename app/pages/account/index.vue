@@ -1,7 +1,7 @@
 <template>
   <div>
     <Toast position="top-center" class="max-w-[calc(100%-2rem)]"/>
-    <ConfirmDialog group="logout" class="max-w-96 w-[calc(100%-6rem)]">
+    <ConfirmDialog group="logout" class="max-w-96 w-[calc(100%-6rem)]" dismissableMask>
       <template #container="{ message, acceptCallback, rejectCallback }">
         <div class="flex flex-col items-center p-8 bg-surface-0 dark:bg-surface-900 rounded">
           <div class="rounded-full bg-red-500 text-primary-contrast inline-flex justify-center items-center h-24 w-24 -mt-20">
@@ -17,6 +17,14 @@
       </template>
     </ConfirmDialog>
 
+    <BaseConfirmModal
+      group="deleteAccount"
+      icon="pi pi-trash"
+      icon-bg-class="bg-red-500"
+      accept-severity="danger"
+      :accept-label="t('account.deleteAccountConfirmAccept')"
+    />
+
     <h1 class="mb-6 text-3xl">{{ t('account.title') }}</h1>
 
     <div v-if="user" class="flex flex-col gap-4">
@@ -24,6 +32,14 @@
 
       <Button :label="t('account.syncNow')" icon="pi pi-sync" :loading="isSyncing" @click="handleSync"/>
       <Button :label="t('account.logOut')" severity="danger" outlined icon="pi pi-sign-out" @click="handleLogout"/>
+      <Button
+        :label="t('account.deleteAccount')"
+        severity="danger"
+        text
+        icon="pi pi-trash"
+        :loading="isDeletingAccount"
+        @click="handleDeleteAccount"
+      />
     </div>
 
     <div v-else class="flex flex-col gap-4">
@@ -101,7 +117,9 @@ const supabase = useSupabaseClient();
 const user = useSupabaseUser();
 const toast = useToast();
 const confirm = useConfirm();
+const router = useRouter();
 const {isSyncing, pullRemote, importLocalToRemote} = useSupabaseSync();
+const isDeletingAccount = ref(false);
 
 const availableLocales = computed(() => locales.value);
 const selectedLocale = computed({
@@ -153,6 +171,28 @@ const handleLogout = () => {
     message: t('account.logoutConfirmMessage'),
     accept: () => {
       supabase.auth.signOut();
+    },
+  });
+};
+
+const handleDeleteAccount = () => {
+  confirm.require({
+    group: 'deleteAccount',
+    header: t('account.deleteAccountConfirmTitle'),
+    message: t('account.deleteAccountConfirmMessage'),
+    accept: async () => {
+      isDeletingAccount.value = true;
+
+      try {
+        await $fetch('/api/account/delete', {method: 'POST'});
+        await supabase.auth.signOut();
+        toast.add({severity: 'success', summary: t('account.deleteAccountSuccessTitle'), detail: t('account.deleteAccountSuccessMessage'), life: 4000});
+        router.push('/');
+      } catch {
+        toast.add({severity: 'error', summary: t('account.deleteAccountErrorTitle'), detail: t('account.deleteAccountErrorMessage'), life: 4000});
+      } finally {
+        isDeletingAccount.value = false;
+      }
     },
   });
 };

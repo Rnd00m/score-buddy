@@ -1,6 +1,6 @@
 <template>
   <div v-if="roomStore.currentGame" :class="isDuelModeActive ? 'flex flex-col h-full' : ''">
-    <ConfirmDialog group="confirm" class="max-w-96 w-[calc(100%-6rem)]">
+    <ConfirmDialog group="confirm" class="max-w-96 w-[calc(100%-6rem)]" dismissableMask>
       <template #container="{ message, acceptCallback, rejectCallback }">
         <div class="flex flex-col items-center p-8 bg-surface-0 dark:bg-surface-900 rounded">
           <div class="rounded-full bg-orange-500 text-primary-contrast inline-flex justify-center items-center h-24 w-24 -mt-20">
@@ -15,7 +15,7 @@
         </div>
       </template>
     </ConfirmDialog>
-    <ConfirmDialog group="reset" class="max-w-96 w-[calc(100%-6rem)]">
+    <ConfirmDialog group="reset" class="max-w-96 w-[calc(100%-6rem)]" dismissableMask>
       <template #container="{ message, acceptCallback, rejectCallback }">
         <div class="flex flex-col items-center p-8 bg-surface-0 dark:bg-surface-900 rounded relative">
           <div class="rounded-full bg-orange-500 text-primary-contrast inline-flex justify-center items-center h-24 w-24 -mt-20">
@@ -33,7 +33,7 @@
         </div>
       </template>
     </ConfirmDialog>
-    <ConfirmDialog group="end" class="max-w-96 w-[calc(100%-6rem)]">
+    <ConfirmDialog group="end" class="max-w-96 w-[calc(100%-6rem)]" dismissableMask>
       <template #container="{ message, acceptCallback, rejectCallback }" v-if="roomStore.winners">
         <div class="flex flex-col items-center p-8 bg-surface-0 dark:bg-surface-900 rounded">
           <div
@@ -60,7 +60,21 @@
         </div>
       </template>
     </ConfirmDialog>
-    <ConfirmDialog group="roundEnd" class="max-w-96 w-[calc(100%-6rem)]">
+    <ConfirmDialog group="tieNotAllowed" class="max-w-96 w-[calc(100%-6rem)]" dismissableMask>
+      <template #container="{ message, acceptCallback }">
+        <div class="flex flex-col items-center p-8 bg-surface-0 dark:bg-surface-900 rounded">
+          <div class="rounded-full bg-orange-500 text-primary-contrast inline-flex justify-center items-center h-24 w-24 -mt-20">
+            <i class="pi pi-exclamation-circle text-5xl"></i>
+          </div>
+          <span class="font-bold text-2xl block mb-2 mt-6">{{ message.header }}</span>
+          <p class="mb-0">{{ message.message }}</p>
+          <div class="flex items-center gap-2 mt-6">
+            <Button severity="contrast" :label="t('common.continue')" @click="acceptCallback"></Button>
+          </div>
+        </div>
+      </template>
+    </ConfirmDialog>
+    <ConfirmDialog group="roundEnd" class="max-w-96 w-[calc(100%-6rem)]" dismissableMask>
       <template #container="{ message, acceptCallback }" v-if="roomStore.winners">
         <div class="flex flex-col items-center p-8 bg-surface-0 dark:bg-surface-900 rounded">
           <div
@@ -78,11 +92,11 @@
       </template>
     </ConfirmDialog>
 
-    <Dialog v-model:visible="isGameInfoDialogOpened" :header="roomStore.currentGame.name" class="max-w-96 w-[calc(100%-6rem)]" :modal="true" :draggable="false" close-on-escape>
+    <Dialog v-model:visible="isGameInfoDialogOpened" :header="roomStore.currentGame.name" class="max-w-96 w-[calc(100%-6rem)]" :modal="true" :draggable="false" close-on-escape dismissable-mask>
       <GameInfo :game="roomStore.currentGame" />
     </Dialog>
 
-    <Menu ref="gameMenu" :model="gameMenuItems" popup/>
+    <Menu ref="gameMenu" :model="gameMenuItems" popup class="mt-2"/>
 
     <h1 class="mb-6 flex justify-between items-center">
       <span class="text-3xl truncate w-full pr-2">{{ roomStore.currentGame.name }}</span>
@@ -212,7 +226,26 @@ watch(
   }
 );
 
+const isTieBlocked = computed(() => {
+  return roomStore.isWinningRoundsModeEnabled
+    && (roomStore.winners?.length ?? 0) > 1;
+});
+
+const showTieNotAllowedAlert = () => {
+  confirm.require({
+    group: 'tieNotAllowed',
+    header: t('game.tieNotAllowedTitle'),
+    message: t('game.tieNotAllowedMessage'),
+    accept: () => {},
+  });
+};
+
 const handleEndGame = () => {
+  if (isTieBlocked.value) {
+    showTieNotAllowedAlert();
+    return;
+  }
+
   const isRoundEnd = !roomStore.isCurrentRoundDecisive;
 
   confirm.require({
@@ -243,6 +276,11 @@ const handleRoundOrGameFinished = () => {
 
 const handleRoundFinished = () => {
   if (!roomStore.winners) return;
+
+  if (isTieBlocked.value) {
+    showTieNotAllowedAlert();
+    return;
+  }
 
   const header = soleWinner.value
     ? t('game.roundHasWon', {name: soleWinner.value.player.name})
@@ -285,6 +323,11 @@ const finishGame = () => {
 
 const handleGameFinished = () => {
   if (!roomStore.winners) return;
+
+  if (isTieBlocked.value) {
+    showTieNotAllowedAlert();
+    return;
+  }
 
   const endMessage = soleWinner.value
     ? t('game.hasWon', {name: soleWinner.value.player.name})

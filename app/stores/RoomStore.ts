@@ -261,6 +261,9 @@ getters: {
     if (winningRounds <= 1) return true;
 
     return Object.values(this.currentRoundWinsTally).some(count => count >= winningRounds);
+  },
+  isWinningRoundsModeEnabled(): boolean {
+    return (this.currentGame?.winningRounds ?? 1) > 1;
   }
 }
 })

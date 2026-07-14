@@ -37,10 +37,10 @@
       <div class="flex flex-col gap-1">
         <label for="startScore">{{ t('newGame.startScore') }}</label>
         <InputNumber id="startScore" name="startScore" :min="lowestPossibleScore !== null ? lowestPossibleScore : undefined" showButtons buttonLayout="horizontal" :step="1" fluid>
-          <template #incrementbuttonicon>
+          <template #incrementicon>
             <span class="pi pi-plus" />
           </template>
-          <template #decrementbuttonicon>
+          <template #decrementicon>
             <span class="pi pi-minus" />
           </template>
         </InputNumber>
@@ -53,10 +53,10 @@
       <div class="flex flex-col gap-1">
         <label for="endingScore">{{ t('newGame.endingScore') }}</label>
         <InputNumber id="endingScore" name="endingScore" :min="lowestPossibleScore !== null ? lowestPossibleScore : undefined" showButtons buttonLayout="horizontal" :step="1" fluid>
-          <template #incrementbuttonicon>
+          <template #incrementicon>
             <span class="pi pi-plus" />
           </template>
-          <template #decrementbuttonicon>
+          <template #decrementicon>
             <span class="pi pi-minus" />
           </template>
         </InputNumber>
@@ -67,12 +67,28 @@
       </div>
 
       <div class="flex flex-col gap-1">
+        <div class="flex items-center justify-between">
+          <span class="inline-flex items-center gap-2">
+            <label for="enableWinningRounds">{{ t('newGame.enableWinningRounds') }}</label>
+            <i
+                class="pi pi-info-circle text-surface-500 cursor-help"
+                @click="toggleWinningRoundsPopover"
+            />
+            <Popover ref="winningRoundsPopover">
+              <p class="max-w-60">{{ t('newGame.winningRoundsTooltip') }}</p>
+            </Popover>
+          </span>
+          <ToggleSwitch id="enableWinningRounds" name="enableWinningRounds" inputId="enableWinningRounds" />
+        </div>
+      </div>
+
+      <div class="flex flex-col gap-1" v-if="$form.enableWinningRounds?.value">
         <label for="winningRounds">{{ t('newGame.winningRounds') }}</label>
         <InputNumber id="winningRounds" name="winningRounds" :min="1" showButtons buttonLayout="horizontal" :step="1" fluid>
-          <template #incrementbuttonicon>
+          <template #incrementicon>
             <span class="pi pi-plus" />
           </template>
-          <template #decrementbuttonicon>
+          <template #decrementicon>
             <span class="pi pi-minus" />
           </template>
         </InputNumber>
@@ -94,10 +110,10 @@
       <div class="flex flex-col gap-1">
         <label for="lowestPossibleScore">{{ t('newGame.lowestPossibleScore') }}</label>
         <InputNumber id="lowestPossibleScore" name="lowestPossibleScore" showButtons buttonLayout="horizontal" :step="1" fluid v-model="lowestPossibleScore">
-          <template #incrementbuttonicon>
+          <template #incrementicon>
             <span class="pi pi-plus" />
           </template>
-          <template #decrementbuttonicon>
+          <template #decrementicon>
             <span class="pi pi-minus" />
           </template>
         </InputNumber>
@@ -142,11 +158,15 @@ const suggestedGameNames = computed<string[]>(() => {
 
 const lowestPossibleScore = ref(null);
 
+const winningRoundsPopover = ref();
+const toggleWinningRoundsPopover = (event: MouseEvent) => winningRoundsPopover.value?.toggle(event);
+
 const player = ref({
   name: '',
   startScore: 0,
   endingScore: null,
-  winningRounds: 1,
+  enableWinningRounds: false,
+  winningRounds: null,
   winCondition: WinCondition.MostPoints,
   lowestPossibleScore: null
 });
@@ -191,12 +211,14 @@ const resolver = ({values}: FormResolverOptions) => {
     errors.endingScore = [{message: t('newGame.endingScoreDifferent')}];
   }
 
-  if (values.winningRounds === null) {
-    errors.winningRounds = [{message: t('newGame.winningRoundsRequired')}];
-  }
+  if (values.enableWinningRounds) {
+    if (values.winningRounds === null) {
+      errors.winningRounds = [{message: t('newGame.winningRoundsRequired')}];
+    }
 
-  if (values.winningRounds !== null && values.winningRounds < 1) {
-    errors.winningRounds = [{message: t('newGame.winningRoundsMin')}];
+    if (values.winningRounds !== null && values.winningRounds < 1) {
+      errors.winningRounds = [{message: t('newGame.winningRoundsMin')}];
+    }
   }
 
   return {
@@ -206,13 +228,15 @@ const resolver = ({values}: FormResolverOptions) => {
 
 const onFormSubmit = ({valid, states}: FormSubmitEvent) => {
   if (valid) {
+    const winningRounds = states.enableWinningRounds?.value ? states.winningRounds?.value : 1;
+
     roomStore.startGame(
         states.name?.value.trim(),
         states.startScore?.value,
         states.endingScore?.value,
         states.winCondition?.value,
         states.lowestPossibleScore?.value,
-        states.winningRounds?.value
+        winningRounds
     );
     router.push('/game');
   }
