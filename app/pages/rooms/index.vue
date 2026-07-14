@@ -49,12 +49,30 @@
       </template>
     </ConfirmDialog>
 
+    <ConfirmDialog group="firstPlayer" class="max-w-96 w-[calc(100%-6rem)]">
+      <template #container="{ message, acceptCallback }" v-if="firstPlayer">
+        <div class="flex flex-col items-center p-8 bg-surface-0 dark:bg-surface-900 rounded">
+          <div
+              class="rounded-full bg-primary text-primary-contrast inline-flex justify-center items-center h-24 w-24 -mt-20"
+              :style="firstPlayerIconStyle"
+          >
+            <i class="pi pi-star-fill text-5xl"></i>
+          </div>
+          <span class="font-bold text-2xl block mb-2 mt-6">{{ message.header }}</span>
+          <p class="mb-0">{{ message.message }}</p>
+          <div class="flex items-center gap-2 mt-6">
+            <Button severity="contrast" :label="t('common.continue')" @click="acceptCallback"></Button>
+          </div>
+        </div>
+      </template>
+    </ConfirmDialog>
+
     <Menu ref="roomMenu" :model="roomMenuItems" popup class="mt-2"/>
 
     <h1 class="mb-6 flex justify-between items-center shrink-0">
       <span class="text-3xl">{{ t('room.title') }}</span>
       <span class="inline-flex gap-2">
-        <Button raised severity="danger" icon="pi pi-stop-circle" :disabled="roomStore.players.length === 0" @click="handleEndRoom" />
+        <Button raised severity="danger" icon="pi pi-times" :disabled="roomStore.players.length === 0" @click="handleEndRoom" />
         <NuxtLink to="/rooms/players/add">
             <Button raised severity="contrast" icon="pi pi-user-plus" />
         </NuxtLink>
@@ -117,6 +135,7 @@ import type { Player } from "~/types/global";
 
 const {t} = useI18n();
 const {fromNow} = useDateFormat();
+const router = useRouter();
 const roomStore = useRoomStore();
 const confirm = useConfirm();
 const toast = useToast();
@@ -125,8 +144,16 @@ const { expandedRows, onRowClick } = useExpandableRow('uuid');
 const roomMenu = ref();
 const roomMenuItems = computed(() => [
   {
+    label: t('room.determineFirstPlayer'),
+    icon: 'pi pi-star',
+    disabled: roomStore.players.length < 2,
+    command: () => {
+      handleDetermineFirstPlayer();
+    }
+  },
+  {
     label: t('room.resetLobby'),
-    icon: 'pi pi-undo',
+    icon: 'pi pi-eraser',
     disabled: roomStore.players.length === 0,
     command: () => {
       handleResetRoom();
@@ -136,6 +163,35 @@ const roomMenuItems = computed(() => [
 
 const toggleRoomMenu = (event: Event) => {
   roomMenu.value.toggle(event);
+};
+
+const firstPlayer = ref<Player | null>(null);
+
+const firstPlayerIconStyle = computed(() => {
+  if (!firstPlayer.value) return {};
+
+  const playerColor = firstPlayer.value.color.value;
+
+  return {
+    background: playerColor,
+    color: getTextColorContrasted(playerColor)
+  }
+});
+
+const handleDetermineFirstPlayer = () => {
+  const players = roomStore.players;
+  firstPlayer.value = players[Math.floor(Math.random() * players.length)] ?? null;
+
+  if (!firstPlayer.value) return;
+
+  confirm.require({
+    group: 'firstPlayer',
+    header: t('room.firstPlayerTitle'),
+    message: t('room.firstPlayerMessage', { name: firstPlayer.value.name }),
+    accept: () => {
+      router.push('/');
+    },
+  });
 };
 
 const handleRemovePlayer = (playerUuid: string) => {

@@ -156,7 +156,10 @@
     "endRoomTitle": "End lobby?",
     "endRoomMessage": "Are you sure you want to end the lobby?",
     "resetLobby": "Reset lobby",
-    "resetRoomMessage": "Are you sure you want to reset the lobby? All games will be lost."
+    "resetRoomMessage": "Are you sure you want to reset the lobby? All games will be lost.",
+    "determineFirstPlayer": "First player ?",
+    "firstPlayerTitle": "First player",
+    "firstPlayerMessage": "{name} starts!"
   },
   "addPlayer": {
     "title": "Add player",

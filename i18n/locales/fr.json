@@ -156,7 +156,10 @@
     "endRoomTitle": "Fermer le salon ?",
     "endRoomMessage": "Voulez-vous vraiment fermer le salon ?",
     "resetLobby": "Réinitialiser le salon",
-    "resetRoomMessage": "Voulez-vous vraiment réinitialiser le salon ? Toutes les parties seront perdues."
+    "resetRoomMessage": "Voulez-vous vraiment réinitialiser le salon ? Toutes les parties seront perdues.",
+    "determineFirstPlayer": "Qui commence ?",
+    "firstPlayerTitle": "Premier joueur",
+    "firstPlayerMessage": "{name} commence !"
   },
   "addPlayer": {
     "title": "Ajouter un joueur",
