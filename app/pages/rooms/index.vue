@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-col h-full">
     <Toast position="top-center" class="max-w-[calc(100%-2rem)]"/>
-    <ConfirmDialog group="remove" class="max-w-96 w-[calc(100%-6rem)]">
+    <ConfirmDialog group="remove" class="max-w-96 w-[calc(100%-6rem)]" dismissableMask>
       <template #container="{ message, acceptCallback, rejectCallback }">
         <div class="flex flex-col items-center p-8 bg-surface-0 dark:bg-surface-900 rounded">
           <div class="rounded-full bg-orange-500 text-primary-contrast inline-flex justify-center items-center h-24 w-24 -mt-20">
@@ -17,7 +17,7 @@
       </template>
     </ConfirmDialog>
 
-    <ConfirmDialog group="end" class="max-w-96 w-[calc(100%-6rem)]">
+    <ConfirmDialog group="end" class="max-w-96 w-[calc(100%-6rem)]" dismissableMask>
       <template #container="{ message, acceptCallback, rejectCallback }">
         <div class="flex flex-col items-center p-8 bg-surface-0 dark:bg-surface-900 rounded">
           <div class="rounded-full bg-red-500 text-primary-contrast inline-flex justify-center items-center h-24 w-24 -mt-20">
@@ -33,7 +33,7 @@
       </template>
     </ConfirmDialog>
 
-    <ConfirmDialog group="reset" class="max-w-96 w-[calc(100%-6rem)]">
+    <ConfirmDialog group="reset" class="max-w-96 w-[calc(100%-6rem)]" dismissableMask>
       <template #container="{ message, acceptCallback, rejectCallback }">
         <div class="flex flex-col items-center p-8 bg-surface-0 dark:bg-surface-900 rounded">
           <div class="rounded-full bg-orange-500 text-primary-contrast inline-flex justify-center items-center h-24 w-24 -mt-20">
@@ -49,7 +49,7 @@
       </template>
     </ConfirmDialog>
 
-    <ConfirmDialog group="firstPlayer" class="max-w-96 w-[calc(100%-6rem)]">
+    <ConfirmDialog group="firstPlayer" class="max-w-96 w-[calc(100%-6rem)]" dismissableMask>
       <template #container="{ message, acceptCallback }" v-if="firstPlayer">
         <div class="flex flex-col items-center p-8 bg-surface-0 dark:bg-surface-900 rounded">
           <div

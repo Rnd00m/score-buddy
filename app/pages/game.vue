@@ -1,6 +1,6 @@
 <template>
   <div v-if="roomStore.currentGame" :class="isDuelModeActive ? 'flex flex-col h-full' : ''">
-    <ConfirmDialog group="confirm" class="max-w-96 w-[calc(100%-6rem)]">
+    <ConfirmDialog group="confirm" class="max-w-96 w-[calc(100%-6rem)]" dismissableMask>
       <template #container="{ message, acceptCallback, rejectCallback }">
         <div class="flex flex-col items-center p-8 bg-surface-0 dark:bg-surface-900 rounded">
           <div class="rounded-full bg-orange-500 text-primary-contrast inline-flex justify-center items-center h-24 w-24 -mt-20">
@@ -15,7 +15,7 @@
         </div>
       </template>
     </ConfirmDialog>
-    <ConfirmDialog group="reset" class="max-w-96 w-[calc(100%-6rem)]">
+    <ConfirmDialog group="reset" class="max-w-96 w-[calc(100%-6rem)]" dismissableMask>
       <template #container="{ message, acceptCallback, rejectCallback }">
         <div class="flex flex-col items-center p-8 bg-surface-0 dark:bg-surface-900 rounded relative">
           <div class="rounded-full bg-orange-500 text-primary-contrast inline-flex justify-center items-center h-24 w-24 -mt-20">
@@ -33,7 +33,7 @@
         </div>
       </template>
     </ConfirmDialog>
-    <ConfirmDialog group="end" class="max-w-96 w-[calc(100%-6rem)]">
+    <ConfirmDialog group="end" class="max-w-96 w-[calc(100%-6rem)]" dismissableMask>
       <template #container="{ message, acceptCallback, rejectCallback }" v-if="roomStore.winners">
         <div class="flex flex-col items-center p-8 bg-surface-0 dark:bg-surface-900 rounded">
           <div
@@ -60,7 +60,7 @@
         </div>
       </template>
     </ConfirmDialog>
-    <ConfirmDialog group="tieNotAllowed" class="max-w-96 w-[calc(100%-6rem)]">
+    <ConfirmDialog group="tieNotAllowed" class="max-w-96 w-[calc(100%-6rem)]" dismissableMask>
       <template #container="{ message, acceptCallback }">
         <div class="flex flex-col items-center p-8 bg-surface-0 dark:bg-surface-900 rounded">
           <div class="rounded-full bg-orange-500 text-primary-contrast inline-flex justify-center items-center h-24 w-24 -mt-20">
@@ -74,7 +74,7 @@
         </div>
       </template>
     </ConfirmDialog>
-    <ConfirmDialog group="roundEnd" class="max-w-96 w-[calc(100%-6rem)]">
+    <ConfirmDialog group="roundEnd" class="max-w-96 w-[calc(100%-6rem)]" dismissableMask>
       <template #container="{ message, acceptCallback }" v-if="roomStore.winners">
         <div class="flex flex-col items-center p-8 bg-surface-0 dark:bg-surface-900 rounded">
           <div
@@ -92,7 +92,7 @@
       </template>
     </ConfirmDialog>
 
-    <Dialog v-model:visible="isGameInfoDialogOpened" :header="roomStore.currentGame.name" class="max-w-96 w-[calc(100%-6rem)]" :modal="true" :draggable="false" close-on-escape>
+    <Dialog v-model:visible="isGameInfoDialogOpened" :header="roomStore.currentGame.name" class="max-w-96 w-[calc(100%-6rem)]" :modal="true" :draggable="false" close-on-escape dismissable-mask>
       <GameInfo :game="roomStore.currentGame" />
     </Dialog>
 
