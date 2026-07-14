@@ -143,6 +143,25 @@ const MyPreset = definePreset(Aura, {
         }
       }
     }
+  },
+  components: {
+    datatable: {
+      header: {
+        sm: { padding: '0.375rem 0.5rem' }
+      },
+      headerCell: {
+        sm: { padding: '0.375rem 0.5rem' }
+      },
+      bodyCell: {
+        sm: { padding: '0.375rem 0.5rem' }
+      },
+      footerCell: {
+        sm: { padding: '0.375rem 0.5rem' }
+      },
+      footer: {
+        sm: { padding: '0.375rem 0.5rem' }
+      }
+    }
   }
 });
 
