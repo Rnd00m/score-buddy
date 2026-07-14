@@ -155,6 +155,7 @@
     "removePlayerMessage": "Are you sure you want to remove this player?",
     "endRoomTitle": "End lobby?",
     "endRoomMessage": "Are you sure you want to end the lobby?",
+    "resetLobby": "Reset lobby",
     "resetRoomMessage": "Are you sure you want to reset the lobby? All games will be lost."
   },
   "addPlayer": {

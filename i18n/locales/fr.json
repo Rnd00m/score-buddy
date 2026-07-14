@@ -155,6 +155,7 @@
     "removePlayerMessage": "Voulez-vous vraiment retirer ce joueur ?",
     "endRoomTitle": "Fermer le salon ?",
     "endRoomMessage": "Voulez-vous vraiment fermer le salon ?",
+    "resetLobby": "Réinitialiser le salon",
     "resetRoomMessage": "Voulez-vous vraiment réinitialiser le salon ? Toutes les parties seront perdues."
   },
   "addPlayer": {

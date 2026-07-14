@@ -49,14 +49,16 @@
       </template>
     </ConfirmDialog>
 
+    <Menu ref="roomMenu" :model="roomMenuItems" popup class="mt-2"/>
+
     <h1 class="mb-6 flex justify-between items-center shrink-0">
       <span class="text-3xl">{{ t('room.title') }}</span>
       <span class="inline-flex gap-2">
         <Button raised severity="danger" icon="pi pi-stop-circle" :disabled="roomStore.players.length === 0" @click="handleEndRoom" />
-        <Button raised severity="contrast" icon="pi pi-undo" :disabled="roomStore.players.length === 0" @click="handleResetRoom" />
         <NuxtLink to="/rooms/players/add">
             <Button raised severity="contrast" icon="pi pi-user-plus" />
         </NuxtLink>
+        <Button raised severity="contrast" icon="pi pi-ellipsis-v" :aria-label="t('common.menu')" @click="toggleRoomMenu" />
       </span>
     </h1>
 
@@ -119,6 +121,22 @@ const roomStore = useRoomStore();
 const confirm = useConfirm();
 const toast = useToast();
 const { expandedRows, onRowClick } = useExpandableRow('uuid');
+
+const roomMenu = ref();
+const roomMenuItems = computed(() => [
+  {
+    label: t('room.resetLobby'),
+    icon: 'pi pi-undo',
+    disabled: roomStore.players.length === 0,
+    command: () => {
+      handleResetRoom();
+    }
+  }
+]);
+
+const toggleRoomMenu = (event: Event) => {
+  roomMenu.value.toggle(event);
+};
 
 const handleRemovePlayer = (playerUuid: string) => {
   if (roomStore.currentGame !== null) {

@@ -96,7 +96,7 @@
       <GameInfo :game="roomStore.currentGame" />
     </Dialog>
 
-    <Menu ref="gameMenu" :model="gameMenuItems" popup/>
+    <Menu ref="gameMenu" :model="gameMenuItems" popup class="mt-2"/>
 
     <h1 class="mb-6 flex justify-between items-center">
       <span class="text-3xl truncate w-full pr-2">{{ roomStore.currentGame.name }}</span>
