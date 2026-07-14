@@ -37,10 +37,10 @@
       <div class="flex flex-col gap-1">
         <label for="startScore">{{ t('newGame.startScore') }}</label>
         <InputNumber id="startScore" name="startScore" :min="lowestPossibleScore !== null ? lowestPossibleScore : undefined" showButtons buttonLayout="horizontal" :step="1" fluid>
-          <template #incrementbuttonicon>
+          <template #incrementicon>
             <span class="pi pi-plus" />
           </template>
-          <template #decrementbuttonicon>
+          <template #decrementicon>
             <span class="pi pi-minus" />
           </template>
         </InputNumber>
@@ -53,10 +53,10 @@
       <div class="flex flex-col gap-1">
         <label for="endingScore">{{ t('newGame.endingScore') }}</label>
         <InputNumber id="endingScore" name="endingScore" :min="lowestPossibleScore !== null ? lowestPossibleScore : undefined" showButtons buttonLayout="horizontal" :step="1" fluid>
-          <template #incrementbuttonicon>
+          <template #incrementicon>
             <span class="pi pi-plus" />
           </template>
-          <template #decrementbuttonicon>
+          <template #decrementicon>
             <span class="pi pi-minus" />
           </template>
         </InputNumber>
@@ -85,10 +85,10 @@
       <div class="flex flex-col gap-1" v-if="$form.enableWinningRounds?.value">
         <label for="winningRounds">{{ t('newGame.winningRounds') }}</label>
         <InputNumber id="winningRounds" name="winningRounds" :min="1" showButtons buttonLayout="horizontal" :step="1" fluid>
-          <template #incrementbuttonicon>
+          <template #incrementicon>
             <span class="pi pi-plus" />
           </template>
-          <template #decrementbuttonicon>
+          <template #decrementicon>
             <span class="pi pi-minus" />
           </template>
         </InputNumber>
@@ -110,10 +110,10 @@
       <div class="flex flex-col gap-1">
         <label for="lowestPossibleScore">{{ t('newGame.lowestPossibleScore') }}</label>
         <InputNumber id="lowestPossibleScore" name="lowestPossibleScore" showButtons buttonLayout="horizontal" :step="1" fluid v-model="lowestPossibleScore">
-          <template #incrementbuttonicon>
+          <template #incrementicon>
             <span class="pi pi-plus" />
           </template>
-          <template #decrementbuttonicon>
+          <template #decrementicon>
             <span class="pi pi-minus" />
           </template>
         </InputNumber>

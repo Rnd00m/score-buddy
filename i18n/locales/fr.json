@@ -165,7 +165,19 @@
     "roll": "Lancer",
     "diceCount": "Nombre de dés",
     "diceSides": "Nombre de faces",
-    "diceGrandTotal": "Total général"
+    "diceGrandTotal": "Total général",
+    "timer": "Minuteur"
+  },
+  "timer": {
+    "title": "Minuteur",
+    "minutes": "Minutes",
+    "seconds": "Secondes",
+    "start": "Démarrer",
+    "pause": "Pause",
+    "resume": "Reprendre",
+    "reset": "Réinitialiser",
+    "finishedTitle": "Temps écoulé !",
+    "finishedMessage": "Le minuteur est terminé."
   },
   "addPlayer": {
     "title": "Ajouter un joueur",

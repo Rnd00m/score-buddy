@@ -165,7 +165,19 @@
     "roll": "Roll",
     "diceCount": "Number of dice",
     "diceSides": "Number of sides",
-    "diceGrandTotal": "Grand total"
+    "diceGrandTotal": "Grand total",
+    "timer": "Timer"
+  },
+  "timer": {
+    "title": "Timer",
+    "minutes": "Minutes",
+    "seconds": "Seconds",
+    "start": "Start",
+    "pause": "Pause",
+    "resume": "Resume",
+    "reset": "Reset",
+    "finishedTitle": "Time's up!",
+    "finishedMessage": "The timer has finished."
   },
   "addPlayer": {
     "title": "Add player",

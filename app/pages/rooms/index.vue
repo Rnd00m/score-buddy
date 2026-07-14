@@ -80,8 +80,8 @@
             inputClass="w-14 text-center"
             :aria-label="t('room.diceCount')"
           >
-            <template #incrementbuttonicon><span class="pi pi-plus" /></template>
-            <template #decrementbuttonicon><span class="pi pi-minus" /></template>
+            <template #incrementicon><span class="pi pi-plus" /></template>
+            <template #decrementicon><span class="pi pi-minus" /></template>
           </InputNumber>
           <span>d</span>
           <InputNumber
@@ -94,8 +94,8 @@
             inputClass="w-16 text-center"
             :aria-label="t('room.diceSides')"
           >
-            <template #incrementbuttonicon><span class="pi pi-plus" /></template>
-            <template #decrementbuttonicon><span class="pi pi-minus" /></template>
+            <template #incrementicon><span class="pi pi-plus" /></template>
+            <template #decrementicon><span class="pi pi-minus" /></template>
           </InputNumber>
           <Button
             icon="pi pi-times"
@@ -211,6 +211,13 @@ const roomMenuItems = computed(() => [
     icon: 'pi pi-box',
     command: () => {
       isDiceDialogOpened.value = true;
+    }
+  },
+  {
+    label: t('room.timer'),
+    icon: 'pi pi-stopwatch',
+    command: () => {
+      router.push('/rooms/timer');
     }
   },
   {
