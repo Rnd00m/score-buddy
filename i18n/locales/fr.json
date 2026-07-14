@@ -159,7 +159,13 @@
     "resetRoomMessage": "Voulez-vous vraiment réinitialiser le salon ? Toutes les parties seront perdues.",
     "determineFirstPlayer": "Qui commence ?",
     "firstPlayerTitle": "Premier joueur",
-    "firstPlayerMessage": "{name} commence !"
+    "firstPlayerMessage": "{name} commence !",
+    "rollDice": "Lancer des dés",
+    "addDie": "Ajouter un dé",
+    "roll": "Lancer",
+    "diceCount": "Nombre de dés",
+    "diceSides": "Nombre de faces",
+    "diceGrandTotal": "Total général"
   },
   "addPlayer": {
     "title": "Ajouter un joueur",

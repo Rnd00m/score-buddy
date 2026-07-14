@@ -67,6 +67,61 @@
       </template>
     </ConfirmDialog>
 
+    <Dialog v-model:visible="isDiceDialogOpened" :header="t('room.rollDice')" class="max-w-96 w-[calc(100%-6rem)]" :modal="true" :draggable="false" close-on-escape dismissable-mask>
+      <div class="flex flex-col gap-4">
+        <div v-for="(die, index) in diceGroups" :key="index" class="flex items-center gap-2">
+          <InputNumber
+            v-model="die.count"
+            :min="1"
+            :max="20"
+            showButtons
+            buttonLayout="horizontal"
+            :step="1"
+            inputClass="w-14 text-center"
+            :aria-label="t('room.diceCount')"
+          >
+            <template #incrementbuttonicon><span class="pi pi-plus" /></template>
+            <template #decrementbuttonicon><span class="pi pi-minus" /></template>
+          </InputNumber>
+          <span>d</span>
+          <InputNumber
+            v-model="die.sides"
+            :min="2"
+            :max="1000"
+            showButtons
+            buttonLayout="horizontal"
+            :step="1"
+            inputClass="w-16 text-center"
+            :aria-label="t('room.diceSides')"
+          >
+            <template #incrementbuttonicon><span class="pi pi-plus" /></template>
+            <template #decrementbuttonicon><span class="pi pi-minus" /></template>
+          </InputNumber>
+          <Button
+            icon="pi pi-times"
+            severity="danger"
+            size="small"
+            text
+            :aria-label="t('common.cancel')"
+            :disabled="diceGroups.length === 1"
+            @click="removeDiceGroup(index)"
+          />
+        </div>
+
+        <Button :label="t('room.addDie')" icon="pi pi-plus" severity="secondary" outlined @click="addDiceGroup" />
+        <Button :label="t('room.roll')" icon="pi pi-play" severity="contrast" @click="handleRollDice" />
+
+        <div v-if="diceResults.length" class="flex flex-col gap-1 border-t border-surface-200 dark:border-surface-700 pt-4">
+          <div v-for="(result, index) in diceResults" :key="index">
+            {{ result.count }}d{{ result.sides }}: {{ result.rolls.join(', ') }} <span v-if="result.rolls.length > 1">= <strong>{{ result.total }}</strong></span>
+          </div>
+          <div v-if="diceResults.length > 1" class="font-bold mt-1">
+            {{ t('room.diceGrandTotal') }}: {{ diceGrandTotal }}
+          </div>
+        </div>
+      </div>
+    </Dialog>
+
     <Menu ref="roomMenu" :model="roomMenuItems" popup class="mt-2"/>
 
     <h1 class="mb-6 flex justify-between items-center shrink-0">
@@ -152,6 +207,13 @@ const roomMenuItems = computed(() => [
     }
   },
   {
+    label: t('room.rollDice'),
+    icon: 'pi pi-box',
+    command: () => {
+      isDiceDialogOpened.value = true;
+    }
+  },
+  {
     label: t('room.resetLobby'),
     icon: 'pi pi-eraser',
     disabled: roomStore.players.length === 0,
@@ -229,6 +291,45 @@ const handleResetRoom = () => {
     accept: () => {
       roomStore.resetRoom();
     },
+  });
+};
+
+interface DiceGroup {
+  count: number;
+  sides: number;
+}
+
+interface DiceRollResult extends DiceGroup {
+  rolls: number[];
+  total: number;
+}
+
+const isDiceDialogOpened = ref(false);
+const diceGroups = ref<DiceGroup[]>([{ count: 1, sides: 6 }]);
+const diceResults = ref<DiceRollResult[]>([]);
+
+const diceGrandTotal = computed(() => diceResults.value.reduce((sum, result) => sum + result.total, 0));
+
+const addDiceGroup = () => {
+  diceGroups.value.push({ count: 1, sides: 6 });
+};
+
+const removeDiceGroup = (index: number) => {
+  if (diceGroups.value.length === 1) return;
+
+  diceGroups.value.splice(index, 1);
+};
+
+const handleRollDice = () => {
+  diceResults.value = diceGroups.value.map((die) => {
+    const rolls = Array.from({ length: die.count }, () => Math.floor(Math.random() * die.sides) + 1);
+
+    return {
+      count: die.count,
+      sides: die.sides,
+      rolls,
+      total: rolls.reduce((sum, roll) => sum + roll, 0)
+    };
   });
 };
 

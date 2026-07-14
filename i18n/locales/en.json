@@ -159,7 +159,13 @@
     "resetRoomMessage": "Are you sure you want to reset the lobby? All games will be lost.",
     "determineFirstPlayer": "First player ?",
     "firstPlayerTitle": "First player",
-    "firstPlayerMessage": "{name} starts!"
+    "firstPlayerMessage": "{name} starts!",
+    "rollDice": "Roll dice",
+    "addDie": "Add a die",
+    "roll": "Roll",
+    "diceCount": "Number of dice",
+    "diceSides": "Number of sides",
+    "diceGrandTotal": "Grand total"
   },
   "addPlayer": {
     "title": "Add player",
