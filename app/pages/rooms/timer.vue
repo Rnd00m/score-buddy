@@ -10,9 +10,9 @@
     </h1>
 
     <div class="flex-1 flex flex-col items-center justify-center gap-8">
-      <div class="relative flex items-center justify-center">
-        <ProgressSpinner class="timer-spinner w-56 h-56" :strokeWidth="4" :value="remainingPercent"/>
-        <span class="absolute text-4xl font-bold tabular-nums">{{ formattedRemainingTime }}</span>
+      <div class="relative flex items-center justify-center w-full max-w-80 aspect-square">
+        <ProgressSpinner class="timer-spinner w-full h-full" :strokeWidth="4" :value="remainingPercent"/>
+        <span class="absolute text-6xl font-bold tabular-nums">{{ formattedRemainingTime }}</span>
       </div>
 
       <div class="flex items-end gap-4">
