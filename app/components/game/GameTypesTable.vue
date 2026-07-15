@@ -18,7 +18,7 @@
   </ConfirmDialog>
 
   <DataTable
-    size="small"
+    size="large"
     :value="gameTypes"
     @rowSelect="handleGameSelected"
     selectionMode="single"

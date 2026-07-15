@@ -1,5 +1,5 @@
 <template>
-  <DataTable size="small" :value="scores" removableSort sortField="rank" :sortOrder="1">
+  <DataTable size="large" :value="scores" removableSort sortField="rank" :sortOrder="1">
     <Column field="rank" :header="t('gameHistoryTable.rank')" sortable>
       <template #body="{ data }">
         {{ data.rank }} <i v-if="data.rank === 1" class="pi pi-trophy text-xs"></i>

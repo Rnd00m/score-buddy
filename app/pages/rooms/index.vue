@@ -146,7 +146,7 @@
       removableSort
       scrollable
       scrollHeight="flex"
-      size="small"
+      size="large"
     >
       <template #empty> {{ t('room.noPlayers') }} </template>
       <Column expander class="w-1" v-if="roomStore.games.length"/>
@@ -166,7 +166,7 @@
         </template>
       </Column>
       <template #expansion="slotProps">
-        <DataTable size="small" :value="userGamesScores(slotProps.data)" removableSort sortField="createdAtTime" :sortOrder="-1">
+        <DataTable size="large" :value="userGamesScores(slotProps.data)" removableSort sortField="createdAtTime" :sortOrder="-1">
           <Column field="name" :header="t('room.game')" />
           <Column :header="t('room.rank')" >
             <template #body="{ data }">

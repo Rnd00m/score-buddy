@@ -19,15 +19,15 @@
         <div class="flex flex-col items-center gap-1">
           <label for="minutes">{{ t('timer.minutes') }}</label>
           <InputNumber
-              id="minutes"
-              v-model="minutes"
-              :min="0"
-              :max="99"
-              showButtons
-              buttonLayout="horizontal"
-              :step="1"
-              inputClass="w-16 text-center"
-              :disabled="isRunning"
+            id="minutes"
+            v-model="minutes"
+            :min="0"
+            :max="99"
+            showButtons
+            buttonLayout="horizontal"
+            :step="1"
+            inputClass="w-16 text-center"
+            :disabled="isRunning"
           >
             <template #incrementicon><span class="pi pi-plus" /></template>
             <template #decrementicon><span class="pi pi-minus" /></template>
@@ -37,15 +37,15 @@
         <div class="flex flex-col items-center gap-1">
           <label for="seconds">{{ t('timer.seconds') }}</label>
           <InputNumber
-              id="seconds"
-              v-model="seconds"
-              :min="0"
-              :max="59"
-              showButtons
-              buttonLayout="horizontal"
-              :step="1"
-              inputClass="w-16 text-center"
-              :disabled="isRunning"
+            id="seconds"
+            v-model="seconds"
+            :min="0"
+            :max="59"
+            showButtons
+            buttonLayout="horizontal"
+            :step="1"
+            inputClass="w-16 text-center"
+            :disabled="isRunning"
           >
             <template #incrementicon><span class="pi pi-plus" /></template>
             <template #decrementicon><span class="pi pi-minus" /></template>
@@ -55,11 +55,11 @@
 
       <div class="flex items-center gap-2">
         <Button
-            :label="startPauseLabel"
-            :icon="isRunning ? 'pi pi-pause' : 'pi pi-play'"
-            severity="contrast"
-            :disabled="totalDuration === 0"
-            @click="toggleTimer"
+          :label="startPauseLabel"
+          :icon="isRunning ? 'pi pi-pause' : 'pi pi-play'"
+          severity="contrast"
+          :disabled="totalDuration === 0"
+          @click="toggleTimer"
         />
         <Button :label="t('timer.reset')" icon="pi pi-refresh" severity="secondary" outlined @click="resetTimer"/>
       </div>

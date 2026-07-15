@@ -10,7 +10,7 @@
     removableSort
     scrollable
     scrollHeight="flex"
-    size="small"
+    size="large"
     :loading="loading"
     :paginator="paginator"
     :rows="10"
