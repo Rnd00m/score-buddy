@@ -149,7 +149,7 @@
       size="large"
     >
       <template #empty> {{ t('room.noPlayers') }} </template>
-      <Column expander class="w-1"/>
+      <Column expander class="w-1 pe-0"/>
       <Column field="name" :header="t('room.player')" sortable>
         <template #body="slotProps">
           <div class="flex items-center gap-2">

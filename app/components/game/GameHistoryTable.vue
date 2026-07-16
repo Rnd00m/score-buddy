@@ -17,7 +17,7 @@
     :rowsPerPageOptions="[10, 20, 50]"
   >
     <template #empty>{{ emptyMessage ?? t('gameHistoryTable.noPlayedGames') }}</template>
-    <Column expander class="w-1" />
+    <Column expander class="w-1 pe-0" />
 
     <Column field="name" :header="t('gameHistoryTable.name')" sortable></Column>
     <Column :header="t('gameHistoryTable.duration')">
