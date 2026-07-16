@@ -149,7 +149,7 @@
       size="large"
     >
       <template #empty> {{ t('room.noPlayers') }} </template>
-      <Column expander class="w-1" v-if="roomStore.games.length"/>
+      <Column expander class="w-1"/>
       <Column field="name" :header="t('room.player')" sortable>
         <template #body="slotProps">
           <div class="flex items-center gap-2">
@@ -167,6 +167,7 @@
       </Column>
       <template #expansion="slotProps">
         <DataTable size="large" :value="userGamesScores(slotProps.data)" removableSort sortField="createdAtTime" :sortOrder="-1">
+          <template #empty>{{ t('room.noCompletedGames') }}</template>
           <Column field="name" :header="t('room.game')" />
           <Column :header="t('room.rank')" >
             <template #body="{ data }">

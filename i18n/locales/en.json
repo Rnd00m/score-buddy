@@ -144,6 +144,7 @@
   "room": {
     "title": "Room",
     "noPlayers": "Currently no players.",
+    "noCompletedGames": "No completed games.",
     "player": "Player",
     "score": "Score",
     "game": "Game",

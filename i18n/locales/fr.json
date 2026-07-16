@@ -144,6 +144,7 @@
   "room": {
     "title": "Salon",
     "noPlayers": "Aucun joueur pour le moment.",
+    "noCompletedGames": "Aucune partie terminée.",
     "player": "Joueur",
     "score": "Score",
     "game": "Partie",
