@@ -8,14 +8,18 @@
         :class="{ 'route-active': isActive }"
         @click="navigate"
       >
-        <span v-ripple :class="item.icon" class="bottom-nav-icon"/>
+        <span v-ripple class="bottom-nav-icon">
+          <component :is="item.icon" :size="24"/>
+        </span>
       </a>
     </RouterLink>
   </nav>
 </template>
 
 <script setup lang="ts">
+import type { Component } from "vue";
+
 defineProps<{
-  items: { icon: string; label: string; route: string }[];
+  items: { icon: Component; label: string; route: string }[];
 }>();
 </script>

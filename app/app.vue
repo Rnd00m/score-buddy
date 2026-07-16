@@ -30,6 +30,7 @@
 
 <script setup lang="ts">
 import { VueQueryDevtools } from '@tanstack/vue-query-devtools'
+import { Play, History, Users, Clock, User } from '@primeicons/vue';
 
 const { t, locale } = useI18n();
 
@@ -52,11 +53,11 @@ const router = useRouter();
 
 const items = computed(() => {
   return [
-    { icon: 'pi pi-play', label: t('menu.play'), route: roomStore.currentGame !== null ? '/game' : '/games' },
-    { icon: 'pi pi-history', label: t('menu.history'), route: '/games/history' },
-    { icon: 'pi pi-users', label: t('menu.rooms'), route: '/rooms' },
-    { icon: 'pi pi-clock', label: t('menu.myHistory'), route: '/users/games/history' },
-    { icon: 'pi pi-user', label: t('menu.account'), route: '/account' },
+    { icon: Play, label: t('menu.play'), route: roomStore.currentGame !== null ? '/game' : '/games' },
+    { icon: History, label: t('menu.history'), route: '/games/history' },
+    { icon: Users, label: t('menu.rooms'), route: '/rooms' },
+    { icon: Clock, label: t('menu.myHistory'), route: '/users/games/history' },
+    { icon: User, label: t('menu.account'), route: '/account' },
   ];
 });
 

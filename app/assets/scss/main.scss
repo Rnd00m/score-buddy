@@ -63,7 +63,7 @@ body {
 }
 
 .bottom-nav-link {
-  padding: 0.425rem 0.3rem 0.3rem 0.3rem;
+  padding: 0.6rem 0.35rem 0.475rem 0.35rem;
   color: var(--p-text-color);
 }
 
@@ -71,22 +71,14 @@ body {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 3.5rem;
-  height: 2.125rem;
+  width: 3.875rem;
+  height: 2.4375rem;
   border-radius: 999px;
-  font-size: 1.25rem;
   transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 .bottom-nav-link.route-active .bottom-nav-icon {
   background: rgba(0, 0, 0, 0.12);
-}
-
-// pi-play's triangle glyph is optically off-center within its bounding box;
-// shift only the glyph (::before), not the circular background, to recenter it
-.bottom-nav-icon.pi-play::before {
-  display: inline-block;
-  transform: translateX(0.1rem);
 }
 
 :root.app-dark {

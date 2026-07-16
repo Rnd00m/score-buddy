@@ -23,6 +23,7 @@
     "@nuxtjs/i18n": "^10.4.0",
     "@nuxtjs/supabase": "^2.0.9",
     "@pinia/nuxt": "^0.11.3",
+    "@primeicons/vue": "^8.0.0",
     "@primeuix/themes": "3.0.0-rc.1",
     "@primevue/forms": "5.0.0-rc.2",
     "@shopify/draggable": "^1.2.1",

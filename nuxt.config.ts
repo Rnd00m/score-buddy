@@ -105,6 +105,7 @@ export default defineNuxtConfig({
         '@capacitor/app',
         '@capacitor/core',
         '@capawesome/capacitor-android-edge-to-edge-support',
+        '@primeicons/vue',
         '@shopify/draggable',
         '@tanstack/vue-query',
         '@tanstack/vue-query-devtools',

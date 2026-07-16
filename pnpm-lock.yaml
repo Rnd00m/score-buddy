@@ -32,6 +32,9 @@ importers:
       '@pinia/nuxt':
         specifier: ^0.11.3
         version: 0.11.3(magicast@0.5.3)(pinia@3.0.4(typescript@5.7.3)(vue@3.5.38(typescript@5.7.3)))
+      '@primeicons/vue':
+        specifier: ^8.0.0
+        version: 8.0.0(vue@3.5.38(typescript@5.7.3))
       '@primeuix/themes':
         specifier: 3.0.0-rc.1
         version: 3.0.0-rc.1
@@ -1989,11 +1992,11 @@ packages:
   '@prettier/plugin-xml@2.2.0':
     resolution: {integrity: sha512-UWRmygBsyj4bVXvDiqSccwT1kmsorcwQwaIy30yVh8T+Gspx4OlC0shX1y+ZuwXZvgnafmpRYKks0bAu9urJew==}
 
-  '@primeicons/core@8.0.0-rc.2':
-    resolution: {integrity: sha512-rQhYUXJR8zlMXlmDJFzqEtWLg1yqut2+WmpSiqESgI93A9+eqmNkmPrkO+GmkZQ9KGmvGXuXrylfvKlAhBaq3w==}
+  '@primeicons/core@8.0.0':
+    resolution: {integrity: sha512-vPif+sXxajXCSL2bmNBP0QYliJONVRgFVpCg9e7hGn7IG18JkMAm4fF5HVld1N4sDATkZQM7jKVxdZ8EK09Giw==}
 
-  '@primeicons/vue@8.0.0-rc.2':
-    resolution: {integrity: sha512-/l6BNWQyG2wycvJ/GNLvl6v3t0nhTSQSF0jL/zkIFXnjeJsAtV28oegl7q7D714OFTTW5ZJH+wtjqgmFsIf+Vg==}
+  '@primeicons/vue@8.0.0':
+    resolution: {integrity: sha512-sIqk+kZB9Bn0FqODjDAnNvRXY4Ypky2TInY/oIC3aAJOud1A3FoKruMC8IwiRDz1uHzxYnQqWwtFsfZAgC7qXQ==}
     peerDependencies:
       vue: ^3
 
@@ -2020,6 +2023,10 @@ packages:
 
   '@primeuix/utils@0.6.4':
     resolution: {integrity: sha512-pZ5f+vj7wSzRhC7KoEQRU5fvYAe+RP9+m39CTscZ3UywCD1Y2o6Fe1rRgklMPSkzUcty2jzkA0zMYkiJBD1hgg==}
+    engines: {node: '>=12.11.0'}
+
+  '@primeuix/utils@0.8.0':
+    resolution: {integrity: sha512-dZSMKU2XJ7W7VDLuFMS/o4k+QYw4SYIpqSNhR/jdasMaaXl8eq0Gt7fTzTwwq7hgfmfOsI6V5xtzUUIvybOJ/w==}
     engines: {node: '>=12.11.0'}
 
   '@primeuix/utils@0.8.0-rc.2':
@@ -7935,14 +7942,14 @@ snapshots:
       '@xml-tools/parser': 1.0.11
       prettier: 2.8.8
 
-  '@primeicons/core@8.0.0-rc.2':
+  '@primeicons/core@8.0.0':
     dependencies:
-      '@primeuix/utils': 0.8.0-rc.2
+      '@primeuix/utils': 0.8.0
 
-  '@primeicons/vue@8.0.0-rc.2(vue@3.5.38(typescript@5.7.3))':
+  '@primeicons/vue@8.0.0(vue@3.5.38(typescript@5.7.3))':
     dependencies:
-      '@primeicons/core': 8.0.0-rc.2
-      '@primeuix/utils': 0.8.0-rc.2
+      '@primeicons/core': 8.0.0
+      '@primeuix/utils': 0.8.0
       vue: 3.5.38(typescript@5.7.3)
 
   '@primeui/license-manager@1.0.0-rc.2':
@@ -7971,6 +7978,8 @@ snapshots:
       '@primeuix/styled': 1.0.0-rc.3
 
   '@primeuix/utils@0.6.4': {}
+
+  '@primeuix/utils@0.8.0': {}
 
   '@primeuix/utils@0.8.0-rc.2': {}
 
@@ -11226,7 +11235,7 @@ snapshots:
 
   primevue@5.0.0-rc.2(vue@3.5.38(typescript@5.7.3)):
     dependencies:
-      '@primeicons/vue': 8.0.0-rc.2(vue@3.5.38(typescript@5.7.3))
+      '@primeicons/vue': 8.0.0(vue@3.5.38(typescript@5.7.3))
       '@primeui/license-manager': 1.0.0-rc.2
       '@primeuix/motion': 1.0.0-rc.2
       '@primeuix/styled': 1.0.0-rc.3
