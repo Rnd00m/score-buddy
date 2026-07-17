@@ -13,7 +13,6 @@
           @touchstart.capture="updateDirection($event, `${player.uuid}-dec`, 'down', getQuickDecrementItems(player).length)"
         >
           <Button
-            icon="pi pi-minus"
             severity="contrast"
             variant="text"
             raised
@@ -28,7 +27,9 @@
             @touchstart="handleStartPress(() => handleDecrementScore(player))"
             @touchend="handleStopPress"
             @touchcancel="handleStopPress"
-          />
+          >
+            <template #icon><Minus :size="18"/></template>
+          </Button>
           <SpeedDial
             class="speed-dial-glued"
             :transition-delay="0"
@@ -46,7 +47,9 @@
             }"
           >
             <template #icon="{ visible }">
-              <i class="pi pi-bolt quick-score-toggle-icon" :class="{ 'quick-score-toggle-icon-open': visible }" />
+              <span class="quick-score-toggle-icon inline-flex" :class="{ 'quick-score-toggle-icon-open': visible }">
+                <Bolt :size="16"/>
+              </span>
             </template>
             <template #item="{ item }">
               <div class="contents">
@@ -98,7 +101,6 @@
           @touchstart.capture="updateDirection($event, `${player.uuid}-inc`, 'down', getQuickIncrementItems(player).length)"
         >
           <Button
-            icon="pi pi-plus"
             severity="contrast"
             variant="text"
             raised
@@ -113,7 +115,9 @@
             @touchstart="handleStartPress(() => handleIncrementScore(player))"
             @touchend="handleStopPress"
             @touchcancel="handleStopPress"
-          />
+          >
+            <template #icon><Plus :size="18"/></template>
+          </Button>
           <SpeedDial
             class="speed-dial-glued"
             :transition-delay="0"
@@ -131,7 +135,9 @@
             }"
           >
             <template #icon="{ visible }">
-              <i class="pi pi-bolt quick-score-toggle-icon" :class="{ 'quick-score-toggle-icon-open': visible }" />
+              <span class="quick-score-toggle-icon inline-flex" :class="{ 'quick-score-toggle-icon-open': visible }">
+                <Bolt :size="16"/>
+              </span>
             </template>
             <template #item="{ item }">
               <div class="contents">
@@ -155,6 +161,9 @@
 
 <script lang="ts" setup>
 import type {Sortable} from "@shopify/draggable";
+import Bolt from '@primeicons/vue/bolt';
+import Minus from '@primeicons/vue/minus';
+import Plus from '@primeicons/vue/plus';
 
 const {t} = useI18n();
 const roomStore = useRoomStore();

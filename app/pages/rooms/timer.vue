@@ -4,7 +4,9 @@
 
     <h1 class="mb-6 flex items-center gap-4 shrink-0">
       <NuxtLink to="/rooms">
-        <Button severity="secondary" icon="pi pi-arrow-left"/>
+        <Button severity="secondary">
+          <template #icon><ArrowLeft :size="18"/></template>
+        </Button>
       </NuxtLink>
       <span class="text-3xl">{{ t('timer.title') }}</span>
     </h1>
@@ -29,8 +31,8 @@
             inputClass="w-16 text-center"
             :disabled="isRunning"
           >
-            <template #incrementicon><span class="pi pi-plus" /></template>
-            <template #decrementicon><span class="pi pi-minus" /></template>
+            <template #incrementicon><Plus :size="14"/></template>
+            <template #decrementicon><Minus :size="14"/></template>
           </InputNumber>
         </div>
         <span class="text-2xl mb-2">:</span>
@@ -47,8 +49,8 @@
             inputClass="w-16 text-center"
             :disabled="isRunning"
           >
-            <template #incrementicon><span class="pi pi-plus" /></template>
-            <template #decrementicon><span class="pi pi-minus" /></template>
+            <template #incrementicon><Plus :size="14"/></template>
+            <template #decrementicon><Minus :size="14"/></template>
           </InputNumber>
         </div>
       </div>
@@ -56,18 +58,28 @@
       <div class="flex items-center gap-2">
         <Button
           :label="startPauseLabel"
-          :icon="isRunning ? 'pi pi-pause' : 'pi pi-play'"
           severity="contrast"
           :disabled="totalDuration === 0"
           @click="toggleTimer"
-        />
-        <Button :label="t('timer.reset')" icon="pi pi-refresh" severity="secondary" outlined @click="resetTimer"/>
+        >
+          <template #icon><component :is="isRunning ? Pause : Play" :size="18"/></template>
+        </Button>
+        <Button :label="t('timer.reset')" severity="secondary" outlined @click="resetTimer">
+          <template #icon><Refresh :size="18"/></template>
+        </Button>
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
+import ArrowLeft from '@primeicons/vue/arrow-left';
+import Plus from '@primeicons/vue/plus';
+import Minus from '@primeicons/vue/minus';
+import Pause from '@primeicons/vue/pause';
+import Play from '@primeicons/vue/play';
+import Refresh from '@primeicons/vue/refresh';
+
 const {t} = useI18n();
 const toast = useToast();
 

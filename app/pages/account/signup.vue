@@ -4,7 +4,9 @@
 
     <h1 class="mb-6 flex items-center gap-4">
       <NuxtLink to="/account">
-        <Button severity="secondary" icon="pi pi-arrow-left"/>
+        <Button severity="secondary">
+          <template #icon><ArrowLeft :size="18"/></template>
+        </Button>
       </NuxtLink>
       <span class="text-3xl">{{ t('signup.title') }}</span>
     </h1>
@@ -49,6 +51,7 @@
 <script setup lang="ts">
 import {ref} from 'vue';
 import {Capacitor} from '@capacitor/core';
+import ArrowLeft from '@primeicons/vue/arrow-left';
 
 const {t} = useI18n();
 const supabase = useSupabaseClient();

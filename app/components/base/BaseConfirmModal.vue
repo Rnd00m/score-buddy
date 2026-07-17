@@ -3,7 +3,7 @@
     <template #container="{ message, acceptCallback, rejectCallback }">
       <div class="flex flex-col items-center p-8 bg-surface-0 dark:bg-surface-900 rounded">
         <div :class="['rounded-full text-primary-contrast inline-flex justify-center items-center h-24 w-24 -mt-20', iconBgClass]">
-          <i :class="[icon, 'text-5xl']"></i>
+          <component :is="icon" :size="48"/>
         </div>
         <span class="font-bold text-2xl block mb-2 mt-6">{{ message.header }}</span>
         <slot />
@@ -18,18 +18,21 @@
 </template>
 
 <script setup lang="ts">
+import type { Component } from "vue";
+import ExclamationCircle from '@primeicons/vue/exclamation-circle';
+
 const {t} = useI18n();
 
 withDefaults(defineProps<{
   group: string;
-  icon?: string;
+  icon?: Component;
   iconBgClass?: string;
   acceptLabel?: string;
   rejectLabel?: string;
   acceptSeverity?: string;
   rejectSeverity?: string;
 }>(), {
-  icon: 'pi pi-exclamation-circle',
+  icon: () => ExclamationCircle,
   iconBgClass: 'bg-orange-500',
   acceptSeverity: 'contrast',
   rejectSeverity: 'secondary',

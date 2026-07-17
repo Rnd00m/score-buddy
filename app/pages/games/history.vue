@@ -2,7 +2,7 @@
   <div class="flex flex-col h-full">
     <BaseConfirmModal
       group="replay"
-      icon="pi pi-replay"
+      :icon="Replay"
       icon-bg-class="bg-primary"
       :accept-label="t('common.yes')"
       :reject-label="t('common.no')"
@@ -14,7 +14,9 @@
       <span class="text-3xl">{{ t('gamesHistory.title') }}</span>
       <span class="inline-flex gap-2">
         <NuxtLink to="/games/new">
-          <Button raised severity="contrast" :disabled="roomStore.players.length === 0" icon="pi pi-play" />
+          <Button raised severity="contrast" :disabled="roomStore.players.length === 0">
+            <template #icon><Play :size="18"/></template>
+          </Button>
         </NuxtLink>
       </span>
     </h1>
@@ -25,6 +27,8 @@
 
 <script setup lang="ts">
 import type {Game} from "~/types/global";
+import Replay from '@primeicons/vue/replay';
+import Play from '@primeicons/vue/play';
 
 const {t} = useI18n();
 const roomStore = useRoomStore();

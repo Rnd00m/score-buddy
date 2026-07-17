@@ -9,17 +9,21 @@
       <p>{{ t('userGamesHistory.logInPrompt') }}</p>
 
       <NuxtLink to="/account/login">
-        <Button :label="t('account.logIn')" icon="pi pi-sign-in" fluid/>
+        <Button :label="t('account.logIn')" fluid>
+          <template #icon><SignIn :size="18"/></template>
+        </Button>
       </NuxtLink>
       <NuxtLink to="/account/signup">
-        <Button :label="t('account.signUp')" icon="pi pi-user-plus" outlined fluid/>
+        <Button :label="t('account.signUp')" outlined fluid>
+          <template #icon><UserPlus :size="18"/></template>
+        </Button>
       </NuxtLink>
     </div>
 
     <template v-else>
       <BaseConfirmModal
         group="replay"
-        icon="pi pi-replay"
+        :icon="Replay"
         icon-bg-class="bg-primary"
         :accept-label="t('common.yes')"
         :reject-label="t('common.no')"
@@ -41,6 +45,9 @@
 import { useQuery } from '@tanstack/vue-query';
 import type {Game} from "~/types/global";
 import { WinCondition } from "~/types/global";
+import SignIn from '@primeicons/vue/sign-in';
+import UserPlus from '@primeicons/vue/user-plus';
+import Replay from '@primeicons/vue/replay';
 
 const {t} = useI18n();
 const supabase = useSupabaseClient();

@@ -32,7 +32,9 @@
     </Column>
     <Column v-if="showReplayColumn" class="w-8">
       <template #body="{ data }">
-        <Button icon="pi pi-replay" severity="primary" size="small" :aria-label="t('gameHistoryTable.replay')" @click="emit('replay', data)"/>
+        <Button severity="primary" size="small" :aria-label="t('gameHistoryTable.replay')" @click="emit('replay', data)">
+          <template #icon><Replay :size="16"/></template>
+        </Button>
       </template>
     </Column>
 
@@ -50,6 +52,7 @@
 
 <script setup lang="ts">
 import type {Game} from "~/types/global";
+import Replay from '@primeicons/vue/replay';
 
 const {t} = useI18n();
 const {fromNow, formattedDuration} = useDateFormat();

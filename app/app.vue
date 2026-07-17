@@ -15,7 +15,7 @@
     <template #container="{ message, acceptCallback, rejectCallback }">
       <div class="flex flex-col items-center p-8 bg-surface-0 dark:bg-surface-900 rounded">
         <div class="rounded-full bg-primary text-primary-contrast inline-flex justify-center items-center h-24 w-24 -mt-20">
-          <i class="pi pi-android text-5xl"></i>
+          <Android :size="48"/>
         </div>
         <span class="font-bold text-2xl block mb-2 mt-6">{{ message.header }}</span>
         <p class="mb-0 text-center">{{ message.message }}</p>
@@ -30,7 +30,7 @@
 
 <script setup lang="ts">
 import { VueQueryDevtools } from '@tanstack/vue-query-devtools'
-import { Play, History, Users, Clock, User } from '@primeicons/vue';
+import { Play, History, Users, Clock, User, Android } from '@primeicons/vue';
 
 const { t, locale } = useI18n();
 

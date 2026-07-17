@@ -52,7 +52,9 @@
             }"
           >
             <template #icon="{ visible }">
-              <i class="pi pi-bolt quick-score-toggle-icon" :class="{ 'quick-score-toggle-icon-open': visible }" />
+              <span class="quick-score-toggle-icon inline-flex" :class="{ 'quick-score-toggle-icon-open': visible }">
+                <Bolt :size="18"/>
+              </span>
             </template>
             <template #item="{ item }">
               <div class="contents">
@@ -69,7 +71,6 @@
             </template>
           </SpeedDial>
           <Button
-            icon="pi pi-minus"
             severity="contrast"
             variant="text"
             raised
@@ -85,12 +86,13 @@
             @touchstart="handleStartPress(() => handleDecrementScore(player))"
             @touchend="handleStopPress"
             @touchcancel="handleStopPress"
-          />
+          >
+            <template #icon><Minus :size="24"/></template>
+          </Button>
         </div>
 
         <div class="flex flex-1 no-drag">
           <Button
-            icon="pi pi-plus"
             severity="contrast"
             variant="text"
             raised
@@ -106,7 +108,9 @@
             @touchstart="handleStartPress(() => handleIncrementScore(player))"
             @touchend="handleStopPress"
             @touchcancel="handleStopPress"
-          />
+          >
+            <template #icon><Plus :size="24"/></template>
+          </Button>
           <SpeedDial
             class="relative speed-dial-glued flex-none w-1/4"
             :transition-delay="0"
@@ -124,7 +128,9 @@
             }"
           >
             <template #icon="{ visible }">
-              <i class="pi pi-bolt quick-score-toggle-icon" :class="{ 'quick-score-toggle-icon-open': visible }" />
+              <span class="quick-score-toggle-icon inline-flex" :class="{ 'quick-score-toggle-icon-open': visible }">
+                <Bolt :size="18"/>
+              </span>
             </template>
             <template #item="{ item }">
               <div class="contents">
@@ -148,6 +154,9 @@
 
 <script lang="ts" setup>
 import type {Sortable} from "@shopify/draggable";
+import Bolt from '@primeicons/vue/bolt';
+import Minus from '@primeicons/vue/minus';
+import Plus from '@primeicons/vue/plus';
 
 const {t} = useI18n();
 const roomStore = useRoomStore();

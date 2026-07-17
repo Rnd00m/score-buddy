@@ -5,7 +5,7 @@
       <template #container="{ message, acceptCallback, rejectCallback }">
         <div class="flex flex-col items-center p-8 bg-surface-0 dark:bg-surface-900 rounded">
           <div class="rounded-full bg-orange-500 text-primary-contrast inline-flex justify-center items-center h-24 w-24 -mt-20">
-            <i class="pi pi-exclamation-circle text-5xl"></i>
+            <ExclamationCircle :size="48"/>
           </div>
           <span class="font-bold text-2xl block mb-2 mt-6">{{ message.header }}</span>
           <p class="mb-0">{{ message.message }}</p>
@@ -21,7 +21,7 @@
       <template #container="{ message, acceptCallback, rejectCallback }">
         <div class="flex flex-col items-center p-8 bg-surface-0 dark:bg-surface-900 rounded">
           <div class="rounded-full bg-red-500 text-primary-contrast inline-flex justify-center items-center h-24 w-24 -mt-20">
-            <i class="pi pi-stop-circle text-5xl"></i>
+            <Times :size="48"/>
           </div>
           <span class="font-bold text-2xl block mb-2 mt-6">{{ message.header }}</span>
           <p class="mb-0">{{ message.message }}</p>
@@ -37,7 +37,7 @@
       <template #container="{ message, acceptCallback, rejectCallback }">
         <div class="flex flex-col items-center p-8 bg-surface-0 dark:bg-surface-900 rounded">
           <div class="rounded-full bg-orange-500 text-primary-contrast inline-flex justify-center items-center h-24 w-24 -mt-20">
-            <i class="pi pi-exclamation-circle text-5xl"></i>
+            <ExclamationCircle :size="48"/>
           </div>
           <span class="font-bold text-2xl block mb-2 mt-6">{{ message.header }}</span>
           <p class="mb-0">{{ message.message }}</p>
@@ -56,7 +56,7 @@
               class="rounded-full bg-primary text-primary-contrast inline-flex justify-center items-center h-24 w-24 -mt-20"
               :style="firstPlayerIconStyle"
           >
-            <i class="pi pi-star-fill text-5xl"></i>
+            <StarFill :size="48"/>
           </div>
           <span class="font-bold text-2xl block mb-2 mt-6">{{ message.header }}</span>
           <p class="mb-0">{{ message.message }}</p>
@@ -80,8 +80,8 @@
             inputClass="w-14 text-center"
             :aria-label="t('room.diceCount')"
           >
-            <template #incrementicon><span class="pi pi-plus" /></template>
-            <template #decrementicon><span class="pi pi-minus" /></template>
+            <template #incrementicon><Plus :size="14"/></template>
+            <template #decrementicon><Minus :size="14"/></template>
           </InputNumber>
           <span>d</span>
           <InputNumber
@@ -94,22 +94,27 @@
             inputClass="w-16 text-center"
             :aria-label="t('room.diceSides')"
           >
-            <template #incrementicon><span class="pi pi-plus" /></template>
-            <template #decrementicon><span class="pi pi-minus" /></template>
+            <template #incrementicon><Plus :size="14"/></template>
+            <template #decrementicon><Minus :size="14"/></template>
           </InputNumber>
           <Button
-            icon="pi pi-times"
             severity="danger"
             size="small"
             text
             :aria-label="t('common.cancel')"
             :disabled="diceGroups.length === 1"
             @click="removeDiceGroup(index)"
-          />
+          >
+            <template #icon><Times :size="14"/></template>
+          </Button>
         </div>
 
-        <Button :label="t('room.addDie')" icon="pi pi-plus" severity="secondary" outlined @click="addDiceGroup" />
-        <Button :label="t('room.roll')" icon="pi pi-play" severity="contrast" @click="handleRollDice" />
+        <Button :label="t('room.addDie')" severity="secondary" outlined @click="addDiceGroup">
+          <template #icon><Plus :size="18"/></template>
+        </Button>
+        <Button :label="t('room.roll')" severity="contrast" @click="handleRollDice">
+          <template #icon><Play :size="18"/></template>
+        </Button>
 
         <div v-if="diceResults.length" class="flex flex-col gap-1 border-t border-surface-200 dark:border-surface-700 pt-4">
           <div v-for="(result, index) in diceResults" :key="index">
@@ -127,11 +132,17 @@
     <h1 class="mb-6 flex justify-between items-center shrink-0">
       <span class="text-3xl">{{ t('room.title') }}</span>
       <span class="inline-flex gap-2">
-        <Button raised severity="danger" icon="pi pi-times" :disabled="roomStore.players.length === 0" @click="handleEndRoom" />
+        <Button raised severity="danger" :disabled="roomStore.players.length === 0" @click="handleEndRoom">
+          <template #icon><Times :size="18"/></template>
+        </Button>
         <NuxtLink to="/rooms/players/add">
-            <Button raised severity="contrast" icon="pi pi-user-plus" />
+          <Button raised severity="contrast">
+            <template #icon><UserPlus :size="18"/></template>
+          </Button>
         </NuxtLink>
-        <Button raised severity="contrast" icon="pi pi-ellipsis-v" :aria-label="t('common.menu')" @click="toggleRoomMenu" />
+        <Button raised severity="contrast" :aria-label="t('common.menu')" @click="toggleRoomMenu">
+          <template #icon><EllipsisV :size="18"/></template>
+        </Button>
       </span>
     </h1>
 
@@ -162,7 +173,9 @@
       <Column field="score" :header="t('room.score')" sortable></Column>
       <Column class="w-8">
         <template #body="{ data }">
-          <Button icon="pi pi-times" @click="handleRemovePlayer(data.uuid)" severity="danger" size="small" />
+          <Button @click="handleRemovePlayer(data.uuid)" severity="danger" size="small">
+            <template #icon><Times :size="14"/></template>
+          </Button>
         </template>
       </Column>
       <template #expansion="slotProps">
@@ -171,7 +184,7 @@
           <Column field="name" :header="t('room.game')" />
           <Column :header="t('room.rank')" >
             <template #body="{ data }">
-              {{ data.rank }} <i v-if="data.rank === 1" class="pi pi-trophy text-xs"></i>
+              {{ data.rank }} <Trophy v-if="data.rank === 1" :size="12"/>
             </template>
           </Column>
           <Column field="finalScore" :header="t('room.points')" />
@@ -188,6 +201,19 @@
 
 <script setup lang="ts">
 import type { Player } from "~/types/global";
+import ExclamationCircle from '@primeicons/vue/exclamation-circle';
+import StarFill from '@primeicons/vue/star-fill';
+import Plus from '@primeicons/vue/plus';
+import Minus from '@primeicons/vue/minus';
+import Times from '@primeicons/vue/times';
+import Play from '@primeicons/vue/play';
+import UserPlus from '@primeicons/vue/user-plus';
+import EllipsisV from '@primeicons/vue/ellipsis-v';
+import Trophy from '@primeicons/vue/trophy';
+import Star from '@primeicons/vue/star';
+import Box from '@primeicons/vue/box';
+import Stopwatch from '@primeicons/vue/stopwatch';
+import Eraser from '@primeicons/vue/eraser';
 
 const {t} = useI18n();
 const {fromNow} = useDateFormat();
@@ -201,7 +227,7 @@ const roomMenu = ref();
 const roomMenuItems = computed(() => [
   {
     label: t('room.determineFirstPlayer'),
-    icon: 'pi pi-star',
+    icon: Star,
     disabled: roomStore.players.length < 2,
     command: () => {
       handleDetermineFirstPlayer();
@@ -209,21 +235,21 @@ const roomMenuItems = computed(() => [
   },
   {
     label: t('room.rollDice'),
-    icon: 'pi pi-box',
+    icon: Box,
     command: () => {
       isDiceDialogOpened.value = true;
     }
   },
   {
     label: t('room.timer'),
-    icon: 'pi pi-stopwatch',
+    icon: Stopwatch,
     command: () => {
       router.push('/rooms/timer');
     }
   },
   {
     label: t('room.resetLobby'),
-    icon: 'pi pi-eraser',
+    icon: Eraser,
     disabled: roomStore.players.length === 0,
     command: () => {
       handleResetRoom();

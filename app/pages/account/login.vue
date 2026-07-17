@@ -5,7 +5,7 @@
       <template #container="{ message, acceptCallback, rejectCallback }">
         <div class="flex flex-col items-center p-8 bg-surface-0 dark:bg-surface-900 rounded">
           <div class="rounded-full bg-primary text-primary-contrast inline-flex justify-center items-center h-24 w-24 -mt-20">
-            <i class="pi pi-cloud-upload text-5xl"></i>
+            <CloudUpload :size="48"/>
           </div>
           <span class="font-bold text-2xl block mb-2 mt-6">{{ message.header }}</span>
           <p class="mb-0">{{ message.message }}</p>
@@ -19,7 +19,9 @@
 
     <h1 class="mb-6 flex items-center gap-4">
       <NuxtLink to="/account">
-        <Button severity="secondary" icon="pi pi-arrow-left"/>
+        <Button severity="secondary">
+          <template #icon><ArrowLeft :size="18"/></template>
+        </Button>
       </NuxtLink>
       <span class="text-3xl">{{ t('login.title') }}</span>
     </h1>
@@ -54,6 +56,8 @@
 
 <script setup lang="ts">
 import {ref} from 'vue';
+import CloudUpload from '@primeicons/vue/cloud-upload';
+import ArrowLeft from '@primeicons/vue/arrow-left';
 
 const {t} = useI18n();
 const supabase = useSupabaseClient();

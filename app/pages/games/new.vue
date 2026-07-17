@@ -2,7 +2,9 @@
   <div>
     <h1 class="mb-6 flex items-center gap-4">
       <NuxtLink to="#" @click.prevent="$router.back()">
-        <Button severity="secondary" icon="pi pi-arrow-left"/>
+        <Button severity="secondary">
+          <template #icon><ArrowLeft :size="18"/></template>
+        </Button>
       </NuxtLink>
       <span class="text-3xl">{{ t('newGame.title') }}</span>
     </h1>
@@ -38,10 +40,10 @@
         <label for="startScore">{{ t('newGame.startScore') }}</label>
         <InputNumber id="startScore" name="startScore" :min="lowestPossibleScore !== null ? lowestPossibleScore : undefined" showButtons buttonLayout="horizontal" :step="1" fluid>
           <template #incrementicon>
-            <span class="pi pi-plus" />
+            <Plus :size="14"/>
           </template>
           <template #decrementicon>
-            <span class="pi pi-minus" />
+            <Minus :size="14"/>
           </template>
         </InputNumber>
         <Message v-if="$form.startScore?.invalid" severity="error" size="small" variant="simple">{{
@@ -54,10 +56,10 @@
         <label for="endingScore">{{ t('newGame.endingScore') }}</label>
         <InputNumber id="endingScore" name="endingScore" :min="lowestPossibleScore !== null ? lowestPossibleScore : undefined" showButtons buttonLayout="horizontal" :step="1" fluid>
           <template #incrementicon>
-            <span class="pi pi-plus" />
+            <Plus :size="14"/>
           </template>
           <template #decrementicon>
-            <span class="pi pi-minus" />
+            <Minus :size="14"/>
           </template>
         </InputNumber>
         <Message v-if="$form.endingScore?.invalid" severity="error" size="small" variant="simple">{{
@@ -70,10 +72,9 @@
         <div class="flex items-center justify-between">
           <span class="inline-flex items-center gap-2">
             <label for="enableWinningRounds">{{ t('newGame.enableWinningRounds') }}</label>
-            <i
-                class="pi pi-info-circle text-surface-500 cursor-help"
-                @click="toggleWinningRoundsPopover"
-            />
+            <span class="text-surface-500 cursor-help inline-flex" @click="toggleWinningRoundsPopover">
+              <InfoCircle :size="18"/>
+            </span>
             <Popover ref="winningRoundsPopover">
               <p class="max-w-60">{{ t('newGame.winningRoundsTooltip') }}</p>
             </Popover>
@@ -86,10 +87,10 @@
         <label for="winningRounds">{{ t('newGame.winningRounds') }}</label>
         <InputNumber id="winningRounds" name="winningRounds" :min="1" showButtons buttonLayout="horizontal" :step="1" fluid>
           <template #incrementicon>
-            <span class="pi pi-plus" />
+            <Plus :size="14"/>
           </template>
           <template #decrementicon>
-            <span class="pi pi-minus" />
+            <Minus :size="14"/>
           </template>
         </InputNumber>
         <Message v-if="$form.winningRounds?.invalid" severity="error" size="small" variant="simple">{{
@@ -111,10 +112,10 @@
         <label for="lowestPossibleScore">{{ t('newGame.lowestPossibleScore') }}</label>
         <InputNumber id="lowestPossibleScore" name="lowestPossibleScore" showButtons buttonLayout="horizontal" :step="1" fluid v-model="lowestPossibleScore">
           <template #incrementicon>
-            <span class="pi pi-plus" />
+            <Plus :size="14"/>
           </template>
           <template #decrementicon>
-            <span class="pi pi-minus" />
+            <Minus :size="14"/>
           </template>
         </InputNumber>
         <Message v-if="$form.lowestPossibleScore?.invalid" severity="error" size="small" variant="simple">{{
@@ -131,6 +132,10 @@
 <script setup lang="ts">
 import type {FormResolverOptions, FormSubmitEvent} from '@primevue/forms';
 import { WinCondition } from '~/types/global';
+import ArrowLeft from '@primeicons/vue/arrow-left';
+import Plus from '@primeicons/vue/plus';
+import Minus from '@primeicons/vue/minus';
+import InfoCircle from '@primeicons/vue/info-circle';
 
 const {t} = useI18n();
 const roomStore = useRoomStore();

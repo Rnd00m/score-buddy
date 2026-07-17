@@ -4,7 +4,7 @@
       <template #container="{ message, acceptCallback, rejectCallback }">
         <div class="flex flex-col items-center p-8 bg-surface-0 dark:bg-surface-900 rounded">
           <div class="rounded-full bg-orange-500 text-primary-contrast inline-flex justify-center items-center h-24 w-24 -mt-20">
-            <i class="pi pi-exclamation-circle text-5xl"></i>
+            <ExclamationCircle :size="48"/>
           </div>
           <span class="font-bold text-2xl block mb-2 mt-6">{{ message.header }}</span>
           <p class="mb-0">{{ message.message }}</p>
@@ -19,10 +19,12 @@
       <template #container="{ message, acceptCallback, rejectCallback }">
         <div class="flex flex-col items-center p-8 bg-surface-0 dark:bg-surface-900 rounded relative">
           <div class="rounded-full bg-orange-500 text-primary-contrast inline-flex justify-center items-center h-24 w-24 -mt-20">
-            <i class="pi pi-exclamation-circle text-5xl"></i>
+            <ExclamationCircle :size="48"/>
           </div>
           <div class="absolute top-1 right-1">
-            <Button size="large" icon="pi pi-times" severity="danger" variant="text" rounded :aria-label="t('common.cancel')" @click="confirm.close()" />
+            <Button size="large" severity="danger" variant="text" rounded :aria-label="t('common.cancel')" @click="confirm.close()">
+              <template #icon><Times :size="20"/></template>
+            </Button>
           </div>
           <span class="font-bold text-2xl block mb-2 mt-6">{{ message.header }}</span>
           <p class="mb-0">{{ message.message }}</p>
@@ -40,7 +42,7 @@
               class="rounded-full bg-primary text-primary-contrast inline-flex justify-center items-center h-24 w-24 -mt-20"
               :style="endGameIconStyle"
           >
-            <i class="pi pi-trophy text-5xl"></i>
+            <Trophy :size="48"/>
           </div>
           <span class="font-bold text-2xl block mb-2 mt-6">{{ message.header }}</span>
           <p class="mb-0">{{ message.message }}</p>
@@ -64,7 +66,7 @@
       <template #container="{ message, acceptCallback }">
         <div class="flex flex-col items-center p-8 bg-surface-0 dark:bg-surface-900 rounded">
           <div class="rounded-full bg-orange-500 text-primary-contrast inline-flex justify-center items-center h-24 w-24 -mt-20">
-            <i class="pi pi-exclamation-circle text-5xl"></i>
+            <ExclamationCircle :size="48"/>
           </div>
           <span class="font-bold text-2xl block mb-2 mt-6">{{ message.header }}</span>
           <p class="mb-0">{{ message.message }}</p>
@@ -81,7 +83,7 @@
               class="rounded-full bg-primary text-primary-contrast inline-flex justify-center items-center h-24 w-24 -mt-20"
               :style="endGameIconStyle"
           >
-            <i class="pi pi-flag-fill text-5xl"></i>
+            <FlagFill :size="48"/>
           </div>
           <span class="font-bold text-2xl block mb-2 mt-6">{{ message.header }}</span>
           <p class="mb-0">{{ message.message }}</p>
@@ -101,10 +103,18 @@
     <h1 class="mb-6 flex justify-between items-center">
       <span class="text-3xl truncate w-full pr-2">{{ roomStore.currentGame.name }}</span>
       <span class="inline-flex gap-2">
-      <Button @click="handleUndo" :disabled="!canUndo" raised variant="outlined" severity="secondary" icon="pi pi-undo" :aria-label="t('common.undo')" />
-      <Button @click="handleRedo" :disabled="!canRedo" raised variant="outlined" severity="secondary" icon="pi pi-undo redo-icon" :aria-label="t('common.redo')" />
-      <Button @click="handleEndGame" raised severity="contrast" icon="pi pi-stop" />
-      <Button @click="toggleGameMenu" raised severity="contrast" icon="pi pi-ellipsis-v" :aria-label="t('common.menu')" />
+      <Button @click="handleUndo" :disabled="!canUndo" raised variant="outlined" severity="secondary" :aria-label="t('common.undo')">
+        <template #icon><Undo :size="18"/></template>
+      </Button>
+      <Button @click="handleRedo" :disabled="!canRedo" raised variant="outlined" severity="secondary" :aria-label="t('common.redo')">
+        <template #icon><span class="redo-icon inline-flex"><Undo :size="18"/></span></template>
+      </Button>
+      <Button @click="handleEndGame" raised severity="contrast">
+        <template #icon><Stop :size="18"/></template>
+      </Button>
+      <Button @click="toggleGameMenu" raised severity="contrast" :aria-label="t('common.menu')">
+        <template #icon><EllipsisV :size="18"/></template>
+      </Button>
     </span>
     </h1>
 
@@ -116,6 +126,16 @@
 </template>
 
 <script setup lang="ts">
+import ExclamationCircle from '@primeicons/vue/exclamation-circle';
+import Times from '@primeicons/vue/times';
+import Trophy from '@primeicons/vue/trophy';
+import FlagFill from '@primeicons/vue/flag-fill';
+import Undo from '@primeicons/vue/undo';
+import Stop from '@primeicons/vue/stop';
+import EllipsisV from '@primeicons/vue/ellipsis-v';
+import Info from '@primeicons/vue/info';
+import Replay from '@primeicons/vue/replay';
+
 const {t} = useI18n();
 const roomStore = useRoomStore();
 const confirm = useConfirm();
@@ -128,14 +148,14 @@ const gameMenu = ref();
 const gameMenuItems = computed(() => [
   {
     label: t('game.info'),
-    icon: 'pi pi-info',
+    icon: Info,
     command: () => {
       isGameInfoDialogOpened.value = true;
     }
   },
   {
     label: t('game.reset'),
-    icon: 'pi pi-replay',
+    icon: Replay,
     command: () => {
       handleResetGame();
     }

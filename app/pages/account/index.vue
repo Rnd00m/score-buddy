@@ -5,7 +5,7 @@
       <template #container="{ message, acceptCallback, rejectCallback }">
         <div class="flex flex-col items-center p-8 bg-surface-0 dark:bg-surface-900 rounded">
           <div class="rounded-full bg-red-500 text-primary-contrast inline-flex justify-center items-center h-24 w-24 -mt-20">
-            <i class="pi pi-sign-out text-5xl"></i>
+            <SignOut :size="48"/>
           </div>
           <span class="font-bold text-2xl block mb-2 mt-6">{{ message.header }}</span>
           <p class="mb-0">{{ message.message }}</p>
@@ -19,7 +19,7 @@
 
     <BaseConfirmModal
       group="deleteAccount"
-      icon="pi pi-trash"
+      :icon="Trash"
       icon-bg-class="bg-red-500"
       accept-severity="danger"
       :accept-label="t('account.deleteAccountConfirmAccept')"
@@ -30,26 +30,35 @@
     <div v-if="user" class="flex flex-col gap-4">
       <p>{{ t('account.loggedInAs') }} <strong>{{ user.email }}</strong></p>
 
-      <Button :label="t('account.syncNow')" icon="pi pi-sync" :loading="isSyncing" @click="handleSync"/>
-      <Button :label="t('account.logOut')" severity="danger" outlined icon="pi pi-sign-out" @click="handleLogout"/>
+      <Button :label="t('account.syncNow')" :loading="isSyncing" @click="handleSync">
+        <template #icon><Sync :size="18"/></template>
+      </Button>
+      <Button :label="t('account.logOut')" severity="danger" outlined @click="handleLogout">
+        <template #icon><SignOut :size="18"/></template>
+      </Button>
       <Button
         :label="t('account.deleteAccount')"
         severity="danger"
         text
-        icon="pi pi-trash"
         :loading="isDeletingAccount"
         @click="handleDeleteAccount"
-      />
+      >
+        <template #icon><Trash :size="18"/></template>
+      </Button>
     </div>
 
     <div v-else class="flex flex-col gap-4">
       <p>{{ t('account.createAccountPrompt') }}</p>
 
       <NuxtLink to="/account/login">
-        <Button :label="t('account.logIn')" icon="pi pi-sign-in" fluid/>
+        <Button :label="t('account.logIn')" fluid>
+          <template #icon><SignIn :size="18"/></template>
+        </Button>
       </NuxtLink>
       <NuxtLink to="/account/signup">
-        <Button :label="t('account.signUp')" icon="pi pi-user-plus" outlined fluid/>
+        <Button :label="t('account.signUp')" outlined fluid>
+          <template #icon><UserPlus :size="18"/></template>
+        </Button>
       </NuxtLink>
     </div>
 
@@ -74,10 +83,9 @@
       <div class="flex items-center justify-between">
         <span class="inline-flex items-center gap-2">
           <label for="duel-mode-switch">{{ t('account.duelMode') }}</label>
-          <i
-            class="pi pi-info-circle text-surface-500 cursor-help"
-            @click="toggleDuelModePopover"
-          />
+          <span class="text-surface-500 cursor-help inline-flex" @click="toggleDuelModePopover">
+            <InfoCircle :size="18"/>
+          </span>
           <Popover ref="duelModePopover">
             <p class="max-w-60">{{ isWakeLockSupported ? t('account.duelModeTooltip') : t('account.duelModeTooltipNoWakeLock') }}</p>
           </Popover>
@@ -107,6 +115,12 @@
 
 <script setup lang="ts">
 import type {LocaleObject} from '@nuxtjs/i18n';
+import SignOut from '@primeicons/vue/sign-out';
+import Trash from '@primeicons/vue/trash';
+import Sync from '@primeicons/vue/sync';
+import SignIn from '@primeicons/vue/sign-in';
+import UserPlus from '@primeicons/vue/user-plus';
+import InfoCircle from '@primeicons/vue/info-circle';
 const {t, locale, locales, setLocale} = useI18n() as ReturnType<typeof useI18n> & {
   locales: ComputedRef<LocaleObject[]>;
   setLocale: (locale: string) => Promise<void>;
