@@ -65,7 +65,7 @@ const { init: initColorScheme } = useColorScheme();
 const { init: initWakeLock } = useScreenWakeLock();
 const { init: initDuelMode } = useDuelMode();
 const { init: initQuickScoreValues } = useQuickScoreValues();
-const { isAndroidWebBrowser, openPlayStore } = useAndroidAppPrompt();
+const { shouldShowPrompt, markPromptAsSeen, openPlayStore } = useAndroidAppPrompt();
 const confirm = useConfirm();
 
 onMounted(() => {
@@ -74,13 +74,17 @@ onMounted(() => {
   initDuelMode();
   initQuickScoreValues();
 
-  if (isAndroidWebBrowser()) {
+  if (shouldShowPrompt()) {
     confirm.require({
       group: 'androidApp',
       header: t('androidApp.title'),
       message: t('androidApp.message'),
       accept: () => {
+        markPromptAsSeen();
         openPlayStore();
+      },
+      reject: () => {
+        markPromptAsSeen();
       },
     });
   }

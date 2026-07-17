@@ -1,6 +1,7 @@
 import {Capacitor} from '@capacitor/core';
 
 const PLAY_STORE_APP_URL = 'market://details?id=com.scorebuddy.app';
+const STORAGE_KEY = 'androidAppPromptSeen';
 
 export const useAndroidAppPrompt = () => {
   const isAndroidWebBrowser = (): boolean => {
@@ -9,9 +10,17 @@ export const useAndroidAppPrompt = () => {
     return /Android/i.test(navigator.userAgent);
   };
 
+  const hasSeenPrompt = (): boolean => localStorage.getItem(STORAGE_KEY) === 'true';
+
+  const markPromptAsSeen = () => {
+    localStorage.setItem(STORAGE_KEY, 'true');
+  };
+
+  const shouldShowPrompt = (): boolean => isAndroidWebBrowser() && !hasSeenPrompt();
+
   const openPlayStore = () => {
     window.location.href = PLAY_STORE_APP_URL;
   };
 
-  return {isAndroidWebBrowser, openPlayStore};
+  return {shouldShowPrompt, markPromptAsSeen, openPlayStore};
 };
