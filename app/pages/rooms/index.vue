@@ -184,7 +184,7 @@
           <Column field="name" :header="t('room.game')" />
           <Column :header="t('room.rank')" >
             <template #body="{ data }">
-              {{ data.rank }} <Trophy v-if="data.rank === 1" :size="12"/>
+              <span class="inline-flex items-center gap-1">{{ data.rank }} <Trophy v-if="data.rank === 1" :size="12"/></span>
             </template>
           </Column>
           <Column field="finalScore" :header="t('room.points')" />

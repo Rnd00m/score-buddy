@@ -148,6 +148,7 @@
 
 <script setup lang="ts">
 import GameCallToActionCard from "~/components/game/GameCallToActionCard.vue";
+import type {GameScore} from "~/types/global";
 
 const {t} = useI18n();
 const roomStore = useRoomStore();
@@ -162,7 +163,8 @@ const handleReplayGame = () => {
       lastCompletedGame.endingScore,
       lastCompletedGame.winCondition,
       lastCompletedGame.lowestPossibleScore,
-      lastCompletedGame.winningRounds ?? 1
+      lastCompletedGame.winningRounds ?? 1,
+      lastCompletedGame.scores.map((score: GameScore) => score.player)
   );
 
   router.push('/game');

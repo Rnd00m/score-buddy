@@ -104,7 +104,8 @@ const handleReplayGame = (game: Game) => {
         game.endingScore,
         game.winCondition,
         game.lowestPossibleScore,
-        game.winningRounds ?? 1
+        game.winningRounds ?? 1,
+        game.scores.map((score) => score.player)
       );
 
       router.push('/game');

@@ -2,7 +2,7 @@
   <DataTable size="large" :value="scores" removableSort sortField="rank" :sortOrder="1">
     <Column field="rank" :header="t('gameHistoryTable.rank')" sortable>
       <template #body="{ data }">
-        {{ data.rank }} <Trophy v-if="data.rank === 1" :size="12"/>
+        <span class="inline-flex items-center gap-1">{{ data.rank }} <Trophy v-if="data.rank === 1" :size="12"/></span>
       </template>
     </Column>
     <Column field="player" :header="t('gameHistoryTable.player')" #body="{ data }">

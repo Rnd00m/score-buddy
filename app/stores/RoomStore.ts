@@ -60,8 +60,13 @@ actions: {
     endingScore: number | null,
     winCondition: WinCondition,
     lowestPossibleScore: number | null,
-    winningRounds: number = 1
+    winningRounds: number = 1,
+    fallbackPlayers: Player[] = []
   ) {
+    if (this.players.length === 0 && fallbackPlayers.length > 0) {
+      this.players = fallbackPlayers.map((player) => ({ ...player, score: 0 }));
+    }
+
     this.currentGame = {
       uuid: uuidv4(),
       name,
