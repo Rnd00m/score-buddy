@@ -193,7 +193,7 @@
   },
   "userGamesHistory": {
     "title": "Historique",
-    "gamesCount": "{count} parties",
+    "gamesCount": "{count} partie | {count} partie | {count} parties",
     "logInPrompt": "Connectez-vous pour voir l'historique de toutes les parties jouées sur votre compte, sur tous vos appareils.",
     "noGamesFound": "Aucune partie trouvée."
   },
