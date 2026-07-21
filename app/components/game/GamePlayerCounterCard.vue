@@ -58,7 +58,7 @@
                   variant="text"
                   raised
                   type="button"
-                  class="flex items-center justify-center text-center leading-none rounded-full text-base font-bold p-3"
+                  class="flex items-center justify-center text-center leading-none rounded-full text-base font-bold min-w-11 h-11 px-2 shrink-0"
                   :style="{
                     backgroundColor: getButtonColor(player.color.value, 'dark'),
                     color: getTextColorContrasted(player.color.value),
@@ -146,7 +146,7 @@
                   variant="text"
                   raised
                   type="button"
-                  class="flex items-center justify-center text-center leading-none rounded-full text-base font-bold p-3"
+                  class="flex items-center justify-center text-center leading-none rounded-full text-base font-bold min-w-11 h-11 px-2 shrink-0"
                   :style="{ backgroundColor: getButtonColor(player.color.value, 'dark'), color: getTextColorContrasted(player.color.value) }"
                   @click.stop="item.command?.({ originalEvent: $event, item })"
                 >{{ item.label }}</Button>
