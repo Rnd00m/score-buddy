@@ -49,6 +49,10 @@ body {
 :root {
   //--bottom-nav-gap: 0.5rem;
   --bottom-nav-background: var(--p-primary-500);
+  // Kept in sync with .bottom-nav's actual rendered height (icon height +
+  // link's vertical padding) so other bottom-anchored UI (e.g. Toast) can
+  // clear it without hardcoding the number a second time.
+  --bottom-nav-height: 3.5125rem;
 }
 
 // -------------------- Main menu -------------------- >
@@ -88,6 +92,14 @@ body {
 .app-dark .bottom-nav-link.route-active .bottom-nav-icon {
   background: var(--p-primary-500);
   color: var(--p-dark-secondary-900);
+}
+
+// -------------------- Toast -------------------- >
+// PrimeVue's bottom-center offset (20px from viewport bottom, set inline)
+// sits underneath the bottom nav; clear it (plus the gesture-nav safe area)
+// instead. !important is required to beat the component's inline style.
+.p-toast.p-toast-bottom-center {
+  bottom: calc(var(--bottom-nav-height) + env(safe-area-inset-bottom) + 12px) !important;
 }
 
 // -------------------- AutoComplete -------------------- >
