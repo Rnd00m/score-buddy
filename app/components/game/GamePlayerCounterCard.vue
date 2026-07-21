@@ -202,7 +202,7 @@ onMounted(async () => {
 
     sortable = new Sortable(cardsContainer.value, {
       draggable: '.player-score-card',
-      delay: { mouse: 0, drag: 0, touch: 100 },
+      delay: { mouse: 100, drag: 0, touch: 100 },
       mirror: {
         constrainDimensions: true,
       },
