@@ -208,11 +208,21 @@ actions: {
       return;
     }
 
-    const clampedScore = Math.min(Math.max(score, MIN_SCORE), MAX_SCORE);
+    let clampedScore = Math.min(Math.max(score, MIN_SCORE), MAX_SCORE);
 
-    playerScore.score = this.currentGame.lowestPossibleScore !== null
-      ? Math.max(clampedScore, this.currentGame.lowestPossibleScore)
-      : clampedScore;
+    if (this.currentGame.lowestPossibleScore !== null) {
+      clampedScore = Math.max(clampedScore, this.currentGame.lowestPossibleScore);
+    }
+
+    // Mirrors the increment/decrement guard: the score can never move past
+    // endingScore, whichever direction it's being approached from.
+    if (this.currentGame.endingScore !== null) {
+      clampedScore = this.currentGame.endingScore >= this.currentGame.startScore
+        ? Math.min(clampedScore, this.currentGame.endingScore)
+        : Math.max(clampedScore, this.currentGame.endingScore);
+    }
+
+    playerScore.score = clampedScore;
 
     this.calculateRankings(this.currentGame);
   },
