@@ -18,7 +18,7 @@
       </div>
 
       <div class="flex items-end gap-4">
-        <div class="flex flex-col items-center gap-1">
+        <div class="flex flex-col items-center gap-1" @mousedown="blurSpinnerButtonFocus">
           <label for="minutes">{{ t('timer.minutes') }}</label>
           <InputNumber
             id="minutes"
@@ -36,7 +36,7 @@
           </InputNumber>
         </div>
         <span class="text-2xl mb-2">:</span>
-        <div class="flex flex-col items-center gap-1">
+        <div class="flex flex-col items-center gap-1" @mousedown="blurSpinnerButtonFocus">
           <label for="seconds">{{ t('timer.seconds') }}</label>
           <InputNumber
             id="seconds"
@@ -85,6 +85,22 @@ const toast = useToast();
 
 const minutes = ref(1);
 const seconds = ref(0);
+
+const isTouchDevice = ref(false);
+
+onMounted(() => {
+  isTouchDevice.value = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+});
+
+// PrimeVue's InputNumber spin buttons focus the underlying input on mousedown (so
+// keyboard arrow keys can keep spinning it), which pops up the mobile keyboard.
+// Blurring right after lets that focus-triggered keyboard never actually appear.
+const blurSpinnerButtonFocus = (event: MouseEvent) => {
+  if (!isTouchDevice.value) return;
+  if (!(event.target as HTMLElement).closest('button')) return;
+
+  (document.activeElement as HTMLElement | null)?.blur();
+};
 
 const totalDuration = computed(() => (minutes.value ?? 0) * 60 + (seconds.value ?? 0));
 
