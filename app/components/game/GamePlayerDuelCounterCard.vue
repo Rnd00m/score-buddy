@@ -83,8 +83,8 @@
             @mousedown="!isTouchDevice ? handleStartPress(() => handleDecrementScore(player)) : null"
             @mouseup="!isTouchDevice ? handleStopPress() : null"
             @mouseleave="!isTouchDevice ? handleStopPress() : null"
-            @touchstart="handleStartPress(() => handleDecrementScore(player))"
-            @touchend="handleStopPress"
+            @touchstart.prevent="handleStartPress(() => handleDecrementScore(player))"
+            @touchend.prevent="handleStopPress"
             @touchcancel="handleStopPress"
           >
             <template #icon><Minus :size="24"/></template>
@@ -105,8 +105,8 @@
             @mousedown="!isTouchDevice ? handleStartPress(() => handleIncrementScore(player)) : null"
             @mouseup="!isTouchDevice ? handleStopPress() : null"
             @mouseleave="!isTouchDevice ? handleStopPress() : null"
-            @touchstart="handleStartPress(() => handleIncrementScore(player))"
-            @touchend="handleStopPress"
+            @touchstart.prevent="handleStartPress(() => handleIncrementScore(player))"
+            @touchend.prevent="handleStopPress"
             @touchcancel="handleStopPress"
           >
             <template #icon><Plus :size="24"/></template>
