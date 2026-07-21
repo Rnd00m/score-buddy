@@ -22,6 +22,11 @@ public class MainActivity extends BridgeActivity {
         SplashScreen splashScreen = SplashScreen.installSplashScreen(this);
         super.onCreate(savedInstanceState);
 
+        // The WebView otherwise scales rendered content with the system font-size
+        // accessibility setting, which breaks the (mostly rem-based) layout on
+        // devices where that setting is increased (e.g. reported on a Galaxy S23 Ultra).
+        getBridge().getWebView().getSettings().setTextZoom(100);
+
         // Android only forces edge-to-edge automatically on API 35+ (targetSdk).
         // On older versions (e.g. Android 14) the window never actually goes
         // edge-to-edge on its own, so the WindowInsetsCompat system-bar insets

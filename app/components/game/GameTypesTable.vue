@@ -1,5 +1,5 @@
 <template>
-  <Toast position="top-center" class="max-w-[calc(100%-2rem)]"/>
+  <Toast position="bottom-center" class="max-w-[calc(100%-2rem)]"/>
 
   <ConfirmDialog group="newGame" class="max-w-96 w-[calc(100%-6rem)]" dismissableMask>
     <template #container="{ message, acceptCallback, rejectCallback }">

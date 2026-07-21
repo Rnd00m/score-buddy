@@ -193,7 +193,7 @@
   },
   "userGamesHistory": {
     "title": "History",
-    "gamesCount": "{count} games",
+    "gamesCount": "{count} games | {count} game | {count} games",
     "logInPrompt": "Log in to see the history of every game played on your account, across all devices.",
     "noGamesFound": "No games found."
   },

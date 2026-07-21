@@ -58,7 +58,7 @@
                   variant="text"
                   raised
                   type="button"
-                  class="flex items-center justify-center text-center leading-none rounded-full text-base font-bold p-3"
+                  class="flex items-center justify-center text-center leading-none rounded-full text-base font-bold min-w-11 h-11 px-2 shrink-0"
                   :style="{
                     backgroundColor: getButtonColor(player.color.value, 'dark'),
                     color: getTextColorContrasted(player.color.value),
@@ -146,7 +146,7 @@
                   variant="text"
                   raised
                   type="button"
-                  class="flex items-center justify-center text-center leading-none rounded-full text-base font-bold p-3"
+                  class="flex items-center justify-center text-center leading-none rounded-full text-base font-bold min-w-11 h-11 px-2 shrink-0"
                   :style="{ backgroundColor: getButtonColor(player.color.value, 'dark'), color: getTextColorContrasted(player.color.value) }"
                   @click.stop="item.command?.({ originalEvent: $event, item })"
                 >{{ item.label }}</Button>
@@ -202,7 +202,7 @@ onMounted(async () => {
 
     sortable = new Sortable(cardsContainer.value, {
       draggable: '.player-score-card',
-      delay: { mouse: 0, drag: 0, touch: 100 },
+      delay: { mouse: 100, drag: 0, touch: 100 },
       mirror: {
         constrainDimensions: true,
       },
