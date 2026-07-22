@@ -49,8 +49,8 @@
 </template>
 
 <script setup lang="ts">
-import {ref} from 'vue';
 import {Capacitor} from '@capacitor/core';
+import type {FormResolverOptions, FormSubmitEvent} from '@primevue/forms';
 import ArrowLeft from '@primeicons/vue/arrow-left';
 
 const {t} = useI18n();
@@ -66,8 +66,16 @@ const credentials = ref({
   confirmPassword: ''
 });
 
-const resolver = ({values}) => {
-  const errors = {};
+const isPasswordStrongEnough = (password: string) => {
+  return password.length >= 8
+    && /[a-z]/.test(password)
+    && /[A-Z]/.test(password)
+    && /[0-9]/.test(password)
+    && /[^a-zA-Z0-9]/.test(password);
+};
+
+const resolver = ({values}: FormResolverOptions) => {
+  const errors: Record<string, {message: string}[]> = {};
 
   if (!values.email?.trim()) {
     errors.email = [{message: t('login.emailRequired')}];
@@ -75,8 +83,8 @@ const resolver = ({values}) => {
 
   if (!values.password) {
     errors.password = [{message: t('login.passwordRequired')}];
-  } else if (values.password.length < 6) {
-    errors.password = [{message: t('signup.passwordMinLength')}];
+  } else if (!isPasswordStrongEnough(values.password)) {
+    errors.password = [{message: t('signup.passwordRequirements')}];
   }
 
   if (values.confirmPassword !== values.password) {
@@ -88,7 +96,7 @@ const resolver = ({values}) => {
   };
 };
 
-const onFormSubmit = async ({valid, states}) => {
+const onFormSubmit = async ({valid, states}: FormSubmitEvent) => {
   if (!valid) return;
 
   isLoading.value = true;
@@ -98,8 +106,8 @@ const onFormSubmit = async ({valid, states}) => {
     : `${window.location.origin}/auth/callback`;
 
   const {error} = await supabase.auth.signUp({
-    email: states.email.value.trim(),
-    password: states.password.value,
+    email: states.email!.value.trim(),
+    password: states.password!.value,
     options: {emailRedirectTo}
   });
 

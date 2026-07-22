@@ -85,7 +85,7 @@
     "submit": "Sign up",
     "alreadyHaveAccount": "Already have an account?",
     "logIn": "Log in",
-    "passwordMinLength": "Password must be at least 6 characters.",
+    "passwordRequirements": "Password must be at least 8 characters, with uppercase, lowercase, a number, and a special character.",
     "passwordsDoNotMatch": "Passwords do not match.",
     "checkInboxTitle": "Check your inbox",
     "checkInboxMessage": "Confirm your email address to finish creating your account."
