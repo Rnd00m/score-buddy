@@ -71,6 +71,7 @@
     "signUp": "Sign up",
     "emailRequired": "Email is required.",
     "passwordRequired": "Password is required.",
+    "forgotPassword": "Forgot password?",
     "importTitle": "Import local data?",
     "importMessage": "You have games and/or saved players stored on this device. Do you want to add them to your account?",
     "import": "Import",
@@ -79,13 +80,34 @@
     "syncErrorMessage": "Could not fetch your saved data.",
     "importErrorMessage": "Could not import your local data."
   },
+  "forgotPassword": {
+    "title": "Forgot password",
+    "instructions": "Enter your email address and we'll send you a link to reset your password.",
+    "submit": "Send reset link",
+    "checkInboxTitle": "Check your inbox",
+    "checkInboxMessage": "If an account exists for this email, you'll receive a password reset link shortly."
+  },
+  "resetPassword": {
+    "title": "Reset your password",
+    "newPassword": "New password",
+    "submit": "Reset password",
+    "invalidLink": "This password reset link is invalid or has expired.",
+    "requestNewLink": "Request a new link",
+    "successTitle": "Password updated",
+    "successMessage": "Your password has been changed successfully."
+  },
   "signup": {
     "title": "Sign up",
     "confirmPassword": "Confirm password",
     "submit": "Sign up",
     "alreadyHaveAccount": "Already have an account?",
     "logIn": "Log in",
-    "passwordMinLength": "Password must be at least 6 characters.",
+    "passwordRequirements": "Password must be at least 8 characters, with uppercase, lowercase, a number, and a special character.",
+    "requirementMinLength": "At least 8 characters",
+    "requirementUppercase": "Contains an uppercase letter",
+    "requirementLowercase": "Contains a lowercase letter",
+    "requirementNumber": "Contains a number",
+    "requirementSymbol": "Contains a special character",
     "passwordsDoNotMatch": "Passwords do not match.",
     "checkInboxTitle": "Check your inbox",
     "checkInboxMessage": "Confirm your email address to finish creating your account."

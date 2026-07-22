@@ -2,27 +2,16 @@
   <div>
     <Toast position="bottom-center" class="max-w-[calc(100%-2rem)]"/>
 
-    <h1 class="mb-6 flex items-center gap-4">
-      <NuxtLink to="/account">
-        <Button severity="secondary">
-          <template #icon><ArrowLeft :size="18"/></template>
-        </Button>
-      </NuxtLink>
-      <span class="text-3xl">{{ t('signup.title') }}</span>
-    </h1>
+    <h1 class="mb-6 text-3xl">{{ t('resetPassword.title') }}</h1>
 
-    <Form v-slot="$form" :initialValues="credentials" :resolver :validateOnValueUpdate="false" :validateOnBlur="false" @submit="onFormSubmit" class="flex flex-col gap-4 w-full">
-      <div class="flex flex-col gap-1">
-        <label for="email">{{ t('login.email') }}</label>
-        <InputText id="email" name="email" type="email" fluid/>
-        <Message v-if="$form.email?.invalid" severity="error" size="small" variant="simple">{{
-            $form.email.error?.message
-          }}
-        </Message>
-      </div>
+    <Message v-if="isValidSession === false" severity="error" size="small">
+      {{ t('resetPassword.invalidLink') }}
+      <NuxtLink to="/account/forgot-password" class="text-primary underline">{{ t('resetPassword.requestNewLink') }}</NuxtLink>
+    </Message>
 
+    <Form v-else-if="isValidSession" v-slot="$form" :initialValues="credentials" :resolver :validateOnValueUpdate="false" :validateOnBlur="false" @submit="onFormSubmit" class="flex flex-col gap-4 w-full">
       <div class="flex flex-col gap-1">
-        <label for="password">{{ t('login.password') }}</label>
+        <label for="password">{{ t('resetPassword.newPassword') }}</label>
         <Password id="password" name="password" :feedback="false" toggleMask fluid/>
         <Message v-if="$form.password?.invalid" severity="error" size="small" variant="simple">{{
             $form.password.error?.message
@@ -47,36 +36,24 @@
         </Message>
       </div>
 
-      <BaseTurnstile v-if="turnstileSiteKey" ref="turnstileRef" :site-key="turnstileSiteKey" @verified="token => captchaToken = token" @expired="captchaToken = ''"/>
-
-      <Button type="submit" severity="primary" :label="t('signup.submit')" :loading="isLoading" :disabled="!!turnstileSiteKey && !captchaToken"/>
+      <Button type="submit" severity="primary" :label="t('resetPassword.submit')" :loading="isLoading"/>
     </Form>
-
-    <p class="mt-4 text-center">
-      {{ t('signup.alreadyHaveAccount') }} <NuxtLink to="/account/login" class="text-primary">{{ t('signup.logIn') }}</NuxtLink>
-    </p>
   </div>
 </template>
 
 <script setup lang="ts">
-import {Capacitor} from '@capacitor/core';
 import type {FormResolverOptions, FormSubmitEvent} from '@primevue/forms';
-import ArrowLeft from '@primeicons/vue/arrow-left';
 import CheckCircle from '@primeicons/vue/check-circle';
-import BaseTurnstile from '@/components/base/BaseTurnstile.vue';
 
 const {t} = useI18n();
 const supabase = useSupabaseClient();
 const router = useRouter();
 const toast = useToast();
-const {public: {turnstileSiteKey}} = useRuntimeConfig();
 
 const isLoading = ref(false);
-const captchaToken = ref('');
-const turnstileRef = ref<InstanceType<typeof BaseTurnstile>>();
+const isValidSession = ref<boolean | null>(null);
 
 const credentials = ref({
-  email: '',
   password: '',
   confirmPassword: ''
 });
@@ -95,10 +72,6 @@ const isPasswordStrongEnough = (password: string) => passwordRequirementDefiniti
 
 const resolver = ({values}: FormResolverOptions) => {
   const errors: Record<string, {message: string}[]> = {};
-
-  if (!values.email?.trim()) {
-    errors.email = [{message: t('login.emailRequired')}];
-  }
 
   if (!values.password) {
     errors.password = [{message: t('login.passwordRequired')}];
@@ -120,26 +93,35 @@ const onFormSubmit = async ({valid, states}: FormSubmitEvent) => {
 
   isLoading.value = true;
 
-  const emailRedirectTo = Capacitor.isNativePlatform()
-    ? 'com.scorebuddy.app://account/callback'
-    : `${window.location.origin}/auth/callback`;
-
-  const {error} = await supabase.auth.signUp({
-    email: states.email!.value.trim(),
-    password: states.password!.value,
-    options: {emailRedirectTo, captchaToken: captchaToken.value || undefined}
-  });
+  const {error} = await supabase.auth.updateUser({password: states.password!.value});
 
   isLoading.value = false;
 
   if (error) {
-    turnstileRef.value?.reset();
-    captchaToken.value = '';
     toast.add({severity: 'error', summary: t('common.error'), detail: error.message, life: 4000});
     return;
   }
 
-  toast.add({severity: 'success', summary: t('signup.checkInboxTitle'), detail: t('signup.checkInboxMessage'), life: 6000});
-  router.push('/account/login');
+  toast.add({severity: 'success', summary: t('resetPassword.successTitle'), detail: t('resetPassword.successMessage'), life: 4000});
+  router.push('/account');
 };
+
+onMounted(async () => {
+  const {data: {session}} = await supabase.auth.getSession();
+  if (session) {
+    isValidSession.value = true;
+    return;
+  }
+
+  const {data: {subscription}} = supabase.auth.onAuthStateChange((event) => {
+    if (event !== 'PASSWORD_RECOVERY') return;
+    isValidSession.value = true;
+    subscription.unsubscribe();
+  });
+
+  setTimeout(() => {
+    if (isValidSession.value === null) isValidSession.value = false;
+    subscription.unsubscribe();
+  }, 3000);
+});
 </script>

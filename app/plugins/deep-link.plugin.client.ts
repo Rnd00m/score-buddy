@@ -8,7 +8,9 @@ export default defineNuxtPlugin(async () => {
   const router = useRouter();
 
   const handleUrl = async (url: string) => {
-    if (!url.includes('account/callback')) return;
+    const isRecovery = url.includes('account/reset-password');
+    if (!url.includes('account/callback') && !isRecovery) return;
+
     const code = new URL(url).searchParams.get('code');
     if (code) {
       // Best-effort: if Supabase is unreachable (no connection, paused project),
@@ -19,7 +21,7 @@ export default defineNuxtPlugin(async () => {
         return;
       }
     }
-    await router.push('/account');
+    await router.push(isRecovery ? '/account/reset-password' : '/account');
   };
 
   void App.addListener('appUrlOpen', ({ url }) => handleUrl(url));

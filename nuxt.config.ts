@@ -55,7 +55,8 @@ export default defineNuxtConfig({
       bggApiBaseUrl: process.env.BGG_API_BASE_URL,
       siteUrl: process.env.APP_BASE_URL,
       contactEmail: process.env.CONTACT_EMAIL,
-      PRIMEUI_LICENSE: process.env.PRIMEUI_LICENSE
+      PRIMEUI_LICENSE: process.env.PRIMEUI_LICENSE,
+      turnstileSiteKey: process.env.TURNSTILE_SITE_KEY
     }
   },
   css: ['@/assets/scss/main.scss'],
