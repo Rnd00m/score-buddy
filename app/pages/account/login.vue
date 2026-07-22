@@ -45,7 +45,9 @@
         </Message>
       </div>
 
-      <Button type="submit" severity="primary" :label="t('login.submit')" :loading="isLoading"/>
+      <BaseTurnstile v-if="turnstileSiteKey" ref="turnstileRef" :site-key="turnstileSiteKey" @verified="token => captchaToken = token" @expired="captchaToken = ''"/>
+
+      <Button type="submit" severity="primary" :label="t('login.submit')" :loading="isLoading" :disabled="!!turnstileSiteKey && !captchaToken"/>
     </Form>
 
     <p class="mt-4 text-center">
@@ -58,6 +60,7 @@
 import {ref} from 'vue';
 import CloudUpload from '@primeicons/vue/cloud-upload';
 import ArrowLeft from '@primeicons/vue/arrow-left';
+import BaseTurnstile from '@/components/base/BaseTurnstile.vue';
 
 const {t} = useI18n();
 const supabase = useSupabaseClient();
@@ -67,8 +70,11 @@ const confirm = useConfirm();
 const roomStore = useRoomStore();
 const playerProfilesStore = usePlayerProfilesStore();
 const {pullRemote, importLocalToRemote} = useSupabaseSync();
+const {public: {turnstileSiteKey}} = useRuntimeConfig();
 
 const isLoading = ref(false);
+const captchaToken = ref('');
+const turnstileRef = ref<InstanceType<typeof BaseTurnstile>>();
 
 const credentials = ref({
   email: '',
@@ -98,11 +104,14 @@ const onFormSubmit = async ({valid, states}) => {
 
   const {error} = await supabase.auth.signInWithPassword({
     email: states.email.value.trim(),
-    password: states.password.value
+    password: states.password.value,
+    options: {captchaToken: captchaToken.value || undefined}
   });
 
   if (error) {
     isLoading.value = false;
+    turnstileRef.value?.reset();
+    captchaToken.value = '';
     toast.add({severity: 'error', summary: t('common.error'), detail: error.message, life: 4000});
     return;
   }

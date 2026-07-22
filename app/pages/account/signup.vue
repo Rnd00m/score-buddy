@@ -47,7 +47,9 @@
         </Message>
       </div>
 
-      <Button type="submit" severity="primary" :label="t('signup.submit')" :loading="isLoading"/>
+      <BaseTurnstile v-if="turnstileSiteKey" ref="turnstileRef" :site-key="turnstileSiteKey" @verified="token => captchaToken = token" @expired="captchaToken = ''"/>
+
+      <Button type="submit" severity="primary" :label="t('signup.submit')" :loading="isLoading" :disabled="!!turnstileSiteKey && !captchaToken"/>
     </Form>
 
     <p class="mt-4 text-center">
@@ -61,13 +63,17 @@ import {Capacitor} from '@capacitor/core';
 import type {FormResolverOptions, FormSubmitEvent} from '@primevue/forms';
 import ArrowLeft from '@primeicons/vue/arrow-left';
 import CheckCircle from '@primeicons/vue/check-circle';
+import BaseTurnstile from '@/components/base/BaseTurnstile.vue';
 
 const {t} = useI18n();
 const supabase = useSupabaseClient();
 const router = useRouter();
 const toast = useToast();
+const {public: {turnstileSiteKey}} = useRuntimeConfig();
 
 const isLoading = ref(false);
+const captchaToken = ref('');
+const turnstileRef = ref<InstanceType<typeof BaseTurnstile>>();
 
 const credentials = ref({
   email: '',
@@ -121,12 +127,14 @@ const onFormSubmit = async ({valid, states}: FormSubmitEvent) => {
   const {error} = await supabase.auth.signUp({
     email: states.email!.value.trim(),
     password: states.password!.value,
-    options: {emailRedirectTo}
+    options: {emailRedirectTo, captchaToken: captchaToken.value || undefined}
   });
 
   isLoading.value = false;
 
   if (error) {
+    turnstileRef.value?.reset();
+    captchaToken.value = '';
     toast.add({severity: 'error', summary: t('common.error'), detail: error.message, life: 4000});
     return;
   }
