@@ -71,6 +71,7 @@
     "signUp": "S'inscrire",
     "emailRequired": "L'email est requis.",
     "passwordRequired": "Le mot de passe est requis.",
+    "forgotPassword": "Mot de passe oublié ?",
     "importTitle": "Importer les données locales ?",
     "importMessage": "Vous avez des parties et/ou des joueurs sauvegardés sur cet appareil. Voulez-vous les ajouter à votre compte ?",
     "import": "Importer",
@@ -78,6 +79,22 @@
     "syncErrorTitle": "Erreur de synchronisation",
     "syncErrorMessage": "Impossible de récupérer vos données sauvegardées.",
     "importErrorMessage": "Impossible d'importer vos données locales."
+  },
+  "forgotPassword": {
+    "title": "Mot de passe oublié",
+    "instructions": "Saisissez votre adresse email et nous vous enverrons un lien pour réinitialiser votre mot de passe.",
+    "submit": "Envoyer le lien",
+    "checkInboxTitle": "Vérifiez votre boîte mail",
+    "checkInboxMessage": "Si un compte existe pour cet email, vous recevrez un lien de réinitialisation sous peu."
+  },
+  "resetPassword": {
+    "title": "Réinitialiser votre mot de passe",
+    "newPassword": "Nouveau mot de passe",
+    "submit": "Réinitialiser le mot de passe",
+    "invalidLink": "Ce lien de réinitialisation est invalide ou a expiré.",
+    "requestNewLink": "Demander un nouveau lien",
+    "successTitle": "Mot de passe mis à jour",
+    "successMessage": "Votre mot de passe a été modifié avec succès."
   },
   "signup": {
     "title": "Inscription",

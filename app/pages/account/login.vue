@@ -37,7 +37,10 @@
       </div>
 
       <div class="flex flex-col gap-1">
-        <label for="password">{{ t('login.password') }}</label>
+        <div class="flex items-center justify-between">
+          <label for="password">{{ t('login.password') }}</label>
+          <NuxtLink to="/account/forgot-password" class="text-sm text-primary">{{ t('login.forgotPassword') }}</NuxtLink>
+        </div>
         <Password id="password" name="password" :feedback="false" toggleMask fluid/>
         <Message v-if="$form.password?.invalid" severity="error" size="small" variant="simple">{{
             $form.password.error?.message
