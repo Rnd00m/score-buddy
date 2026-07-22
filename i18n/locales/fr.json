@@ -86,6 +86,11 @@
     "alreadyHaveAccount": "Vous avez déjà un compte ?",
     "logIn": "Se connecter",
     "passwordRequirements": "Le mot de passe doit contenir au moins 8 caractères, avec des majuscules, des minuscules, des chiffres et un caractère spécial.",
+    "requirementMinLength": "Au moins 8 caractères",
+    "requirementUppercase": "Contient une majuscule",
+    "requirementLowercase": "Contient une minuscule",
+    "requirementNumber": "Contient un chiffre",
+    "requirementSymbol": "Contient un caractère spécial",
     "passwordsDoNotMatch": "Les mots de passe ne correspondent pas.",
     "checkInboxTitle": "Vérifiez votre boîte mail",
     "checkInboxMessage": "Confirmez votre adresse email pour finaliser la création de votre compte."

@@ -23,11 +23,19 @@
 
       <div class="flex flex-col gap-1">
         <label for="password">{{ t('login.password') }}</label>
-        <Password id="password" name="password" toggleMask fluid/>
+        <Password id="password" name="password" :feedback="false" toggleMask fluid/>
         <Message v-if="$form.password?.invalid" severity="error" size="small" variant="simple">{{
             $form.password.error?.message
           }}
         </Message>
+        <ul class="flex flex-col gap-2 list-none ms-1 my-1 p-0">
+          <li v-for="req in passwordRequirements" :key="req.id" class="flex items-center gap-2 text-sm transition-all duration-300">
+            <CheckCircle :class="['transition-all duration-300 ease-out', req.test($form.password?.value ?? '') ? 'text-green-500 scale-110 opacity-100' : 'text-surface-400 scale-90 opacity-70']"/>
+            <span :class="['transition-all duration-300 ease-out', req.test($form.password?.value ?? '') ? 'text-green-700 dark:text-green-400 line-through decoration-2 decoration-green-500/70' : 'text-surface-700 dark:text-surface-300 dark:opacity-70']">
+              {{ req.label }}
+            </span>
+          </li>
+        </ul>
       </div>
 
       <div class="flex flex-col gap-1">
@@ -52,6 +60,7 @@
 import {Capacitor} from '@capacitor/core';
 import type {FormResolverOptions, FormSubmitEvent} from '@primevue/forms';
 import ArrowLeft from '@primeicons/vue/arrow-left';
+import CheckCircle from '@primeicons/vue/check-circle';
 
 const {t} = useI18n();
 const supabase = useSupabaseClient();
@@ -66,13 +75,17 @@ const credentials = ref({
   confirmPassword: ''
 });
 
-const isPasswordStrongEnough = (password: string) => {
-  return password.length >= 8
-    && /[a-z]/.test(password)
-    && /[A-Z]/.test(password)
-    && /[0-9]/.test(password)
-    && /[^a-zA-Z0-9]/.test(password);
-};
+const passwordRequirementDefinitions = [
+  {id: 'minLength', labelKey: 'signup.requirementMinLength', test: (v: string) => v.length >= 8},
+  {id: 'uppercase', labelKey: 'signup.requirementUppercase', test: (v: string) => /[A-Z]/.test(v)},
+  {id: 'lowercase', labelKey: 'signup.requirementLowercase', test: (v: string) => /[a-z]/.test(v)},
+  {id: 'number', labelKey: 'signup.requirementNumber', test: (v: string) => /[0-9]/.test(v)},
+  {id: 'symbol', labelKey: 'signup.requirementSymbol', test: (v: string) => /[^a-zA-Z0-9]/.test(v)}
+];
+
+const passwordRequirements = computed(() => passwordRequirementDefinitions.map(req => ({...req, label: t(req.labelKey)})));
+
+const isPasswordStrongEnough = (password: string) => passwordRequirementDefinitions.every(req => req.test(password));
 
 const resolver = ({values}: FormResolverOptions) => {
   const errors: Record<string, {message: string}[]> = {};

@@ -86,6 +86,11 @@
     "alreadyHaveAccount": "Already have an account?",
     "logIn": "Log in",
     "passwordRequirements": "Password must be at least 8 characters, with uppercase, lowercase, a number, and a special character.",
+    "requirementMinLength": "At least 8 characters",
+    "requirementUppercase": "Contains an uppercase letter",
+    "requirementLowercase": "Contains a lowercase letter",
+    "requirementNumber": "Contains a number",
+    "requirementSymbol": "Contains a special character",
     "passwordsDoNotMatch": "Passwords do not match.",
     "checkInboxTitle": "Check your inbox",
     "checkInboxMessage": "Confirm your email address to finish creating your account."
