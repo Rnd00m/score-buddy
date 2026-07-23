@@ -44,6 +44,20 @@ const MyPreset = definePreset(Aura, {
     }
   },
   semantic: {
+    // Bumped up from Aura's defaults (0.75rem/0.5rem, no explicit fontSize) so
+    // form controls read at a comfortable size on phones — this cascades to
+    // every input built on the shared form-field tokens (InputText, InputNumber,
+    // Select, AutoComplete, Password, ...).
+    formField: {
+      fontSize: '1.0625rem',
+      paddingX: '0.875rem',
+      paddingY: '0.625rem',
+    },
+    list: {
+      option: {
+        padding: '0.75rem 0.875rem',
+      },
+    },
     primary: {
       50:  "#FFF8DC",
       100: "#FEF2B6",
@@ -143,6 +157,43 @@ const MyPreset = definePreset(Aura, {
         }
       }
     }
+  },
+  components: {
+    // Button's default paddingY/X are aliases of formField.padding, so bumping
+    // formField above also grew regular buttons and made icon-only buttons
+    // (header actions, etc.) taller than wide, since iconOnlyWidth is a fixed,
+    // separate token. Un-alias the padding back to Aura's original size so
+    // buttons stay compact, and keep iconOnlyWidth matching so they're square.
+    button: {
+      root: {
+        paddingX: '0.75rem',
+        paddingY: '0.5rem',
+        iconOnlyWidth: '2.75rem',
+      },
+    },
+    // Notifications felt cramped on phones at Aura's defaults; size them up
+    // to match the bumped-up formField scale above.
+    toast: {
+      icon: {size: '1.375rem'},
+      content: {padding: '1rem'},
+      summary: {fontSize: '1.125rem'},
+      detail: {fontSize: '1rem'},
+      closeIcon: {size: '1.375rem'},
+    },
+    message: {
+      icon: {size: '1.375rem'},
+      content: {padding: '0.75rem 1rem'},
+      text: {fontSize: '1.0625rem'},
+    },
+    // SelectButton renders its options as ToggleButtons, so this also grows
+    // the win-condition selector on the new game screen.
+    togglebutton: {
+      content: {padding: '0.625rem 1rem'},
+    },
+    toggleswitch: {
+      root: {width: '3rem', height: '1.75rem'},
+      handle: {size: '1.25rem'},
+    },
   },
 });
 

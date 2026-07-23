@@ -40,7 +40,7 @@
       </GameCallToActionCard>
       <template v-if="roomStore.games.length">
         <GameCallToActionCard
-          :headingText="roomStore.getLastCompletedGame.name"
+          :headingText="roomStore.getLastCompletedGame!.name"
           :buttonText="t('home.replay')"
           :buttonStyle="{
             backgroundColor: `var(--p-surface-900)`,
@@ -156,6 +156,7 @@ const router = useRouter();
 
 const handleReplayGame = () => {
   const lastCompletedGame = roomStore.getLastCompletedGame;
+  if (!lastCompletedGame) return;
 
   roomStore.startGame(
       lastCompletedGame.name,

@@ -28,7 +28,7 @@ export const useBggGameSearch = (query: Ref<string>) => {
 
         return {
           id: Number(item.id),
-          name: primaryName.value,
+          name: primaryName?.value ?? '',
           yearPublished: item.yearpublished ? Number(item.yearpublished.value) : null,
         }
       })

@@ -13,12 +13,17 @@ export const useSwipe = (target: Ref<HTMLElement | null>, options: UseSwipeOptio
   let startY = 0;
 
   const onTouchStart = (event: TouchEvent) => {
-    startX = event.touches[0].clientX;
-    startY = event.touches[0].clientY;
+    const touch = event.touches[0];
+    if (!touch) return;
+
+    startX = touch.clientX;
+    startY = touch.clientY;
   };
 
   const onTouchEnd = (event: TouchEvent) => {
     const touch = event.changedTouches[0];
+    if (!touch) return;
+
     const deltaX = touch.clientX - startX;
     const deltaY = touch.clientY - startY;
 

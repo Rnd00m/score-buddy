@@ -1,7 +1,5 @@
 <template>
   <div>
-    <Toast position="bottom-center" class="max-w-[calc(100%-2rem)]"/>
-
     <h1 class="mb-6 text-3xl">{{ t('resetPassword.title') }}</h1>
 
     <Message v-if="isValidSession === false" severity="error" size="small">

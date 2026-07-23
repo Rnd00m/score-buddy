@@ -1,7 +1,5 @@
 <template>
   <div>
-    <Toast position="bottom-center" class="max-w-[calc(100%-2rem)]"/>
-
     <h1 class="mb-6 flex items-center gap-4">
       <NuxtLink to="/account/login">
         <Button severity="secondary">
@@ -23,7 +21,7 @@
         </Message>
       </div>
 
-      <BaseTurnstile v-if="turnstileSiteKey" ref="turnstileRef" :site-key="turnstileSiteKey" @verified="token => captchaToken = token" @expired="captchaToken = ''"/>
+      <BaseTurnstile v-if="turnstileSiteKey" ref="turnstileRef" :site-key="turnstileSiteKey" @verified="(token: string) => captchaToken = token" @expired="captchaToken = ''"/>
 
       <Button type="submit" severity="primary" :label="t('forgotPassword.submit')" :loading="isLoading" :disabled="!!turnstileSiteKey && !captchaToken"/>
     </Form>

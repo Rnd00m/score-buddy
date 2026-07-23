@@ -41,7 +41,7 @@
     <template #expansion="slotProps">
       <template v-if="(slotProps.data.rounds?.length ?? 0) > 1">
         <div v-for="(round, index) in slotProps.data.rounds" :key="index" class="mb-2 last:mb-0">
-          <span class="text-sm font-semibold px-2">{{ t('gameHistoryTable.round', { number: index + 1 }) }}</span>
+          <span class="text-sm font-semibold px-2">{{ t('gameHistoryTable.round', { number: Number(index) + 1 }) }}</span>
           <GameRoundScoresTable :scores="round.scores" />
         </div>
       </template>

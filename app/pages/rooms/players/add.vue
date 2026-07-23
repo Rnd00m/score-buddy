@@ -1,7 +1,5 @@
 <template>
   <div>
-    <Toast position="bottom-center" class="max-w-[calc(100%-2rem)]"/>
-
     <h1 class="mb-6 flex items-center gap-4">
       <NuxtLink to="/rooms">
         <Button severity="secondary">

@@ -102,6 +102,42 @@ body {
   bottom: calc(var(--bottom-nav-height) + env(safe-area-inset-bottom) + 12px) !important;
 }
 
+// PrimeVue nudges the close button up/right by a percentage of its own box
+// (a corner-badge look tuned for Aura's default, smaller button). Our bumped-up
+// toast tokens throw that off-balance, so pin it back in place to line up with
+// the icon and summary text.
+.p-toast-close-button {
+  margin: 0 !important;
+  top: 0 !important;
+  right: 0 !important;
+}
+
+// -------------------- Menu -------------------- >
+// PrimeVue doesn't expose a font-size/icon-size token for menu items, so bump
+// them directly — the "..." action menu in the room/game headers read small
+// next to the rest of the bumped-up UI.
+.p-menu-item-icon {
+  width: 1.125rem;
+  height: 1.125rem;
+}
+
+.p-menu-item-label {
+  font-size: 1rem;
+}
+
+// -------------------- DataTable -------------------- >
+// PrimeVue doesn't expose a font-size token for the DataTable either, and its
+// "large" size preset (used app-wide) only scales padding — body cells even
+// render smaller than the header by default. Bump both, body cells to match
+// the header, so table content reads at the same scale as the rest of the UI.
+.p-datatable-lg .p-datatable-thead > tr > th {
+  font-size: 1.0625rem;
+}
+
+.p-datatable-lg .p-datatable-tbody > tr > td {
+  font-size: 1rem;
+}
+
 // -------------------- AutoComplete -------------------- >
 .p-autocomplete-overlay {
   // PrimeVue only sets a min-width matching the input; without an

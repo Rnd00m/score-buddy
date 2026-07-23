@@ -5,15 +5,19 @@ const STORAGE_KEY = 'colorScheme';
 const DARK_CLASS = 'app-dark';
 
 type ColorScheme = 'light' | 'dark';
+export type ColorSchemePreference = 'system' | ColorScheme;
 
+const preference = ref<ColorSchemePreference>('system');
 const colorScheme = ref<ColorScheme>('light');
+
+let media: MediaQueryList | null = null;
 
 const rgbToHex = (rgb: string) => {
   const match = rgb.match(/\d+/g);
   if (!match) return '#000000';
 
   const [r, g, b] = match.map(Number);
-  return `#${[r, g, b].map(v => v.toString(16).padStart(2, '0')).join('')}`;
+  return `#${[r, g, b].map(v => (v ?? 0).toString(16).padStart(2, '0')).join('')}`;
 };
 
 // the status bar must match the app's actual background, which is themed via CSS vars
@@ -26,6 +30,13 @@ const getNavigationBarColor = () => {
 
   return rgbToHex(getComputedStyle(navigationBarElement).backgroundColor);
 };
+
+const getSystemColorScheme = (): ColorScheme => (
+  window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+);
+
+const isColorSchemePreference = (value: string | null): value is ColorSchemePreference =>
+  value === 'system' || value === 'light' || value === 'dark';
 
 export const useColorScheme = () => {
   const applySystemBars = async (scheme: ColorScheme) => {
@@ -40,23 +51,38 @@ export const useColorScheme = () => {
   };
 
   const applyColorScheme = (scheme: ColorScheme) => {
+    colorScheme.value = scheme;
     document.documentElement.classList.toggle(DARK_CLASS, scheme === 'dark');
     applySystemBars(scheme);
   };
 
+  // Re-resolves the effective light/dark scheme from the current preference —
+  // called both on init/preference change and whenever the OS scheme changes
+  // while "system" is selected, so switching it live is reflected immediately.
+  const resolve = () => {
+    applyColorScheme(preference.value === 'system' ? getSystemColorScheme() : preference.value);
+  };
+
   const init = () => {
-    const stored = localStorage.getItem(STORAGE_KEY) as ColorScheme | null;
-    colorScheme.value = stored ?? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    const stored = localStorage.getItem(STORAGE_KEY);
+    preference.value = isColorSchemePreference(stored) ? stored : 'system';
 
-    applyColorScheme(colorScheme.value);
+    resolve();
+
+    if (!media) {
+      media = window.matchMedia('(prefers-color-scheme: dark)');
+      media.addEventListener('change', () => {
+        if (preference.value === 'system') resolve();
+      });
+    }
   };
 
-  const setColorScheme = (scheme: ColorScheme) => {
-    colorScheme.value = scheme;
-    localStorage.setItem(STORAGE_KEY, scheme);
+  const setColorSchemePreference = (value: ColorSchemePreference) => {
+    preference.value = value;
+    localStorage.setItem(STORAGE_KEY, value);
 
-    applyColorScheme(scheme);
+    resolve();
   };
 
-  return { colorScheme, init, setColorScheme };
+  return { colorScheme, preference, init, setColorSchemePreference };
 };
