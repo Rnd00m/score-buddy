@@ -159,17 +159,25 @@ const MyPreset = definePreset(Aura, {
     }
   },
   components: {
+    // Button's default paddingY/X are aliases of formField.padding, so bumping
+    // formField above also grew regular buttons and made icon-only buttons
+    // (header actions, etc.) taller than wide, since iconOnlyWidth is a fixed,
+    // separate token. Un-alias the padding back to Aura's original size so
+    // buttons stay compact, and keep iconOnlyWidth matching so they're square.
+    button: {
+      root: {
+        paddingX: '0.75rem',
+        paddingY: '0.5rem',
+        iconOnlyWidth: '2.75rem',
+      },
+    },
     // Notifications felt cramped on phones at Aura's defaults; size them up
     // to match the bumped-up formField scale above.
     toast: {
       icon: {size: '1.375rem'},
-      content: {
-        padding: '1rem', 
-        // gap: '0.75rem'
-      },
+      content: {padding: '1rem'},
       summary: {fontSize: '1.125rem'},
       detail: {fontSize: '1rem'},
-      // closeButton: {width: '1rem', height: '1rem'},
       closeIcon: {size: '1.375rem'},
     },
     message: {

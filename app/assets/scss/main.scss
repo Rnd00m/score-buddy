@@ -112,6 +112,19 @@ body {
   right: 0 !important;
 }
 
+// -------------------- Menu -------------------- >
+// PrimeVue doesn't expose a font-size/icon-size token for menu items, so bump
+// them directly — the "..." action menu in the room/game headers read small
+// next to the rest of the bumped-up UI.
+.p-menu-item-icon {
+  width: 1.125rem;
+  height: 1.125rem;
+}
+
+.p-menu-item-label {
+  font-size: 1rem;
+}
+
 // -------------------- AutoComplete -------------------- >
 .p-autocomplete-overlay {
   // PrimeVue only sets a min-width matching the input; without an
