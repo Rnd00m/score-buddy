@@ -38,14 +38,7 @@
 
       <div class="flex flex-col gap-1">
         <label for="startScore">{{ t('newGame.startScore') }}</label>
-        <InputNumber id="startScore" name="startScore" :min="lowestPossibleScore !== null ? lowestPossibleScore : undefined" showButtons buttonLayout="horizontal" :step="1" fluid>
-          <template #incrementicon>
-            <Plus :size="14"/>
-          </template>
-          <template #decrementicon>
-            <Minus :size="14"/>
-          </template>
-        </InputNumber>
+        <BaseNumberIncrementInput id="startScore" name="startScore" :min="lowestPossibleScore !== null ? lowestPossibleScore : undefined" fluid/>
         <Message v-if="$form.startScore?.invalid" severity="error" size="small" variant="simple">{{
             $form.startScore.error?.message
           }}
@@ -54,14 +47,7 @@
 
       <div class="flex flex-col gap-1">
         <label for="endingScore">{{ t('newGame.endingScore') }}</label>
-        <InputNumber id="endingScore" name="endingScore" :min="lowestPossibleScore !== null ? lowestPossibleScore : undefined" showButtons buttonLayout="horizontal" :step="1" fluid>
-          <template #incrementicon>
-            <Plus :size="14"/>
-          </template>
-          <template #decrementicon>
-            <Minus :size="14"/>
-          </template>
-        </InputNumber>
+        <BaseNumberIncrementInput id="endingScore" name="endingScore" :min="lowestPossibleScore !== null ? lowestPossibleScore : undefined" fluid/>
         <Message v-if="$form.endingScore?.invalid" severity="error" size="small" variant="simple">{{
             $form.endingScore.error?.message
           }}
@@ -85,14 +71,7 @@
 
       <div class="flex flex-col gap-1" v-if="$form.enableWinningRounds?.value">
         <label for="winningRounds">{{ t('newGame.winningRounds') }}</label>
-        <InputNumber id="winningRounds" name="winningRounds" :min="1" showButtons buttonLayout="horizontal" :step="1" fluid>
-          <template #incrementicon>
-            <Plus :size="14"/>
-          </template>
-          <template #decrementicon>
-            <Minus :size="14"/>
-          </template>
-        </InputNumber>
+        <BaseNumberIncrementInput id="winningRounds" name="winningRounds" :min="1" fluid/>
         <Message v-if="$form.winningRounds?.invalid" severity="error" size="small" variant="simple">{{
             $form.winningRounds.error?.message
           }}
@@ -110,14 +89,7 @@
 
       <div class="flex flex-col gap-1">
         <label for="lowestPossibleScore">{{ t('newGame.lowestPossibleScore') }}</label>
-        <InputNumber id="lowestPossibleScore" name="lowestPossibleScore" showButtons buttonLayout="horizontal" :step="1" fluid v-model="lowestPossibleScore">
-          <template #incrementicon>
-            <Plus :size="14"/>
-          </template>
-          <template #decrementicon>
-            <Minus :size="14"/>
-          </template>
-        </InputNumber>
+        <BaseNumberIncrementInput id="lowestPossibleScore" name="lowestPossibleScore" fluid v-model="lowestPossibleScore"/>
         <Message v-if="$form.lowestPossibleScore?.invalid" severity="error" size="small" variant="simple">{{
             $form.lowestPossibleScore.error?.message
           }}
@@ -133,8 +105,6 @@
 import type {FormResolverOptions, FormSubmitEvent} from '@primevue/forms';
 import { WinCondition } from '~/types/global';
 import ArrowLeft from '@primeicons/vue/arrow-left';
-import Plus from '@primeicons/vue/plus';
-import Minus from '@primeicons/vue/minus';
 import InfoCircle from '@primeicons/vue/info-circle';
 
 const {t} = useI18n();

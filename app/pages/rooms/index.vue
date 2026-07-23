@@ -70,33 +70,21 @@
     <Dialog v-model:visible="isDiceDialogOpened" :header="t('room.rollDice')" class="max-w-96 w-[calc(100%-6rem)]" :modal="true" :draggable="false" close-on-escape dismissable-mask>
       <div class="flex flex-col gap-4">
         <div v-for="(die, index) in diceGroups" :key="index" class="flex items-center gap-2">
-          <InputNumber
+          <BaseNumberIncrementInput
             v-model="die.count"
             :min="1"
             :max="20"
-            showButtons
-            buttonLayout="horizontal"
-            :step="1"
             inputClass="w-14 text-center"
             :aria-label="t('room.diceCount')"
-          >
-            <template #incrementicon><Plus :size="14"/></template>
-            <template #decrementicon><Minus :size="14"/></template>
-          </InputNumber>
+          />
           <span>d</span>
-          <InputNumber
+          <BaseNumberIncrementInput
             v-model="die.sides"
             :min="2"
             :max="1000"
-            showButtons
-            buttonLayout="horizontal"
-            :step="1"
             inputClass="w-16 text-center"
             :aria-label="t('room.diceSides')"
-          >
-            <template #incrementicon><Plus :size="14"/></template>
-            <template #decrementicon><Minus :size="14"/></template>
-          </InputNumber>
+          />
           <Button
             severity="danger"
             size="small"
@@ -204,7 +192,6 @@ import type { Player } from "~/types/global";
 import ExclamationCircle from '@primeicons/vue/exclamation-circle';
 import StarFill from '@primeicons/vue/star-fill';
 import Plus from '@primeicons/vue/plus';
-import Minus from '@primeicons/vue/minus';
 import Times from '@primeicons/vue/times';
 import Play from '@primeicons/vue/play';
 import UserPlus from '@primeicons/vue/user-plus';
