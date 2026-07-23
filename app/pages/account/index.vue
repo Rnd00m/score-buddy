@@ -70,8 +70,8 @@
       </div>
 
       <div class="flex items-center justify-between">
-        <label for="dark-mode-switch">{{ t('account.darkMode') }}</label>
-        <ToggleSwitch v-model="isDarkMode" inputId="dark-mode-switch"/>
+        <label for="theme-select">{{ t('account.theme') }}</label>
+        <Select id="theme-select" v-model="themePreference" :options="themeOptions" optionLabel="label" optionValue="value" class="w-40"/>
       </div>
 
       <div v-if="isWakeLockSupported" class="flex items-center justify-between">
@@ -120,6 +120,7 @@ import Sync from '@primeicons/vue/sync';
 import SignIn from '@primeicons/vue/sign-in';
 import UserPlus from '@primeicons/vue/user-plus';
 import InfoCircle from '@primeicons/vue/info-circle';
+import type {ColorSchemePreference} from '~/composables/useColorScheme';
 const {t, locale, locales, setLocale} = useI18n() as unknown as ReturnType<typeof useI18n> & {
   locales: ComputedRef<LocaleObject[]>;
   setLocale: (locale: string) => Promise<void>;
@@ -140,11 +141,16 @@ const selectedLocale = computed({
   set: (value) => setLocale(value as 'en' | 'fr'),
 });
 
-const {colorScheme, setColorScheme} = useColorScheme();
-const isDarkMode = computed({
-  get: () => colorScheme.value === 'dark',
-  set: (value: boolean) => setColorScheme(value ? 'dark' : 'light'),
+const {preference, setColorSchemePreference} = useColorScheme();
+const themePreference = computed({
+  get: () => preference.value,
+  set: (value: ColorSchemePreference) => setColorSchemePreference(value),
 });
+const themeOptions = computed(() => [
+  {label: t('account.themeSystem'), value: 'system'},
+  {label: t('account.themeLight'), value: 'light'},
+  {label: t('account.themeDark'), value: 'dark'},
+]);
 
 const {isSupported: isWakeLockSupported, isEnabled: isWakeLockEnabledState, setEnabled: setWakeLockEnabled} = useScreenWakeLock();
 const isWakeLockEnabled = computed({
