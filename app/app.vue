@@ -1,4 +1,6 @@
 <template>
+  <Toast position="bottom-center" class="max-w-[calc(100%-2rem)]"/>
+
   <div class="flex flex-col h-dvh">
     <div ref="mainContent" class="px-6 pb-6 pt-[calc(env(safe-area-inset-top)+1.5rem)] overflow-y-auto flex-1 min-h-0">
       <div class="max-w-3xl mx-auto h-full">
@@ -47,7 +49,6 @@ useHead({
 });
 
 const roomStore = useRoomStore();
-const user = useSupabaseUser();
 const route = useRoute();
 const router = useRouter();
 

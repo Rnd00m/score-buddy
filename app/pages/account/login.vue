@@ -1,6 +1,5 @@
 <template>
   <div>
-    <Toast position="bottom-center" class="max-w-[calc(100%-2rem)]"/>
     <ConfirmDialog group="import" class="max-w-96 w-[calc(100%-6rem)]" dismissableMask>
       <template #container="{ message, acceptCallback, rejectCallback }">
         <div class="flex flex-col items-center p-8 bg-surface-0 dark:bg-surface-900 rounded">

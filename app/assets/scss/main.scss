@@ -102,6 +102,16 @@ body {
   bottom: calc(var(--bottom-nav-height) + env(safe-area-inset-bottom) + 12px) !important;
 }
 
+// PrimeVue nudges the close button up/right by a percentage of its own box
+// (a corner-badge look tuned for Aura's default, smaller button). Our bumped-up
+// toast tokens throw that off-balance, so pin it back in place to line up with
+// the icon and summary text.
+.p-toast-close-button {
+  margin: 0 !important;
+  top: 0 !important;
+  right: 0 !important;
+}
+
 // -------------------- AutoComplete -------------------- >
 .p-autocomplete-overlay {
   // PrimeVue only sets a min-width matching the input; without an

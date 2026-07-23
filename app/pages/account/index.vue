@@ -1,6 +1,5 @@
 <template>
   <div>
-    <Toast position="bottom-center" class="max-w-[calc(100%-2rem)]"/>
     <ConfirmDialog group="logout" class="max-w-96 w-[calc(100%-6rem)]" dismissableMask>
       <template #container="{ message, acceptCallback, rejectCallback }">
         <div class="flex flex-col items-center p-8 bg-surface-0 dark:bg-surface-900 rounded">
@@ -103,7 +102,7 @@
             :min="1"
             :use-grouping="false"
             input-class="w-16 text-center"
-            @update:model-value="(newValue) => handleQuickScoreValueChange(index, newValue)"
+            @update:model-value="(newValue: number | null) => handleQuickScoreValueChange(index, newValue)"
           />
         </div>
       </div>
