@@ -47,7 +47,7 @@
         </Message>
       </div>
 
-      <BaseTurnstile v-if="turnstileSiteKey" ref="turnstileRef" :site-key="turnstileSiteKey" @verified="token => captchaToken = token" @expired="captchaToken = ''"/>
+      <BaseTurnstile v-if="turnstileSiteKey" ref="turnstileRef" :site-key="turnstileSiteKey" @verified="(token: string) => captchaToken = token" @expired="captchaToken = ''"/>
 
       <Button type="submit" severity="primary" :label="t('signup.submit')" :loading="isLoading" :disabled="!!turnstileSiteKey && !captchaToken"/>
     </Form>
@@ -122,7 +122,7 @@ const onFormSubmit = async ({valid, states}: FormSubmitEvent) => {
 
   const emailRedirectTo = Capacitor.isNativePlatform()
     ? 'com.scorebuddy.app://account/callback'
-    : `${window.location.origin}/auth/callback`;
+    : `${window.location.origin}/account/callback`;
 
   const {error} = await supabase.auth.signUp({
     email: states.email!.value.trim(),
