@@ -120,7 +120,7 @@ import Sync from '@primeicons/vue/sync';
 import SignIn from '@primeicons/vue/sign-in';
 import UserPlus from '@primeicons/vue/user-plus';
 import InfoCircle from '@primeicons/vue/info-circle';
-const {t, locale, locales, setLocale} = useI18n() as ReturnType<typeof useI18n> & {
+const {t, locale, locales, setLocale} = useI18n() as unknown as ReturnType<typeof useI18n> & {
   locales: ComputedRef<LocaleObject[]>;
   setLocale: (locale: string) => Promise<void>;
 };

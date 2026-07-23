@@ -43,7 +43,7 @@
 
 <script setup lang="ts">
 import { useQuery } from '@tanstack/vue-query';
-import type {Game} from "~/types/global";
+import type {Game, GameRound, GameScore} from "~/types/global";
 import { WinCondition } from "~/types/global";
 import SignIn from '@primeicons/vue/sign-in';
 import UserPlus from '@primeicons/vue/user-plus';
@@ -74,8 +74,8 @@ const games = computed(() => (data.value ?? []).map((row): Game & { createdAtTim
   lowestPossibleScore: row.lowest_possible_score,
   winCondition: row.win_condition as WinCondition,
   winningRounds: row.winning_rounds ?? 1,
-  scores: row.scores,
-  rounds: row.rounds ?? [],
+  scores: row.scores as unknown as GameScore[],
+  rounds: (row.rounds ?? []) as unknown as GameRound[],
   createdAt: new Date(row.created_at),
   endedAt: row.ended_at ? new Date(row.ended_at) : null,
   createdAtTime: new Date(row.created_at).getTime(),

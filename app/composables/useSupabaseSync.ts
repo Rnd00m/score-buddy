@@ -1,5 +1,6 @@
 import type { Game, GameRound, GameScore, PlayerProfile } from "~/types/global";
 import { WinCondition } from "~/types/global";
+import type { Json } from "~/types/database.types";
 
 export const useSupabaseSync = () => {
   const supabase = useSupabaseClient();
@@ -22,10 +23,10 @@ export const useSupabaseSync = () => {
       lowest_possible_score: game.lowestPossibleScore ?? null,
       win_condition: game.winCondition ?? WinCondition.MostPoints,
       winning_rounds: game.winningRounds ?? 1,
-      scores: game.scores,
-      rounds: game.rounds ?? [],
-      created_at: game.createdAt,
-      ended_at: game.endedAt,
+      scores: game.scores as unknown as Json,
+      rounds: (game.rounds ?? []) as unknown as Json,
+      created_at: game.createdAt.toISOString(),
+      ended_at: game.endedAt ? game.endedAt.toISOString() : null,
     }, { onConflict: 'owner_id,local_uuid' });
 
     if (error) throw error;
@@ -79,8 +80,8 @@ export const useSupabaseSync = () => {
           lowestPossibleScore: row.lowest_possible_score,
           winCondition: row.win_condition as WinCondition,
           winningRounds: row.winning_rounds ?? 1,
-          scores: row.scores as GameScore[],
-          rounds: (row.rounds ?? []) as GameRound[],
+          scores: row.scores as unknown as GameScore[],
+          rounds: (row.rounds ?? []) as unknown as GameRound[],
           createdAt: new Date(row.created_at),
           endedAt: row.ended_at ? new Date(row.ended_at) : null,
         });

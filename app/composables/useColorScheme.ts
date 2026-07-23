@@ -13,7 +13,7 @@ const rgbToHex = (rgb: string) => {
   if (!match) return '#000000';
 
   const [r, g, b] = match.map(Number);
-  return `#${[r, g, b].map(v => v.toString(16).padStart(2, '0')).join('')}`;
+  return `#${[r, g, b].map(v => (v ?? 0).toString(16).padStart(2, '0')).join('')}`;
 };
 
 // the status bar must match the app's actual background, which is themed via CSS vars

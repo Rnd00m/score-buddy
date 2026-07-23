@@ -60,6 +60,7 @@
 
 <script setup lang="ts">
 import {ref} from 'vue';
+import type {FormResolverOptions, FormSubmitEvent} from '@primevue/forms';
 import CloudUpload from '@primeicons/vue/cloud-upload';
 import ArrowLeft from '@primeicons/vue/arrow-left';
 import BaseTurnstile from '@/components/base/BaseTurnstile.vue';
@@ -83,8 +84,8 @@ const credentials = ref({
   password: ''
 });
 
-const resolver = ({values}) => {
-  const errors = {};
+const resolver = ({values}: FormResolverOptions) => {
+  const errors: Record<string, {message: string}[]> = {};
 
   if (!values.email?.trim()) {
     errors.email = [{message: t('login.emailRequired')}];
@@ -99,14 +100,14 @@ const resolver = ({values}) => {
   };
 };
 
-const onFormSubmit = async ({valid, states}) => {
+const onFormSubmit = async ({valid, states}: FormSubmitEvent) => {
   if (!valid) return;
 
   isLoading.value = true;
 
   const {error} = await supabase.auth.signInWithPassword({
-    email: states.email.value.trim(),
-    password: states.password.value,
+    email: states.email!.value.trim(),
+    password: states.password!.value,
     options: {captchaToken: captchaToken.value || undefined}
   });
 
