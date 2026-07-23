@@ -125,6 +125,19 @@ body {
   font-size: 1rem;
 }
 
+// -------------------- DataTable -------------------- >
+// PrimeVue doesn't expose a font-size token for the DataTable either, and its
+// "large" size preset (used app-wide) only scales padding — body cells even
+// render smaller than the header by default. Bump both, body cells to match
+// the header, so table content reads at the same scale as the rest of the UI.
+.p-datatable-lg .p-datatable-thead > tr > th {
+  font-size: 1.0625rem;
+}
+
+.p-datatable-lg .p-datatable-tbody > tr > td {
+  font-size: 1rem;
+}
+
 // -------------------- AutoComplete -------------------- >
 .p-autocomplete-overlay {
   // PrimeVue only sets a min-width matching the input; without an
