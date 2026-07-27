@@ -108,7 +108,9 @@
       </div>
     </div>
 
-    <NuxtLink to="/privacy" class="mt-8 block underline text-sm text-surface-500">{{ t('account.privacyPolicy') }}</NuxtLink>
+    <div class="flex">
+      <NuxtLink to="/privacy" class="mt-8 underline text-sm text-surface-500">{{ t('account.privacyPolicy') }}</NuxtLink>
+    </div>
   </div>
 </template>
 
