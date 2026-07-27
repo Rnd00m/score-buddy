@@ -49,13 +49,12 @@
           <div class="flex items-center gap-2 mt-6">
             <Button
                 :label="t('common.yes')"
+                severity="contrast"
                 @click="acceptCallback"
-                :style="endGameYesButtonStyle"
             ></Button>
             <Button
                 :label="t('common.no')"
-                outlined
-                :style="endGameNoButtonStyle"
+                severity="contrast"
                 @click="rejectCallback"
             ></Button>
           </div>
@@ -212,28 +211,6 @@ const endGameIconStyle = computed(() => {
   return {
     background: winnerColor,
     color: getTextColorContrasted(winnerColor)
-  }
-});
-
-const endGameYesButtonStyle = computed(() => {
-  if (!soleWinner.value) return {};
-
-  const winnerColor = soleWinner.value.player.color.value;
-
-  return {
-    background: winnerColor,
-    color: getTextColorContrasted(winnerColor),
-    borderColor: winnerColor
-  }
-});
-const endGameNoButtonStyle = computed(() => {
-  if (!soleWinner.value) return {};
-
-  const winnerColor = soleWinner.value.player.color.value;
-
-  return {
-    color: winnerColor,
-    borderColor: winnerColor
   }
 });
 
