@@ -25,8 +25,8 @@ export const useSupabaseSync = () => {
       winning_rounds: game.winningRounds ?? 1,
       scores: game.scores as unknown as Json,
       rounds: (game.rounds ?? []) as unknown as Json,
-      created_at: game.createdAt.toISOString(),
-      ended_at: game.endedAt ? game.endedAt.toISOString() : null,
+      created_at: new Date(game.createdAt).toISOString(),
+      ended_at: game.endedAt ? new Date(game.endedAt).toISOString() : null,
     }, { onConflict: 'owner_id,local_uuid' });
 
     if (error) throw error;
