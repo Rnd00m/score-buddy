@@ -19,7 +19,11 @@
     <template #empty>{{ emptyMessage ?? t('gameHistoryTable.noPlayedGames') }}</template>
     <Column expander class="w-1 pe-0" />
 
-    <Column field="name" :header="t('gameHistoryTable.name')" sortable></Column>
+    <Column field="name" :header="t('gameHistoryTable.name')" sortable>
+      <template #body="{ data }">
+        <span class="break-all">{{ data.name }}</span>
+      </template>
+    </Column>
     <Column :header="t('gameHistoryTable.duration')">
       <template #body="{ data }">
         {{ formattedDuration(data.createdAt, data.endedAt) }}

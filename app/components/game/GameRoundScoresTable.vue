@@ -6,7 +6,7 @@
       </template>
     </Column>
     <Column field="player" :header="t('gameHistoryTable.player')" #body="{ data }">
-      {{ data.player.name }}
+      <span class="break-all">{{ data.player.name }}</span>
     </Column>
     <Column field="score" :header="t('gameHistoryTable.score')" />
   </DataTable>
