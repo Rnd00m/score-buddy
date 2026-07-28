@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="pb-4">
     <h1 class="mb-6 text-3xl">{{ t('resetPassword.title') }}</h1>
 
     <Message v-if="isValidSession === false" severity="error" size="small">

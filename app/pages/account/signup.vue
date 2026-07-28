@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="pb-4">
     <h1 class="mb-6 flex items-center gap-4">
       <NuxtLink to="/account">
         <Button severity="secondary">

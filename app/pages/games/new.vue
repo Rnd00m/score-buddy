@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="pb-4">
     <h1 class="mb-6 flex items-center gap-4">
       <NuxtLink to="#" @click.prevent="$router.back()">
         <Button severity="secondary">

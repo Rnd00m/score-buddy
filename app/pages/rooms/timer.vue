@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col h-full">
+  <div class="flex flex-col h-full pb-4">
     <h1 class="mb-6 flex items-center gap-4 shrink-0">
       <NuxtLink to="/rooms">
         <Button severity="secondary">

@@ -1,5 +1,5 @@
 <template>
-  <div class="h-[calc(100vh-118px)] grid place-items-center">
+  <div class="min-h-full flex flex-col items-center justify-center pb-4">
     <div class="flex flex-col items-center w-full gap-8" v-if="roomStore.players.length">
       <GameCallToActionCard
           :headingText="t('home.newGame')"

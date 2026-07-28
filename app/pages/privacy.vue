@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="pb-4">
     <h1 class="mb-6 text-3xl">{{ t('privacy.title') }}</h1>
 
     <p class="mb-4 text-sm text-surface-500">{{ t('privacy.lastUpdated', { date: lastUpdated }) }}</p>
