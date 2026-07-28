@@ -231,7 +231,8 @@
     "player": "Joueur",
     "score": "Score",
     "replay": "Rejouer",
-    "round": "Manche {number}"
+    "round": "Manche {number}",
+    "jumpToDate": "Aller à une date"
   },
   "gameInfo": {
     "startScore": "Score de départ",

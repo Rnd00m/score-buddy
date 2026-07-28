@@ -231,7 +231,8 @@
     "player": "Player",
     "score": "Score",
     "replay": "Replay",
-    "round": "Round {number}"
+    "round": "Round {number}",
+    "jumpToDate": "Jump to date"
   },
   "gameInfo": {
     "startScore": "Start score",

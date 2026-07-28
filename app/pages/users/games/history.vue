@@ -35,6 +35,7 @@
           :games="games"
           :loading="isFetching"
           :empty-message="t('userGamesHistory.noGamesFound')"
+          enable-date-scrubber
           @replay="handleReplayGame"
       />
     </template>
