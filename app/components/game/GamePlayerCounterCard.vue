@@ -232,10 +232,6 @@ onBeforeUnmount(() => {
   transition: opacity 0.15s ease, box-shadow 0.15s ease, outline 0.15s ease;
 }
 
-.player-score-card:last-child {
-  margin-bottom: 1rem;
-}
-
 .player-score-card.draggable-source--is-dragging {
   opacity: 0.35;
 }
