@@ -46,6 +46,20 @@ body {
   font-family: 'Nunito', sans-serif;
 }
 
+// Scrollbars read as visual clutter on the compact mobile layout, where
+// scrolling is gesture-driven anyway; keep them on wider (mouse-driven)
+// viewports, matching the app's own lg breakpoint for "mobile".
+@media (max-width: 1024px) {
+  * {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  *::-webkit-scrollbar {
+    display: none;
+  }
+}
+
 :root {
   //--bottom-nav-gap: 0.5rem;
   --bottom-nav-background: var(--p-primary-500);

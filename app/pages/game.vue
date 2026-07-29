@@ -1,5 +1,5 @@
 <template>
-  <div v-if="roomStore.currentGame" :class="isDuelModeActive ? 'flex flex-col h-full' : ''">
+  <div v-if="roomStore.currentGame" class="flex flex-col h-full">
     <ConfirmDialog group="confirm" class="max-w-96 w-[calc(100%-6rem)]" dismissableMask>
       <template #container="{ message, acceptCallback, rejectCallback }">
         <div class="flex flex-col items-center p-8 bg-surface-0 dark:bg-surface-900 rounded">
@@ -99,7 +99,7 @@
 
     <Menu ref="gameMenu" :model="gameMenuItems" popup class="mt-2"/>
 
-    <h1 class="mb-6 flex justify-between items-center">
+    <h1 class="mb-6 flex justify-between items-center shrink-0">
       <span class="text-3xl truncate w-full pr-2">{{ roomStore.currentGame.name }}</span>
       <span class="inline-flex gap-2">
       <Button @click="handleUndo" :disabled="!canUndo" raised variant="outlined" severity="secondary" :aria-label="t('common.undo')">
@@ -117,7 +117,7 @@
     </span>
     </h1>
 
-    <div class="flex flex-col gap-4" :class="isDuelModeActive ? 'flex-1 min-h-0' : ''">
+    <div class="flex flex-col gap-4 flex-1 min-h-0" :class="isDuelModeActive ? '' : 'overflow-y-auto'">
       <GamePlayerDuelCounterCard v-if="isDuelModeActive"/>
       <GamePlayerCounterCard v-else/>
     </div>
@@ -351,4 +351,5 @@ const handleGameFinished = () => {
   display: inline-block;
   transform: scaleX(-1);
 }
+
 </style>
