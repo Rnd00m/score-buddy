@@ -11,7 +11,7 @@
     @pointerleave="onPointerLeave"
   >
     <div ref="trackRef" class="date-scroll-index-track">
-      <div class="date-scroll-index-thumb" :style="{ top: `${thumbOffset}px` }">
+      <div ref="thumbRef" class="date-scroll-index-thumb" :style="{ top: `${thumbOffset}px` }">
         <span class="date-scroll-index-label">{{ label }}</span>
         <span class="date-scroll-index-dot"></span>
       </div>
@@ -30,15 +30,18 @@ const props = defineProps<{
 const { t, locale } = useI18n();
 
 const trackRef = ref<HTMLElement | null>(null);
+const thumbRef = ref<HTMLElement | null>(null);
 const scrollTop = ref(0);
 const scrollHeight = ref(0);
 const clientHeight = ref(0);
+const thumbHeight = ref(32);
 const isDragging = ref(false);
 const isHovering = ref(false);
 const isScrolling = ref(false);
 let hideTimeout: ReturnType<typeof setTimeout> | null = null;
 let resizeObserver: ResizeObserver | null = null;
 let mutationObserver: MutationObserver | null = null;
+let thumbResizeObserver: ResizeObserver | null = null;
 
 const isActive = computed(() => isDragging.value || isHovering.value || isScrolling.value);
 
@@ -73,9 +76,9 @@ const label = computed(() => {
 
 const thumbOffset = computed(() => {
   const trackHeight = trackRef.value?.clientHeight ?? 0;
-  const thumbHeight = 32;
+  const half = thumbHeight.value / 2;
 
-  return fraction.value * Math.max(trackHeight - thumbHeight, 0);
+  return Math.min(Math.max(fraction.value * trackHeight, half), Math.max(trackHeight - half, half));
 });
 
 const scheduleHide = () => {
@@ -131,6 +134,20 @@ const onPointerDown = (event: PointerEvent) => {
   window.addEventListener('pointerup', stopDragging);
 };
 
+watch(thumbRef, (el, oldEl) => {
+  if (oldEl === el) return;
+
+  thumbResizeObserver?.disconnect();
+  thumbResizeObserver = null;
+  if (!el) return;
+
+  thumbHeight.value = el.offsetHeight;
+  thumbResizeObserver = new ResizeObserver(() => {
+    thumbHeight.value = el.offsetHeight;
+  });
+  thumbResizeObserver.observe(el);
+}, { immediate: true });
+
 watch(() => props.container, (el, oldEl) => {
   oldEl?.removeEventListener('scroll', onScroll);
   resizeObserver?.disconnect();
@@ -154,6 +171,7 @@ onBeforeUnmount(() => {
   props.container?.removeEventListener('scroll', onScroll);
   resizeObserver?.disconnect();
   mutationObserver?.disconnect();
+  thumbResizeObserver?.disconnect();
   stopDragging();
   if (hideTimeout) clearTimeout(hideTimeout);
 });
@@ -164,7 +182,7 @@ onBeforeUnmount(() => {
   position: absolute;
   top: 0.5rem;
   bottom: 0.5rem;
-  right: 0.25rem;
+  right: -1.5rem;
   width: 2rem;
   display: flex;
   justify-content: flex-end;
@@ -177,23 +195,12 @@ onBeforeUnmount(() => {
   position: relative;
   width: 0.25rem;
   height: 100%;
-  border-radius: 999px;
-  background: var(--p-surface-300);
-  opacity: 0;
-  transition: opacity 0.2s ease;
-}
-
-.app-dark .date-scroll-index-track {
-  background: var(--p-surface-700);
-}
-
-.date-scroll-index-active .date-scroll-index-track {
-  opacity: 1;
 }
 
 .date-scroll-index-thumb {
   position: absolute;
   right: 0;
+  transform: translateY(-50%);
   display: flex;
   align-items: center;
   gap: 0.375rem;
@@ -206,9 +213,9 @@ onBeforeUnmount(() => {
   background: var(--p-primary-500);
   color: var(--p-surface-900);
   font-weight: 700;
-  font-size: 0.8125rem;
+  font-size: 1rem;
   white-space: nowrap;
-  padding: 0.3rem 0.7rem;
+  padding: 0.5rem 1rem;
   border-radius: 999px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
   pointer-events: none;
@@ -220,11 +227,11 @@ onBeforeUnmount(() => {
 }
 
 .date-scroll-index-dot {
-  width: 0.75rem;
-  height: 0.75rem;
-  border-radius: 999px;
+  width: 0.4375rem;
+  height: 2rem;
+  border-radius: 999px 0 0 999px;
   background: var(--p-primary-500);
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+  box-shadow: -1px 1px 4px rgba(0, 0, 0, 0.3);
   opacity: 0;
   transition: opacity 0.2s ease;
 }

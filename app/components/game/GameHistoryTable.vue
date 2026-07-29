@@ -1,8 +1,8 @@
 <template>
-  <div class="relative flex-1 min-h-0">
+  <div class="relative flex-1 min-h-0 -mb-6">
     <DataTable
       ref="tableRef"
-      class="h-full -mx-6 -mb-6"
+      class="h-full -mx-6"
       :value="games"
       v-model:expandedRows="expandedRows"
       v-model:sortField="sortField"
@@ -14,7 +14,7 @@
       scrollHeight="flex"
       size="large"
       :loading="loading"
-      :paginator="enableDateScrubber ? false : paginator"
+      :paginator="isScrubberActive ? false : paginator"
       :rows="10"
       :rowsPerPageOptions="[10, 20, 50]"
     >
@@ -56,7 +56,7 @@
     </DataTable>
 
     <BaseDateScrollIndex
-      v-if="enableDateScrubber && isDateSorted"
+      v-if="isScrubberActive && isDateSorted"
       :dates="sortedDates"
       :container="scrollContainer"
     />
@@ -89,6 +89,9 @@ const emit = defineEmits<{
 }>();
 
 const { expandedRows, onRowClick } = useExpandableRow('uuid');
+
+const isMobileDevice = useIsMobileDevice();
+const isScrubberActive = computed(() => props.enableDateScrubber && isMobileDevice.value);
 
 const sortField = ref('createdAtTime');
 const sortOrder = ref<1 | -1>(-1);
