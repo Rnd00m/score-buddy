@@ -351,4 +351,5 @@ const handleGameFinished = () => {
   display: inline-block;
   transform: scaleX(-1);
 }
+
 </style>
