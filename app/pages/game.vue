@@ -117,7 +117,7 @@
     </span>
     </h1>
 
-    <div class="flex flex-col gap-4 flex-1 min-h-0" :class="isDuelModeActive ? '' : 'overflow-y-auto'">
+    <div class="game-content flex flex-col gap-4 flex-1 min-h-0" :class="isDuelModeActive ? '' : 'overflow-y-auto'">
       <GamePlayerDuelCounterCard v-if="isDuelModeActive"/>
       <GamePlayerCounterCard v-else/>
     </div>

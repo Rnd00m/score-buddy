@@ -2,13 +2,13 @@
   <Toast position="bottom-center" class="max-w-[calc(100%-2rem)]"/>
 
   <div class="flex flex-col h-dvh">
-    <div ref="mainContent" class="px-6 pb-6 pt-[calc(env(safe-area-inset-top)+1.5rem)] overflow-y-auto flex-1 min-h-0">
+    <div ref="mainContent" class="main-content px-6 pb-6 pt-[calc(env(safe-area-inset-top)+1.5rem)] overflow-y-auto flex-1 min-h-0">
       <div class="lg:max-w-3xl mx-auto h-full">
         <NuxtPage/>
       </div>
     </div>
     <div class="sticky bottom-0 w-full">
-      <BaseBottomNav :items="items"/>
+      <BaseBottomNav :items="items" :floating="isMobileDevice"/>
     </div>
   </div>
   <VueQueryDevtools />
@@ -51,6 +51,13 @@ useHead({
 const roomStore = useRoomStore();
 const route = useRoute();
 const router = useRouter();
+
+// the floating pill nav only makes sense on a real mobile/tablet device —
+// on a desktop browser resized to a narrow width it stays a docked bar
+const isMobileDevice = useIsMobileDevice();
+watch(isMobileDevice, (floating) => {
+  document.documentElement.classList.toggle('floating-nav', floating);
+}, { immediate: true });
 
 const items = computed(() => {
   return [

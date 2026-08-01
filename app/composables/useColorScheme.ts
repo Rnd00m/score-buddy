@@ -23,14 +23,6 @@ const rgbToHex = (rgb: string) => {
 // the status bar must match the app's actual background, which is themed via CSS vars
 const getStatusBarColor = () => rgbToHex(getComputedStyle(document.body).backgroundColor);
 
-// the navigation bar must match the bottom nav's actual background, which is themed via CSS vars
-const getNavigationBarColor = () => {
-  const navigationBarElement = document.querySelector('.bottom-nav');
-  if (!navigationBarElement) return '#000000';
-
-  return rgbToHex(getComputedStyle(navigationBarElement).backgroundColor);
-};
-
 const getSystemColorScheme = (): ColorScheme => (
   window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
 );
@@ -46,7 +38,10 @@ export const useColorScheme = () => {
 
     await EdgeToEdge.enable();
     await EdgeToEdge.setStatusBarColor({ color: getStatusBarColor() });
-    await EdgeToEdge.setNavigationBarColor({ color: getNavigationBarColor() });
+    // on native platforms the bottom nav is always the floating pill (see
+    // useIsMobileDevice), so the gesture-nav strip behind it shows the page
+    // background rather than the pill's own color
+    await EdgeToEdge.setNavigationBarColor({ color: getStatusBarColor() });
     await SystemBars.setStyle({ style });
   };
 
