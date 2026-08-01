@@ -3,6 +3,7 @@
     v-if="dates.length > 1"
     class="date-scroll-index"
     :class="{ 'date-scroll-index-active': isActive }"
+    :style="{ top: `calc(${headerHeight}px + 0.5rem)` }"
     :aria-label="t('gameHistoryTable.jumpToDate')"
     role="slider"
     :aria-valuetext="label"
@@ -35,6 +36,10 @@ const scrollTop = ref(0);
 const scrollHeight = ref(0);
 const clientHeight = ref(0);
 const thumbHeight = ref(32);
+// So the track starts right below the table's own (sticky) header instead of
+// overlapping it — measured rather than hardcoded since the header's height
+// isn't fixed across locales/font sizes.
+const headerHeight = ref(0);
 const isDragging = ref(false);
 const isHovering = ref(false);
 const isScrolling = ref(false);
@@ -42,6 +47,7 @@ let hideTimeout: ReturnType<typeof setTimeout> | null = null;
 let resizeObserver: ResizeObserver | null = null;
 let mutationObserver: MutationObserver | null = null;
 let thumbResizeObserver: ResizeObserver | null = null;
+let headerResizeObserver: ResizeObserver | null = null;
 
 const isActive = computed(() => isDragging.value || isHovering.value || isScrolling.value);
 
@@ -152,8 +158,10 @@ watch(() => props.container, (el, oldEl) => {
   oldEl?.removeEventListener('scroll', onScroll);
   resizeObserver?.disconnect();
   mutationObserver?.disconnect();
+  headerResizeObserver?.disconnect();
   resizeObserver = null;
   mutationObserver = null;
+  headerResizeObserver = null;
 
   if (!el) return;
 
@@ -165,6 +173,15 @@ watch(() => props.container, (el, oldEl) => {
 
   mutationObserver = new MutationObserver(measure);
   mutationObserver.observe(el, { childList: true, subtree: true });
+
+  const header = el.querySelector('.p-datatable-thead');
+  if (header) {
+    headerHeight.value = header.clientHeight;
+    headerResizeObserver = new ResizeObserver(() => {
+      headerHeight.value = header.clientHeight;
+    });
+    headerResizeObserver.observe(header);
+  }
 }, { immediate: true });
 
 onBeforeUnmount(() => {
@@ -172,6 +189,7 @@ onBeforeUnmount(() => {
   resizeObserver?.disconnect();
   mutationObserver?.disconnect();
   thumbResizeObserver?.disconnect();
+  headerResizeObserver?.disconnect();
   stopDragging();
   if (hideTimeout) clearTimeout(hideTimeout);
 });
@@ -180,8 +198,14 @@ onBeforeUnmount(() => {
 <style scoped>
 .date-scroll-index {
   position: absolute;
-  top: 0.5rem;
-  bottom: 0.5rem;
+  /* top comes from the headerHeight-driven inline style above (+0.5rem so it
+     doesn't sit glued right against the header) so the track starts below
+     the table's sticky header instead of overlapping it. bottom matches the
+     same reserved clearance used for the table's own scroll (main.scss's
+     .page-scroll rule), plus another 0.5rem so it doesn't sit glued right
+     against the nav either, so the track stops above the floating nav
+     instead of running behind it. */
+  bottom: calc(var(--bottom-nav-height) + var(--bottom-nav-floating-offset) + 1rem + 0.5rem);
   right: -1.5rem;
   width: 2rem;
   display: flex;
