@@ -12,15 +12,23 @@ const SAFETY_BUFFER = 24;
 
 /**
  * Speed dials default to opening downward, but near the bottom of the
- * scrollable area — which sits above the app's sticky bottom nav — that
- * pushes items off-screen/behind the nav and forces a scroll. This flips
- * the direction upward when there isn't enough room below the trigger to
- * fit the full linear item stack.
+ * scrollable area — which sits above the app's bottom nav — that pushes
+ * items off-screen/behind the nav and forces a scroll. This flips the
+ * direction upward when there isn't enough room below the trigger to fit
+ * the full linear item stack.
  */
 export const useSpeedDialDirection = () => {
   const directions = reactive<Record<string, BaseDirection | FlippedDirection>>({});
 
+  // The nav's own top edge is the true visual boundary: scrollable content
+  // is allowed to extend behind the (floating, translucent) nav, so the
+  // scroll container's own box can reach all the way to the viewport's
+  // bottom — using its rect instead would let a downward-opening dial think
+  // it has room in the space the nav actually covers.
   const getVisibleBottom = (trigger: HTMLElement) => {
+    const nav = document.querySelector('.bottom-nav') as HTMLElement | null;
+    if (nav) return nav.getBoundingClientRect().top;
+
     const scrollContainer = trigger.closest('.overflow-y-auto') as HTMLElement | null;
 
     return scrollContainer ? scrollContainer.getBoundingClientRect().bottom : window.innerHeight;

@@ -61,12 +61,15 @@ body {
 }
 
 :root {
-  //--bottom-nav-gap: 0.5rem;
   --bottom-nav-background: var(--p-primary-500);
   // Kept in sync with .bottom-nav's actual rendered height (icon height +
   // link's vertical padding) so other bottom-anchored UI (e.g. Toast) can
   // clear it without hardcoding the number a second time.
   --bottom-nav-height: 3.5125rem;
+  // Gap kept between the floating pill nav and the screen edges/gesture-nav
+  // area on real mobile devices (see .floating-nav below); unused otherwise.
+  --bottom-nav-gap: 1rem;
+  --bottom-nav-floating-offset: calc(env(safe-area-inset-bottom) + var(--bottom-nav-gap));
 }
 
 // -------------------- Main menu -------------------- >
@@ -78,6 +81,27 @@ body {
   // extend the nav's own background into the gesture-nav safe area instead
   // of relying solely on the native navigation bar color to match
   padding-bottom: env(safe-area-inset-bottom);
+}
+
+// On real mobile/tablet devices (see useIsMobileDevice), the nav floats over
+// the content as a translucent pill instead of a full-width docked bar —
+// paired with the content/Toast clearance rules further down.
+.bottom-nav--floating {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 40;
+  margin: 0 var(--bottom-nav-gap) var(--bottom-nav-floating-offset);
+  padding-bottom: 0;
+  border-radius: 999px;
+  // Near-opaque pill — the blur (not the pill's own transparency) is what
+  // should read as "frosted"; a higher backdrop-filter radius keeps that
+  // effect visible as a soft glow through the pill even at low alpha.
+  background: color-mix(in srgb, var(--bottom-nav-background) 90%, transparent);
+  backdrop-filter: blur(28px) saturate(180%);
+  -webkit-backdrop-filter: blur(28px) saturate(180%);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
 }
 
 .bottom-nav-link {
@@ -108,12 +132,62 @@ body {
   color: var(--p-dark-secondary-900);
 }
 
+// When a page owns its own inner scroll container (e.g. game.vue's
+// .game-content) instead of scrolling via .main-content directly,
+// .main-content is just a height:100% pass-through down to that inner
+// scroller. Its own bottom padding (the base pb-6 utility) would still
+// shrink the percentage-height chain feeding .game-content, stopping its
+// box short of the viewport's actual bottom — so it must be zeroed out
+// unconditionally (not just under .floating-nav) and left entirely to
+// .game-content to manage.
+.main-content:has(.game-content) {
+  padding-bottom: 0;
+}
+
+// Reinstates, on .game-content itself, the trailing gutter that .main-content
+// used to provide via its own pb-6 before being zeroed out above — kept as
+// the docked-nav default; the floating-nav rule below raises it to the pill's
+// clearance instead.
+//
+// isolation: isolate scopes down every z-index inside (the score cards'
+// SpeedDial toggle/list, drag mirrors, ripples, …) into .game-content's own
+// stacking context. Those inner values (PrimeVue sets e.g. z-index: 1 on the
+// SpeedDial toggle button) are only ever meant to order elements against
+// each other, not against page-level chrome — without isolation they land in
+// the same ambient stacking context as everything else on the page, so
+// nothing stops a low value like 1 from being compared directly against
+// .bottom-nav--floating elsewhere in the tree. Browsers are supposed to
+// still rank that below the nav's z-index: 40, but with cards now allowed to
+// render behind the (backdrop-filter'd) floating pill, this has shown up in
+// the wild as the SpeedDial toggle painting over the nav — isolation removes
+// the ambient comparison entirely instead of relying on it resolving right.
+.game-content {
+  padding-bottom: 1.5rem;
+  isolation: isolate;
+}
+
+// The floating pill is fixed (out of flow) and no longer reserves layout
+// space, so whichever element actually scrolls needs its own clearance to
+// avoid ending up hidden behind it — exactly the pill's own footprint, no
+// extra buffer. Most pages scroll via .main-content itself, but some (e.g.
+// game.vue's .game-content) own their own inner scroll container instead,
+// so they need the same rule applied directly.
+.floating-nav .main-content:not(:has(.game-content)),
+.floating-nav .game-content {
+  padding-bottom: calc(var(--bottom-nav-height) + var(--bottom-nav-floating-offset));
+}
+
 // -------------------- Toast -------------------- >
 // PrimeVue's bottom-center offset (20px from viewport bottom, set inline)
-// sits underneath the bottom nav; clear it (plus the gesture-nav safe area)
-// instead. !important is required to beat the component's inline style.
+// sits underneath the bottom nav; clear it (plus the gesture-nav safe area,
+// or the floating pill's clearance) instead. !important is required to beat
+// the component's inline style.
 .p-toast.p-toast-bottom-center {
   bottom: calc(var(--bottom-nav-height) + env(safe-area-inset-bottom) + 12px) !important;
+}
+
+.floating-nav .p-toast.p-toast-bottom-center {
+  bottom: calc(var(--bottom-nav-height) + var(--bottom-nav-floating-offset) + 12px) !important;
 }
 
 // PrimeVue nudges the close button up/right by a percentage of its own box

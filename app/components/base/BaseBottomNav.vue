@@ -1,5 +1,5 @@
 <template>
-  <nav class="bottom-nav">
+  <nav class="bottom-nav" :class="{ 'bottom-nav--floating': floating }">
     <RouterLink v-for="item in items" :key="item.route" v-slot="{ href, navigate, isActive }" :to="item.route" custom>
       <a
         :href="href"
@@ -21,5 +21,6 @@ import type { Component } from "vue";
 
 defineProps<{
   items: { icon: Component; label: string; route: string }[];
+  floating?: boolean;
 }>();
 </script>
