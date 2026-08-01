@@ -92,7 +92,14 @@ body {
   max-width: var(--bottom-nav-max-width);
   margin-bottom: var(--bottom-nav-floating-offset);
   z-index: 40;
-  padding: 0 0.5rem;
+  // Half of .bottom-nav-link's own vertical padding (0.5375rem / 2) — so the
+  // first/last icon's gap to this pill's edge equals its own link padding
+  // (0.26875rem) plus this, landing at 0.5375rem total: the same as the gap
+  // above/below every icon, AND the same as the gap between two adjacent
+  // icons (each contributing 0.26875rem on its facing side). One consistent
+  // gap everywhere is also what keeps .bottom-nav-icon's border-radius: 999px
+  // concentric with this pill's own curve.
+  padding: 0 0.26875rem;
   border-radius: 999px;
   background: color-mix(in srgb, var(--bottom-nav-background) 90%, transparent);
   backdrop-filter: blur(28px) saturate(180%);
@@ -112,7 +119,11 @@ body {
 }
 
 .bottom-nav-link {
-  padding: 0.5375rem 0.35rem;
+  // Horizontal padding is exactly half the vertical: two adjacent icons each
+  // contribute this on their facing side, summing to the same gap as the
+  // vertical one (0.5375rem) — see .bottom-nav--floating's own padding above
+  // for why the first/last icon's outer gap matches too.
+  padding: 0.5375rem 0.26875rem;
   color: var(--p-text-color);
 }
 
@@ -122,6 +133,9 @@ body {
   justify-content: center;
   width: 3.875rem;
   height: 2.4375rem;
+  // 999px clamps to half this box's own height, which lands concentric with
+  // the outer pill's curve as long as the gap around this icon is the same
+  // horizontally and vertically — see .bottom-nav--floating's padding above.
   border-radius: 999px;
   transition: background-color 0.2s ease, color 0.2s ease;
 }
