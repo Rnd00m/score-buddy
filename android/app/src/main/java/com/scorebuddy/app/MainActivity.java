@@ -29,11 +29,10 @@ public class MainActivity extends BridgeActivity {
 
         // Android only forces edge-to-edge automatically on API 35+ (targetSdk).
         // On older versions (e.g. Android 14) the window never actually goes
-        // edge-to-edge on its own, so the WindowInsetsCompat system-bar insets
-        // the capacitor-android-edge-to-edge-support plugin relies on stay at
-        // 0, and its status/navigation bar color overlays collapse to zero
-        // height. Forcing it here makes the plugin's color calls take effect
-        // consistently across OS versions.
+        // edge-to-edge on its own, so the WebView never reports non-zero
+        // env(safe-area-inset-*) values and content/the floating nav both end
+        // up flush against the status/gesture-nav areas. Forcing it here keeps
+        // that consistent across OS versions.
         WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
 
         // Dismiss the splash once the icon animation finishes, no sooner and no
