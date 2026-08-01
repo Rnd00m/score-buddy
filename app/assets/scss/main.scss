@@ -163,7 +163,7 @@ body {
 
 .floating-nav .main-content:not(:has(.game-content)),
 .floating-nav .game-content {
-  padding-bottom: calc(var(--bottom-nav-height) + var(--bottom-nav-floating-offset));
+  padding-bottom: calc(var(--bottom-nav-height) + var(--bottom-nav-floating-offset) + 1rem);
 }
 
 // -------------------- Toast -------------------- >
