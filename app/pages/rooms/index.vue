@@ -134,7 +134,7 @@
     </h1>
 
     <DataTable
-      class="flex-1 min-h-0 -mx-6 -mb-6"
+      class="flex-1 min-h-0 -mx-6 page-scroll"
       :value="roomStore.players"
       v-model:expandedRows="expandedRows"
       @row-click="onRowClick"

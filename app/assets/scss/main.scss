@@ -151,19 +151,34 @@ body {
   color: var(--p-dark-secondary-900);
 }
 
-.main-content:has(.game-content) {
+// .page-scroll marks a DataTable (scrollHeight="flex") that owns its own
+// internal scroll instead of scrolling via .main-content — same idea as
+// .game-content: leave .main-content's own padding-bottom out of the way so
+// the table's "flex" height calc isn't pre-shrunk by it, then reserve the
+// nav clearance directly on the table's actual scrolling element instead
+// (below), so its rows can scroll behind the pill exactly like the game
+// page's score cards do.
+.main-content:has(.game-content, .page-scroll) {
   padding-bottom: 0;
 }
-
 
 .game-content {
   padding-bottom: 1.5rem;
   isolation: isolate;
 }
 
-.floating-nav .main-content:not(:has(.game-content)),
+.floating-nav .main-content:not(:has(.game-content, .page-scroll)),
 .floating-nav .game-content {
   padding-bottom: calc(var(--bottom-nav-height) + var(--bottom-nav-floating-offset) + 1rem);
+}
+
+// Direct-child combinator on purpose: expanded rows can nest another
+// DataTable (GameRoundScoresTable) with its own .p-datatable-table-container
+// several levels down — a descendant selector here would give that nested
+// table the same huge padding-bottom as the outer one.
+.floating-nav .page-scroll > .p-datatable-table-container {
+  padding-bottom: calc(var(--bottom-nav-height) + var(--bottom-nav-floating-offset) + 1rem);
+  isolation: isolate;
 }
 
 // -------------------- Toast -------------------- >

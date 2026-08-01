@@ -1,8 +1,8 @@
 <template>
-  <div class="relative flex-1 min-h-0 -mb-6">
+  <div class="relative flex-1 min-h-0">
     <DataTable
       ref="tableRef"
-      class="h-full -mx-6"
+      class="h-full -mx-6 page-scroll"
       :value="games"
       v-model:expandedRows="expandedRows"
       v-model:sortField="sortField"
