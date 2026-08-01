@@ -87,7 +87,7 @@ body {
   max-width: var(--bottom-nav-max-width);
   margin-bottom: var(--bottom-nav-floating-offset);
   z-index: 40;
-  padding: 0 0.34375rem;
+  padding: 0 0.46875rem;
   border-radius: 999px;
   background: color-mix(in srgb, var(--bottom-nav-background) 90%, transparent);
   backdrop-filter: blur(28px) saturate(180%);
