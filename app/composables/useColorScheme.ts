@@ -12,17 +12,6 @@ const colorScheme = ref<ColorScheme>('light');
 
 let media: MediaQueryList | null = null;
 
-const rgbToHex = (rgb: string) => {
-  const match = rgb.match(/\d+/g);
-  if (!match) return '#000000';
-
-  const [r, g, b] = match.map(Number);
-  return `#${[r, g, b].map(v => (v ?? 0).toString(16).padStart(2, '0')).join('')}`;
-};
-
-// the status bar must match the app's actual background, which is themed via CSS vars
-const getStatusBarColor = () => rgbToHex(getComputedStyle(document.body).backgroundColor);
-
 const getSystemColorScheme = (): ColorScheme => (
   window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
 );
@@ -30,18 +19,25 @@ const getSystemColorScheme = (): ColorScheme => (
 const isColorSchemePreference = (value: string | null): value is ColorSchemePreference =>
   value === 'system' || value === 'light' || value === 'dark';
 
+const applyNativeInsetVars = async () => {
+  if (Capacitor.getPlatform() !== 'android') return;
+
+  await EdgeToEdge.enable();
+  const insets = await EdgeToEdge.getInsets();
+  const dpr = window.devicePixelRatio || 1;
+
+  document.documentElement.style.setProperty('--native-inset-top', `${insets.top / dpr}px`);
+  document.documentElement.style.setProperty('--native-inset-bottom', `${insets.bottom / dpr}px`);
+};
+
 export const useColorScheme = () => {
   const applySystemBars = async (scheme: ColorScheme) => {
     if (!Capacitor.isNativePlatform()) return;
 
     const style = scheme === 'dark' ? SystemBarsStyle.Dark : SystemBarsStyle.Light;
 
-    await EdgeToEdge.enable();
-    await EdgeToEdge.setStatusBarColor({ color: getStatusBarColor() });
-    // on native platforms the bottom nav is always the floating pill (see
-    // useIsMobileDevice), so the gesture-nav strip behind it shows the page
-    // background rather than the pill's own color
-    await EdgeToEdge.setNavigationBarColor({ color: getStatusBarColor() });
+    await applyNativeInsetVars();
+    await EdgeToEdge.disable();
     await SystemBars.setStyle({ style });
   };
 
@@ -51,9 +47,6 @@ export const useColorScheme = () => {
     applySystemBars(scheme);
   };
 
-  // Re-resolves the effective light/dark scheme from the current preference —
-  // called both on init/preference change and whenever the OS scheme changes
-  // while "system" is selected, so switching it live is reflected immediately.
   const resolve = () => {
     applyColorScheme(preference.value === 'system' ? getSystemColorScheme() : preference.value);
   };

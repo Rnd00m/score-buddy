@@ -1,4 +1,5 @@
 <template>
+  <div v-if="floating" class="bottom-nav-shade" aria-hidden="true"/>
   <nav class="bottom-nav" :class="{ 'bottom-nav--floating': floating }">
     <RouterLink v-for="item in items" :key="item.route" v-slot="{ href, navigate, isActive }" :to="item.route" custom>
       <a

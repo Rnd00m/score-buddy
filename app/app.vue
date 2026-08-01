@@ -2,7 +2,7 @@
   <Toast position="bottom-center" class="max-w-[calc(100%-2rem)]"/>
 
   <div class="flex flex-col h-dvh">
-    <div ref="mainContent" class="main-content px-6 pb-6 pt-[calc(env(safe-area-inset-top)+1.5rem)] overflow-y-auto flex-1 min-h-0">
+    <div ref="mainContent" class="main-content px-6 pb-6 pt-[calc(var(--native-inset-top,env(safe-area-inset-top))+0.5rem)] overflow-y-auto flex-1 min-h-0">
       <div class="lg:max-w-3xl mx-auto h-full">
         <NuxtPage/>
       </div>
