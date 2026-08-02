@@ -40,6 +40,11 @@
 }
 
 // -------------------- Global -------------------- >
+html {
+  text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+}
+
 body {
   margin: 0;
   background-color: var(--p-content-background);
