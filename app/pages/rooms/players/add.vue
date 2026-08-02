@@ -1,6 +1,6 @@
 <template>
-  <div class="pb-4">
-    <h1 class="mb-6 flex items-center gap-4">
+  <div class="flex flex-col h-full">
+    <h1 class="mb-6 flex items-center gap-4 shrink-0">
       <NuxtLink to="/rooms">
         <Button severity="secondary">
           <template #icon><ArrowLeft :size="18"/></template>
@@ -9,69 +9,71 @@
       <span class="text-3xl">{{ t('addPlayer.title') }}</span>
     </h1>
 
-    <div v-if="quickPickProfiles.length" class="flex flex-col gap-2 mb-4">
-      <label>{{ t('addPlayer.playersPlayedWith') }}</label>
-      <div class="flex flex-wrap content-start gap-2 max-h-52 overflow-y-auto">
-        <Button
-            v-for="profile in visibleQuickPickProfiles"
-            :key="profile.id"
-            severity="secondary"
-            outlined
-            @click="addFromProfile(profile)"
-        >
-          <div class="flex items-center gap-2">
-            <div class="w-4 h-4 rounded-md" :style="{background: profile.color.value}"></div>
-            <span>{{ profile.name }}</span>
-          </div>
-        </Button>
+    <div class="game-content flex-1 min-h-0 overflow-y-auto">
+      <div v-if="quickPickProfiles.length" class="flex flex-col gap-2 mb-4">
+        <label>{{ t('addPlayer.playersPlayedWith') }}</label>
+        <div class="flex flex-wrap content-start gap-2 max-h-52 overflow-y-auto">
+          <Button
+              v-for="profile in visibleQuickPickProfiles"
+              :key="profile.id"
+              severity="secondary"
+              outlined
+              @click="addFromProfile(profile)"
+          >
+            <div class="flex items-center gap-2">
+              <div class="w-4 h-4 rounded-md" :style="{background: profile.color.value}"></div>
+              <span>{{ profile.name }}</span>
+            </div>
+          </Button>
+        </div>
       </div>
-    </div>
 
-    <Form ref="formRef" :key="formKey" v-slot="$form" :initialValues="player" :resolver @submit="onFormSubmit" class="flex flex-col gap-4 w-full">
-      <div class="flex flex-col gap-1">
-        <label for="name">{{ t('common.name') }}</label>
-        <AutoComplete
-            id="name"
-            name="name"
-            type="text"
-            :suggestions="playerNameSuggestions"
-            :show-empty-message="false"
-            fluid
-            @complete="searchPlayerName"
-            @option-select="onPlayerNameSelect"
-        >
-          <template #option="slotProps">
-            <div class="flex items-center gap-2">
-              <div class="w-4 h-4 rounded-md" :style="{background: findProfileByName(slotProps.option)?.color.value}"></div>
-              <span>{{ slotProps.option }}</span>
-            </div>
-          </template>
-        </AutoComplete>
-        <Message v-if="$form.name?.invalid" severity="error" size="small" variant="simple">{{
-            $form.name.error?.message
-          }}
-        </Message>
-      </div>
-      <div class="flex flex-col gap-1">
-        <label for="color">{{ t('common.color') }}</label>
-        <Select id="color" v-model="selectedColor" :options="availableColors" optionLabel="name" class="w-full" :invalid="colorInvalid">
-          <template #value="slotProps">
-            <div v-if="slotProps.value" class="flex items-center gap-2">
-              <div class="w-6 h-6 rounded-md" :style="{background: `${slotProps.value.value}`}"></div>
-              <div>{{ slotProps.value.name }}</div>
-            </div>
-          </template>
-          <template #option="slotProps">
-            <div class="flex items-center gap-2">
-              <div class="w-6 h-6 rounded-md" :style="{background: `${slotProps.option.value}`}"></div>
-              <div>{{ slotProps.option.name }}</div>
-            </div>
-          </template>
-        </Select>
-        <Message v-if="colorInvalid" severity="error" size="small" variant="simple">{{ t('addPlayer.colorRequired') }}</Message>
-      </div>
-      <Button type="submit" severity="primary" :label="t('common.submit')"/>
-    </Form>
+      <Form ref="formRef" :key="formKey" v-slot="$form" :initialValues="player" :resolver @submit="onFormSubmit" class="flex flex-col gap-4 w-full">
+        <div class="flex flex-col gap-1">
+          <label for="name">{{ t('common.name') }}</label>
+          <AutoComplete
+              id="name"
+              name="name"
+              type="text"
+              :suggestions="playerNameSuggestions"
+              :show-empty-message="false"
+              fluid
+              @complete="searchPlayerName"
+              @option-select="onPlayerNameSelect"
+          >
+            <template #option="slotProps">
+              <div class="flex items-center gap-2">
+                <div class="w-4 h-4 rounded-md" :style="{background: findProfileByName(slotProps.option)?.color.value}"></div>
+                <span>{{ slotProps.option }}</span>
+              </div>
+            </template>
+          </AutoComplete>
+          <Message v-if="$form.name?.invalid" severity="error" size="small" variant="simple">{{
+              $form.name.error?.message
+            }}
+          </Message>
+        </div>
+        <div class="flex flex-col gap-1">
+          <label for="color">{{ t('common.color') }}</label>
+          <Select id="color" v-model="selectedColor" :options="availableColors" optionLabel="name" class="w-full" :invalid="colorInvalid">
+            <template #value="slotProps">
+              <div v-if="slotProps.value" class="flex items-center gap-2">
+                <div class="w-6 h-6 rounded-md" :style="{background: `${slotProps.value.value}`}"></div>
+                <div>{{ slotProps.value.name }}</div>
+              </div>
+            </template>
+            <template #option="slotProps">
+              <div class="flex items-center gap-2">
+                <div class="w-6 h-6 rounded-md" :style="{background: `${slotProps.option.value}`}"></div>
+                <div>{{ slotProps.option.name }}</div>
+              </div>
+            </template>
+          </Select>
+          <Message v-if="colorInvalid" severity="error" size="small" variant="simple">{{ t('addPlayer.colorRequired') }}</Message>
+        </div>
+        <Button type="submit" severity="primary" :label="t('common.submit')"/>
+      </Form>
+    </div>
   </div>
 </template>
 

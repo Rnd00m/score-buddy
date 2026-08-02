@@ -1,6 +1,6 @@
 <template>
-  <div class="pb-4">
-    <h1 class="mb-6 flex items-center gap-4">
+  <div class="flex flex-col h-full">
+    <h1 class="mb-6 flex items-center gap-4 shrink-0">
       <NuxtLink to="/account">
         <Button severity="secondary">
           <template #icon><ArrowLeft :size="18"/></template>
@@ -9,50 +9,52 @@
       <span class="text-3xl">{{ t('signup.title') }}</span>
     </h1>
 
-    <Form v-slot="$form" :initialValues="credentials" :resolver :validateOnValueUpdate="false" :validateOnBlur="false" @submit="onFormSubmit" class="flex flex-col gap-4 w-full">
-      <div class="flex flex-col gap-1">
-        <label for="email">{{ t('login.email') }}</label>
-        <InputText id="email" name="email" type="email" fluid/>
-        <Message v-if="$form.email?.invalid" severity="error" size="small" variant="simple">{{
-            $form.email.error?.message
-          }}
-        </Message>
-      </div>
+    <div class="game-content flex-1 min-h-0 overflow-y-auto">
+      <Form v-slot="$form" :initialValues="credentials" :resolver :validateOnValueUpdate="false" :validateOnBlur="false" @submit="onFormSubmit" class="flex flex-col gap-4 w-full">
+        <div class="flex flex-col gap-1">
+          <label for="email">{{ t('login.email') }}</label>
+          <InputText id="email" name="email" type="email" fluid/>
+          <Message v-if="$form.email?.invalid" severity="error" size="small" variant="simple">{{
+              $form.email.error?.message
+            }}
+          </Message>
+        </div>
 
-      <div class="flex flex-col gap-1">
-        <label for="password">{{ t('login.password') }}</label>
-        <Password id="password" name="password" :feedback="false" toggleMask fluid/>
-        <Message v-if="$form.password?.invalid" severity="error" size="small" variant="simple">{{
-            $form.password.error?.message
-          }}
-        </Message>
-        <ul class="flex flex-col gap-2 list-none ms-1 my-1 p-0">
-          <li v-for="req in passwordRequirements" :key="req.id" class="flex items-center gap-2 text-sm transition-all duration-300">
-            <CheckCircle :class="['transition-all duration-300 ease-out', req.test($form.password?.value ?? '') ? 'text-green-500 scale-110 opacity-100' : 'text-surface-400 scale-90 opacity-70']"/>
-            <span :class="['transition-all duration-300 ease-out', req.test($form.password?.value ?? '') ? 'text-green-700 dark:text-green-400 line-through decoration-2 decoration-green-500/70' : 'text-surface-700 dark:text-surface-300 dark:opacity-70']">
-              {{ req.label }}
-            </span>
-          </li>
-        </ul>
-      </div>
+        <div class="flex flex-col gap-1">
+          <label for="password">{{ t('login.password') }}</label>
+          <Password id="password" name="password" :feedback="false" toggleMask fluid/>
+          <Message v-if="$form.password?.invalid" severity="error" size="small" variant="simple">{{
+              $form.password.error?.message
+            }}
+          </Message>
+          <ul class="flex flex-col gap-2 list-none ms-1 my-1 p-0">
+            <li v-for="req in passwordRequirements" :key="req.id" class="flex items-center gap-2 text-sm transition-all duration-300">
+              <CheckCircle :class="['transition-all duration-300 ease-out', req.test($form.password?.value ?? '') ? 'text-green-500 scale-110 opacity-100' : 'text-surface-400 scale-90 opacity-70']"/>
+              <span :class="['transition-all duration-300 ease-out', req.test($form.password?.value ?? '') ? 'text-green-700 dark:text-green-400 line-through decoration-2 decoration-green-500/70' : 'text-surface-700 dark:text-surface-300 dark:opacity-70']">
+                {{ req.label }}
+              </span>
+            </li>
+          </ul>
+        </div>
 
-      <div class="flex flex-col gap-1">
-        <label for="confirmPassword">{{ t('signup.confirmPassword') }}</label>
-        <Password id="confirmPassword" name="confirmPassword" :feedback="false" toggleMask fluid/>
-        <Message v-if="$form.confirmPassword?.invalid" severity="error" size="small" variant="simple">{{
-            $form.confirmPassword.error?.message
-          }}
-        </Message>
-      </div>
+        <div class="flex flex-col gap-1">
+          <label for="confirmPassword">{{ t('signup.confirmPassword') }}</label>
+          <Password id="confirmPassword" name="confirmPassword" :feedback="false" toggleMask fluid/>
+          <Message v-if="$form.confirmPassword?.invalid" severity="error" size="small" variant="simple">{{
+              $form.confirmPassword.error?.message
+            }}
+          </Message>
+        </div>
 
-      <BaseTurnstile v-if="turnstileSiteKey" ref="turnstileRef" :site-key="turnstileSiteKey" @verified="(token: string) => captchaToken = token" @expired="captchaToken = ''"/>
+        <BaseTurnstile v-if="turnstileSiteKey" ref="turnstileRef" :site-key="turnstileSiteKey" @verified="(token: string) => captchaToken = token" @expired="captchaToken = ''"/>
 
-      <Button type="submit" severity="primary" :label="t('signup.submit')" :loading="isLoading" :disabled="!!turnstileSiteKey && !captchaToken"/>
-    </Form>
+        <Button type="submit" severity="primary" :label="t('signup.submit')" :loading="isLoading" :disabled="!!turnstileSiteKey && !captchaToken"/>
+      </Form>
 
-    <p class="mt-4 text-center">
-      {{ t('signup.alreadyHaveAccount') }} <NuxtLink to="/account/login" class="text-primary">{{ t('signup.logIn') }}</NuxtLink>
-    </p>
+      <p class="mt-4 text-center">
+        {{ t('signup.alreadyHaveAccount') }} <NuxtLink to="/account/login" class="text-primary">{{ t('signup.logIn') }}</NuxtLink>
+      </p>
+    </div>
   </div>
 </template>
 

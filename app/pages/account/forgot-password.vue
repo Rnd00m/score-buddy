@@ -1,6 +1,6 @@
 <template>
-  <div class="pb-4">
-    <h1 class="mb-6 flex items-center gap-4">
+  <div class="flex flex-col h-full">
+    <h1 class="mb-6 flex items-center gap-4 shrink-0">
       <NuxtLink to="/account/login">
         <Button severity="secondary">
           <template #icon><ArrowLeft :size="18"/></template>
@@ -9,22 +9,24 @@
       <span class="text-3xl">{{ t('forgotPassword.title') }}</span>
     </h1>
 
-    <p class="mb-6">{{ t('forgotPassword.instructions') }}</p>
+    <div class="game-content flex-1 min-h-0 overflow-y-auto">
+      <p class="mb-6">{{ t('forgotPassword.instructions') }}</p>
 
-    <Form v-slot="$form" :initialValues="credentials" :resolver :validateOnValueUpdate="false" :validateOnBlur="false" @submit="onFormSubmit" class="flex flex-col gap-4 w-full">
-      <div class="flex flex-col gap-1">
-        <label for="email">{{ t('login.email') }}</label>
-        <InputText id="email" name="email" type="email" fluid/>
-        <Message v-if="$form.email?.invalid" severity="error" size="small" variant="simple">{{
-            $form.email.error?.message
-          }}
-        </Message>
-      </div>
+      <Form v-slot="$form" :initialValues="credentials" :resolver :validateOnValueUpdate="false" :validateOnBlur="false" @submit="onFormSubmit" class="flex flex-col gap-4 w-full">
+        <div class="flex flex-col gap-1">
+          <label for="email">{{ t('login.email') }}</label>
+          <InputText id="email" name="email" type="email" fluid/>
+          <Message v-if="$form.email?.invalid" severity="error" size="small" variant="simple">{{
+              $form.email.error?.message
+            }}
+          </Message>
+        </div>
 
-      <BaseTurnstile v-if="turnstileSiteKey" ref="turnstileRef" :site-key="turnstileSiteKey" @verified="(token: string) => captchaToken = token" @expired="captchaToken = ''"/>
+        <BaseTurnstile v-if="turnstileSiteKey" ref="turnstileRef" :site-key="turnstileSiteKey" @verified="(token: string) => captchaToken = token" @expired="captchaToken = ''"/>
 
-      <Button type="submit" severity="primary" :label="t('forgotPassword.submit')" :loading="isLoading" :disabled="!!turnstileSiteKey && !captchaToken"/>
-    </Form>
+        <Button type="submit" severity="primary" :label="t('forgotPassword.submit')" :loading="isLoading" :disabled="!!turnstileSiteKey && !captchaToken"/>
+      </Form>
+    </div>
   </div>
 </template>
 

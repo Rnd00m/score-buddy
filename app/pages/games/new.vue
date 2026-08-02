@@ -1,6 +1,6 @@
 <template>
-  <div class="pb-4">
-    <h1 class="mb-6 flex items-center gap-4">
+  <div class="flex flex-col h-full">
+    <h1 class="mb-6 flex items-center gap-4 shrink-0">
       <NuxtLink to="#" @click.prevent="$router.back()">
         <Button severity="secondary">
           <template #icon><ArrowLeft :size="18"/></template>
@@ -9,95 +9,97 @@
       <span class="text-3xl">{{ t('newGame.title') }}</span>
     </h1>
 
-    <Form v-slot="$form" :initialValues="player" :resolver :validateOnValueUpdate="false" :validateOnBlur="false" @submit="onFormSubmit" class="flex flex-col gap-4 w-full">
-      <div class="flex flex-col gap-1">
-        <label for="name">{{ t('common.name') }}</label>
-        <InputText
-            v-if="!user"
-            id="name"
-            name="name"
-            type="text"
-            fluid
-        />
-        <AutoComplete
-            v-else
-            id="name"
-            :suggestions="suggestedGameNames"
-            :loading="isSearchingBggGames"
-            :empty-search-message="t('newGame.noGameNameResults')"
-            @complete="searchGameName"
-            name="name"
-            type="text"
-            fluid
-        />
-        <Message v-if="$form.name?.invalid" severity="error" size="small" variant="simple">{{
-            $form.name.error?.message
-          }}
-        </Message>
-      </div>
-
-      <div class="flex flex-col gap-1">
-        <label for="startScore">{{ t('newGame.startScore') }}</label>
-        <BaseNumberIncrementInput id="startScore" name="startScore" :min="lowestPossibleScore !== null ? lowestPossibleScore : undefined" fluid/>
-        <Message v-if="$form.startScore?.invalid" severity="error" size="small" variant="simple">{{
-            $form.startScore.error?.message
-          }}
-        </Message>
-      </div>
-
-      <div class="flex flex-col gap-1">
-        <label for="endingScore">{{ t('newGame.endingScore') }}</label>
-        <BaseNumberIncrementInput id="endingScore" name="endingScore" :min="lowestPossibleScore !== null ? lowestPossibleScore : undefined" fluid/>
-        <Message v-if="$form.endingScore?.invalid" severity="error" size="small" variant="simple">{{
-            $form.endingScore.error?.message
-          }}
-        </Message>
-      </div>
-
-      <div class="flex flex-col gap-1">
-        <div class="flex items-center justify-between">
-          <span class="inline-flex items-center gap-2">
-            <label for="enableWinningRounds">{{ t('newGame.enableWinningRounds') }}</label>
-            <span class="text-surface-500 cursor-help inline-flex" @click="toggleWinningRoundsPopover">
-              <InfoCircle :size="18"/>
-            </span>
-            <Popover ref="winningRoundsPopover">
-              <p class="max-w-60">{{ t('newGame.winningRoundsTooltip') }}</p>
-            </Popover>
-          </span>
-          <ToggleSwitch id="enableWinningRounds" name="enableWinningRounds" inputId="enableWinningRounds" />
+    <div class="game-content flex-1 min-h-0 overflow-y-auto">
+      <Form v-slot="$form" :initialValues="player" :resolver :validateOnValueUpdate="false" :validateOnBlur="false" @submit="onFormSubmit" class="flex flex-col gap-4 w-full">
+        <div class="flex flex-col gap-1">
+          <label for="name">{{ t('common.name') }}</label>
+          <InputText
+              v-if="!user"
+              id="name"
+              name="name"
+              type="text"
+              fluid
+          />
+          <AutoComplete
+              v-else
+              id="name"
+              :suggestions="suggestedGameNames"
+              :loading="isSearchingBggGames"
+              :empty-search-message="t('newGame.noGameNameResults')"
+              @complete="searchGameName"
+              name="name"
+              type="text"
+              fluid
+          />
+          <Message v-if="$form.name?.invalid" severity="error" size="small" variant="simple">{{
+              $form.name.error?.message
+            }}
+          </Message>
         </div>
-      </div>
 
-      <div class="flex flex-col gap-1" v-if="$form.enableWinningRounds?.value">
-        <label for="winningRounds">{{ t('newGame.winningRounds') }}</label>
-        <BaseNumberIncrementInput id="winningRounds" name="winningRounds" :min="1" fluid/>
-        <Message v-if="$form.winningRounds?.invalid" severity="error" size="small" variant="simple">{{
-            $form.winningRounds.error?.message
-          }}
-        </Message>
-      </div>
+        <div class="flex flex-col gap-1">
+          <label for="startScore">{{ t('newGame.startScore') }}</label>
+          <BaseNumberIncrementInput id="startScore" name="startScore" :min="lowestPossibleScore !== null ? lowestPossibleScore : undefined" fluid/>
+          <Message v-if="$form.startScore?.invalid" severity="error" size="small" variant="simple">{{
+              $form.startScore.error?.message
+            }}
+          </Message>
+        </div>
 
-      <div class="flex flex-col gap-1">
-        <label for="winCondition">{{ t('newGame.winner') }}</label>
-        <SelectButton id="winCondition" name="winCondition" :options="winConditions" :optionLabel="winConditionLabel" />
-        <Message v-if="$form.winCondition?.invalid" severity="error" size="small" variant="simple">{{
-            $form.winCondition.error?.message
-          }}
-        </Message>
-      </div>
+        <div class="flex flex-col gap-1">
+          <label for="endingScore">{{ t('newGame.endingScore') }}</label>
+          <BaseNumberIncrementInput id="endingScore" name="endingScore" :min="lowestPossibleScore !== null ? lowestPossibleScore : undefined" fluid/>
+          <Message v-if="$form.endingScore?.invalid" severity="error" size="small" variant="simple">{{
+              $form.endingScore.error?.message
+            }}
+          </Message>
+        </div>
 
-      <div class="flex flex-col gap-1">
-        <label for="lowestPossibleScore">{{ t('newGame.lowestPossibleScore') }}</label>
-        <BaseNumberIncrementInput id="lowestPossibleScore" name="lowestPossibleScore" fluid v-model="lowestPossibleScore"/>
-        <Message v-if="$form.lowestPossibleScore?.invalid" severity="error" size="small" variant="simple">{{
-            $form.lowestPossibleScore.error?.message
-          }}
-        </Message>
-      </div>
+        <div class="flex flex-col gap-1">
+          <div class="flex items-center justify-between">
+            <span class="inline-flex items-center gap-2">
+              <label for="enableWinningRounds">{{ t('newGame.enableWinningRounds') }}</label>
+              <span class="text-surface-500 cursor-help inline-flex" @click="toggleWinningRoundsPopover">
+                <InfoCircle :size="18"/>
+              </span>
+              <Popover ref="winningRoundsPopover">
+                <p class="max-w-60">{{ t('newGame.winningRoundsTooltip') }}</p>
+              </Popover>
+            </span>
+            <ToggleSwitch id="enableWinningRounds" name="enableWinningRounds" inputId="enableWinningRounds" />
+          </div>
+        </div>
 
-      <Button type="submit" severity="primary" :label="t('common.start')"/>
-    </Form>
+        <div class="flex flex-col gap-1" v-if="$form.enableWinningRounds?.value">
+          <label for="winningRounds">{{ t('newGame.winningRounds') }}</label>
+          <BaseNumberIncrementInput id="winningRounds" name="winningRounds" :min="1" fluid/>
+          <Message v-if="$form.winningRounds?.invalid" severity="error" size="small" variant="simple">{{
+              $form.winningRounds.error?.message
+            }}
+          </Message>
+        </div>
+
+        <div class="flex flex-col gap-1">
+          <label for="winCondition">{{ t('newGame.winner') }}</label>
+          <SelectButton id="winCondition" name="winCondition" :options="winConditions" :optionLabel="winConditionLabel" />
+          <Message v-if="$form.winCondition?.invalid" severity="error" size="small" variant="simple">{{
+              $form.winCondition.error?.message
+            }}
+          </Message>
+        </div>
+
+        <div class="flex flex-col gap-1">
+          <label for="lowestPossibleScore">{{ t('newGame.lowestPossibleScore') }}</label>
+          <BaseNumberIncrementInput id="lowestPossibleScore" name="lowestPossibleScore" fluid v-model="lowestPossibleScore"/>
+          <Message v-if="$form.lowestPossibleScore?.invalid" severity="error" size="small" variant="simple">{{
+              $form.lowestPossibleScore.error?.message
+            }}
+          </Message>
+        </div>
+
+        <Button type="submit" severity="primary" :label="t('common.start')"/>
+      </Form>
+    </div>
   </div>
 </template>
 
