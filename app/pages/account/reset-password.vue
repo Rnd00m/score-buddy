@@ -1,41 +1,43 @@
 <template>
-  <div class="pb-4">
-    <h1 class="mb-6 text-3xl">{{ t('resetPassword.title') }}</h1>
+  <div class="flex flex-col h-full">
+    <h1 class="mb-6 text-3xl shrink-0">{{ t('resetPassword.title') }}</h1>
 
-    <Message v-if="isValidSession === false" severity="error" size="small">
-      {{ t('resetPassword.invalidLink') }}
-      <NuxtLink to="/account/forgot-password" class="text-primary underline">{{ t('resetPassword.requestNewLink') }}</NuxtLink>
-    </Message>
+    <div class="game-content flex-1 min-h-0 overflow-y-auto">
+      <Message v-if="isValidSession === false" severity="error" size="small">
+        {{ t('resetPassword.invalidLink') }}
+        <NuxtLink to="/account/forgot-password" class="text-primary underline">{{ t('resetPassword.requestNewLink') }}</NuxtLink>
+      </Message>
 
-    <Form v-else-if="isValidSession" v-slot="$form" :initialValues="credentials" :resolver :validateOnValueUpdate="false" :validateOnBlur="false" @submit="onFormSubmit" class="flex flex-col gap-4 w-full">
-      <div class="flex flex-col gap-1">
-        <label for="password">{{ t('resetPassword.newPassword') }}</label>
-        <Password id="password" name="password" :feedback="false" toggleMask fluid/>
-        <Message v-if="$form.password?.invalid" severity="error" size="small" variant="simple">{{
-            $form.password.error?.message
-          }}
-        </Message>
-        <ul class="flex flex-col gap-2 list-none ms-1 my-1 p-0">
-          <li v-for="req in passwordRequirements" :key="req.id" class="flex items-center gap-2 text-sm transition-all duration-300">
-            <CheckCircle :class="['transition-all duration-300 ease-out', req.test($form.password?.value ?? '') ? 'text-green-500 scale-110 opacity-100' : 'text-surface-400 scale-90 opacity-70']"/>
-            <span :class="['transition-all duration-300 ease-out', req.test($form.password?.value ?? '') ? 'text-green-700 dark:text-green-400 line-through decoration-2 decoration-green-500/70' : 'text-surface-700 dark:text-surface-300 dark:opacity-70']">
-              {{ req.label }}
-            </span>
-          </li>
-        </ul>
-      </div>
+      <Form v-else-if="isValidSession" v-slot="$form" :initialValues="credentials" :resolver :validateOnValueUpdate="false" :validateOnBlur="false" @submit="onFormSubmit" class="flex flex-col gap-4 w-full">
+        <div class="flex flex-col gap-1">
+          <label for="password">{{ t('resetPassword.newPassword') }}</label>
+          <Password id="password" name="password" :feedback="false" toggleMask fluid/>
+          <Message v-if="$form.password?.invalid" severity="error" size="small" variant="simple">{{
+              $form.password.error?.message
+            }}
+          </Message>
+          <ul class="flex flex-col gap-2 list-none ms-1 my-1 p-0">
+            <li v-for="req in passwordRequirements" :key="req.id" class="flex items-center gap-2 text-sm transition-all duration-300">
+              <CheckCircle :class="['transition-all duration-300 ease-out', req.test($form.password?.value ?? '') ? 'text-green-500 scale-110 opacity-100' : 'text-surface-400 scale-90 opacity-70']"/>
+              <span :class="['transition-all duration-300 ease-out', req.test($form.password?.value ?? '') ? 'text-green-700 dark:text-green-400 line-through decoration-2 decoration-green-500/70' : 'text-surface-700 dark:text-surface-300 dark:opacity-70']">
+                {{ req.label }}
+              </span>
+            </li>
+          </ul>
+        </div>
 
-      <div class="flex flex-col gap-1">
-        <label for="confirmPassword">{{ t('signup.confirmPassword') }}</label>
-        <Password id="confirmPassword" name="confirmPassword" :feedback="false" toggleMask fluid/>
-        <Message v-if="$form.confirmPassword?.invalid" severity="error" size="small" variant="simple">{{
-            $form.confirmPassword.error?.message
-          }}
-        </Message>
-      </div>
+        <div class="flex flex-col gap-1">
+          <label for="confirmPassword">{{ t('signup.confirmPassword') }}</label>
+          <Password id="confirmPassword" name="confirmPassword" :feedback="false" toggleMask fluid/>
+          <Message v-if="$form.confirmPassword?.invalid" severity="error" size="small" variant="simple">{{
+              $form.confirmPassword.error?.message
+            }}
+          </Message>
+        </div>
 
-      <Button type="submit" severity="primary" :label="t('resetPassword.submit')" :loading="isLoading"/>
-    </Form>
+        <Button type="submit" severity="primary" :label="t('resetPassword.submit')" :loading="isLoading"/>
+      </Form>
+    </div>
   </div>
 </template>
 

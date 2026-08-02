@@ -1,5 +1,5 @@
 <template>
-  <div class="pb-4">
+  <div class="flex flex-col h-full">
     <ConfirmDialog group="logout" class="max-w-96 w-[calc(100%-6rem)]" dismissableMask>
       <template #container="{ message, acceptCallback, rejectCallback }">
         <div class="flex flex-col items-center p-8 bg-surface-0 dark:bg-surface-900 rounded">
@@ -24,92 +24,94 @@
       :accept-label="t('account.deleteAccountConfirmAccept')"
     />
 
-    <h1 class="mb-6 text-3xl">{{ t('account.title') }}</h1>
+    <h1 class="mb-6 text-3xl shrink-0">{{ t('account.title') }}</h1>
 
-    <div v-if="user" class="flex flex-col gap-4">
-      <p>{{ t('account.loggedInAs') }} <strong>{{ user.email }}</strong></p>
+    <div class="game-content flex-1 min-h-0 overflow-y-auto">
+      <div v-if="user" class="flex flex-col gap-4">
+        <p>{{ t('account.loggedInAs') }} <strong>{{ user.email }}</strong></p>
 
-      <Button :label="t('account.syncNow')" :loading="isSyncing" @click="handleSync">
-        <template #icon><Sync :size="18"/></template>
-      </Button>
-      <Button :label="t('account.logOut')" severity="danger" outlined @click="handleLogout">
-        <template #icon><SignOut :size="18"/></template>
-      </Button>
-      <Button
-        :label="t('account.deleteAccount')"
-        severity="danger"
-        text
-        :loading="isDeletingAccount"
-        @click="handleDeleteAccount"
-      >
-        <template #icon><Trash :size="18"/></template>
-      </Button>
-    </div>
-
-    <div v-else class="flex flex-col gap-4">
-      <p>{{ t('account.createAccountPrompt') }}</p>
-
-      <NuxtLink to="/account/login">
-        <Button :label="t('account.logIn')" fluid>
-          <template #icon><SignIn :size="18"/></template>
+        <Button :label="t('account.syncNow')" :loading="isSyncing" @click="handleSync">
+          <template #icon><Sync :size="18"/></template>
         </Button>
-      </NuxtLink>
-      <NuxtLink to="/account/signup">
-        <Button :label="t('account.signUp')" outlined fluid>
-          <template #icon><UserPlus :size="18"/></template>
+        <Button :label="t('account.logOut')" severity="danger" outlined @click="handleLogout">
+          <template #icon><SignOut :size="18"/></template>
         </Button>
-      </NuxtLink>
-    </div>
-
-    <h2 class="mt-8 mb-4 text-xl">{{ t('account.preferences') }}</h2>
-
-    <div class="flex flex-col gap-4">
-      <div class="flex items-center justify-between">
-        <label for="language-select">{{ t('account.language') }}</label>
-        <Select id="language-select" v-model="selectedLocale" :options="availableLocales" optionLabel="name" optionValue="code" class="w-40"/>
+        <Button
+          :label="t('account.deleteAccount')"
+          severity="danger"
+          text
+          :loading="isDeletingAccount"
+          @click="handleDeleteAccount"
+        >
+          <template #icon><Trash :size="18"/></template>
+        </Button>
       </div>
 
-      <div class="flex items-center justify-between">
-        <label for="theme-select">{{ t('account.theme') }}</label>
-        <Select id="theme-select" v-model="themePreference" :options="themeOptions" optionLabel="label" optionValue="value" class="w-40"/>
+      <div v-else class="flex flex-col gap-4">
+        <p>{{ t('account.createAccountPrompt') }}</p>
+
+        <NuxtLink to="/account/login">
+          <Button :label="t('account.logIn')" fluid>
+            <template #icon><SignIn :size="18"/></template>
+          </Button>
+        </NuxtLink>
+        <NuxtLink to="/account/signup">
+          <Button :label="t('account.signUp')" outlined fluid>
+            <template #icon><UserPlus :size="18"/></template>
+          </Button>
+        </NuxtLink>
       </div>
 
-      <div v-if="isWakeLockSupported" class="flex items-center justify-between">
-        <label for="wake-lock-switch">{{ t('account.keepScreenOn') }}</label>
-        <ToggleSwitch v-model="isWakeLockEnabled" inputId="wake-lock-switch"/>
-      </div>
+      <h2 class="mt-8 mb-4 text-xl">{{ t('account.preferences') }}</h2>
 
-      <div class="flex items-center justify-between">
-        <span class="inline-flex items-center gap-2">
-          <label for="duel-mode-switch">{{ t('account.duelMode') }}</label>
-          <span class="text-surface-500 cursor-help inline-flex" @click="toggleDuelModePopover">
-            <InfoCircle :size="18"/>
+      <div class="flex flex-col gap-4">
+        <div class="flex items-center justify-between">
+          <label for="language-select">{{ t('account.language') }}</label>
+          <Select id="language-select" v-model="selectedLocale" :options="availableLocales" optionLabel="name" optionValue="code" class="w-40"/>
+        </div>
+
+        <div class="flex items-center justify-between">
+          <label for="theme-select">{{ t('account.theme') }}</label>
+          <Select id="theme-select" v-model="themePreference" :options="themeOptions" optionLabel="label" optionValue="value" class="w-40"/>
+        </div>
+
+        <div v-if="isWakeLockSupported" class="flex items-center justify-between">
+          <label for="wake-lock-switch">{{ t('account.keepScreenOn') }}</label>
+          <ToggleSwitch v-model="isWakeLockEnabled" inputId="wake-lock-switch"/>
+        </div>
+
+        <div class="flex items-center justify-between">
+          <span class="inline-flex items-center gap-2">
+            <label for="duel-mode-switch">{{ t('account.duelMode') }}</label>
+            <span class="text-surface-500 cursor-help inline-flex" @click="toggleDuelModePopover">
+              <InfoCircle :size="18"/>
+            </span>
+            <Popover ref="duelModePopover">
+              <p class="max-w-60">{{ isWakeLockSupported ? t('account.duelModeTooltip') : t('account.duelModeTooltipNoWakeLock') }}</p>
+            </Popover>
           </span>
-          <Popover ref="duelModePopover">
-            <p class="max-w-60">{{ isWakeLockSupported ? t('account.duelModeTooltip') : t('account.duelModeTooltipNoWakeLock') }}</p>
-          </Popover>
-        </span>
-        <ToggleSwitch v-model="isDuelModeEnabled" inputId="duel-mode-switch"/>
-      </div>
+          <ToggleSwitch v-model="isDuelModeEnabled" inputId="duel-mode-switch"/>
+        </div>
 
-      <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
-        <label>{{ t('account.quickScoreValues') }}</label>
-        <div class="flex flex-wrap gap-2">
-          <InputNumber
-            v-for="(value, index) in quickScoreValues"
-            :key="index"
-            :model-value="value"
-            :min="1"
-            :use-grouping="false"
-            input-class="w-16 text-center"
-            @update:model-value="(newValue: number | null) => handleQuickScoreValueChange(index, newValue)"
-          />
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+          <label>{{ t('account.quickScoreValues') }}</label>
+          <div class="flex flex-wrap gap-2">
+            <InputNumber
+              v-for="(value, index) in quickScoreValues"
+              :key="index"
+              :model-value="value"
+              :min="1"
+              :use-grouping="false"
+              input-class="w-16 text-center"
+              @update:model-value="(newValue: number | null) => handleQuickScoreValueChange(index, newValue)"
+            />
+          </div>
         </div>
       </div>
-    </div>
 
-    <div class="flex">
-      <NuxtLink to="/privacy" class="mt-8 underline text-sm text-surface-500">{{ t('account.privacyPolicy') }}</NuxtLink>
+      <div class="flex">
+        <NuxtLink to="/privacy" class="mt-8 underline text-sm text-surface-500">{{ t('account.privacyPolicy') }}</NuxtLink>
+      </div>
     </div>
   </div>
 </template>

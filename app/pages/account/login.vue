@@ -1,5 +1,5 @@
 <template>
-  <div class="pb-4">
+  <div class="flex flex-col h-full">
     <ConfirmDialog group="import" class="max-w-96 w-[calc(100%-6rem)]" dismissableMask>
       <template #container="{ message, acceptCallback, rejectCallback }">
         <div class="flex flex-col items-center p-8 bg-surface-0 dark:bg-surface-900 rounded">
@@ -16,7 +16,7 @@
       </template>
     </ConfirmDialog>
 
-    <h1 class="mb-6 flex items-center gap-4">
+    <h1 class="mb-6 flex items-center gap-4 shrink-0">
       <NuxtLink to="/account">
         <Button severity="secondary">
           <template #icon><ArrowLeft :size="18"/></template>
@@ -25,36 +25,38 @@
       <span class="text-3xl">{{ t('login.title') }}</span>
     </h1>
 
-    <Form v-slot="$form" :initialValues="credentials" :resolver :validateOnValueUpdate="false" :validateOnBlur="false" @submit="onFormSubmit" class="flex flex-col gap-4 w-full">
-      <div class="flex flex-col gap-1">
-        <label for="email">{{ t('login.email') }}</label>
-        <InputText id="email" name="email" type="email" fluid/>
-        <Message v-if="$form.email?.invalid" severity="error" size="small" variant="simple">{{
-            $form.email.error?.message
-          }}
-        </Message>
-      </div>
-
-      <div class="flex flex-col gap-1">
-        <div class="flex items-center justify-between">
-          <label for="password">{{ t('login.password') }}</label>
-          <NuxtLink to="/account/forgot-password" class="text-sm text-primary">{{ t('login.forgotPassword') }}</NuxtLink>
+    <div class="game-content flex-1 min-h-0 overflow-y-auto">
+      <Form v-slot="$form" :initialValues="credentials" :resolver :validateOnValueUpdate="false" :validateOnBlur="false" @submit="onFormSubmit" class="flex flex-col gap-4 w-full">
+        <div class="flex flex-col gap-1">
+          <label for="email">{{ t('login.email') }}</label>
+          <InputText id="email" name="email" type="email" fluid/>
+          <Message v-if="$form.email?.invalid" severity="error" size="small" variant="simple">{{
+              $form.email.error?.message
+            }}
+          </Message>
         </div>
-        <Password id="password" name="password" :feedback="false" toggleMask fluid/>
-        <Message v-if="$form.password?.invalid" severity="error" size="small" variant="simple">{{
-            $form.password.error?.message
-          }}
-        </Message>
-      </div>
 
-      <BaseTurnstile v-if="turnstileSiteKey" ref="turnstileRef" :site-key="turnstileSiteKey" @verified="token => captchaToken = token" @expired="captchaToken = ''"/>
+        <div class="flex flex-col gap-1">
+          <div class="flex items-center justify-between">
+            <label for="password">{{ t('login.password') }}</label>
+            <NuxtLink to="/account/forgot-password" class="text-sm text-primary">{{ t('login.forgotPassword') }}</NuxtLink>
+          </div>
+          <Password id="password" name="password" :feedback="false" toggleMask fluid/>
+          <Message v-if="$form.password?.invalid" severity="error" size="small" variant="simple">{{
+              $form.password.error?.message
+            }}
+          </Message>
+        </div>
 
-      <Button type="submit" severity="primary" :label="t('login.submit')" :loading="isLoading" :disabled="!!turnstileSiteKey && !captchaToken"/>
-    </Form>
+        <BaseTurnstile v-if="turnstileSiteKey" ref="turnstileRef" :site-key="turnstileSiteKey" @verified="token => captchaToken = token" @expired="captchaToken = ''"/>
 
-    <p class="mt-4 text-center">
-      {{ t('login.noAccountYet') }} <NuxtLink to="/account/signup" class="text-primary">{{ t('login.signUp') }}</NuxtLink>
-    </p>
+        <Button type="submit" severity="primary" :label="t('login.submit')" :loading="isLoading" :disabled="!!turnstileSiteKey && !captchaToken"/>
+      </Form>
+
+      <p class="mt-4 text-center">
+        {{ t('login.noAccountYet') }} <NuxtLink to="/account/signup" class="text-primary">{{ t('login.signUp') }}</NuxtLink>
+      </p>
+    </div>
   </div>
 </template>
 
