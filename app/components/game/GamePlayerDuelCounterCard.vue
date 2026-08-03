@@ -162,6 +162,7 @@
       :color="editingPlayer ? getButtonColor(editingPlayer.color.value, 'dark') : undefined"
       :text-color="editingPlayer ? getTextColorContrasted(editingPlayer.color.value) : undefined"
       :player-name="editingPlayer?.name"
+      :inverted="editingPlayer !== null && roomStore.players[0]?.uuid === editingPlayer?.uuid"
       @char="appendEditChar"
       @backspace="removeLastEditChar"
       @confirm="editingPlayer && applyScoreEdit(editingPlayer)"
