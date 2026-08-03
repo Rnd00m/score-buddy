@@ -6,16 +6,16 @@
     :closable="false"
     close-on-escape
     dismissable-mask
-    position="bottom"
+    :position="displayed.inverted ? 'top' : 'bottom'"
     :draggable="false"
     class="score-keypad-dialog w-full lg:max-w-md m-0"
     content-class="!p-0 !overflow-hidden"
     @update:visible="(next: boolean) => { if (!next) emit('dismiss'); }"
   >
-    <div class="flex flex-col h-[50dvh]">
-      <div class="flex-1 flex flex-col items-center justify-center gap-1 px-4 min-h-0 rounded-t-lg" :style="{ backgroundColor: color, color: textColor }">
-        <span v-if="playerName" class="text-2xl font-semibold opacity-80 truncate max-w-full">{{ playerName }}</span>
-        <span class="font-bold text-6xl text-center break-all">{{ value || '0' }}</span>
+    <div class="flex flex-col h-[50dvh]" :class="{ 'rotate-180': displayed.inverted }">
+      <div class="flex-1 flex flex-col items-center justify-center gap-1 px-4 min-h-0 rounded-t-lg" :style="{ backgroundColor: displayed.color, color: displayed.textColor }">
+        <span v-if="displayed.playerName" class="text-2xl font-semibold opacity-80 truncate max-w-full">{{ displayed.playerName }}</span>
+        <span class="font-bold text-6xl text-center break-all">{{ displayed.value || '0' }}</span>
       </div>
 
       <div class="p-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))] shrink-0 bg-surface-0 dark:bg-surface-900">
@@ -54,13 +54,36 @@ import Plus from '@primeicons/vue/plus';
 
 const {t} = useI18n();
 
-defineProps<{
+const props = defineProps<{
   visible: boolean;
   value: string;
   color?: string;
   textColor?: string;
   playerName?: string;
+  inverted?: boolean;
 }>();
+
+// Keep showing the last-known player data while the dialog plays its leave
+// transition, since the parent clears editingPlayer (and thus these props)
+// the instant it closes — updating them live here would make the dialog
+// visibly jump (color/position/rotation) mid fade-out.
+const displayed = reactive({
+  value: props.value,
+  color: props.color,
+  textColor: props.textColor,
+  playerName: props.playerName,
+  inverted: props.inverted,
+});
+
+watchEffect(() => {
+  if (!props.visible) return;
+
+  displayed.value = props.value;
+  displayed.color = props.color;
+  displayed.textColor = props.textColor;
+  displayed.playerName = props.playerName;
+  displayed.inverted = props.inverted;
+});
 
 const emit = defineEmits<{
   char: [char: string];
