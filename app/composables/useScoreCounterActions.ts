@@ -55,6 +55,8 @@ export const useScoreCounterActions = () => {
   const editingPlayerUuid = ref<string | null>(null);
   const editValue = ref('');
 
+  const editingPlayer = computed(() => roomStore.players.find((player) => player.uuid === editingPlayerUuid.value) ?? null);
+
   const vFocus = {
     mounted: (el: HTMLInputElement) => {
       el.focus();
@@ -64,6 +66,14 @@ export const useScoreCounterActions = () => {
   const startEditingScore = (player: Player) => {
     editingPlayerUuid.value = player.uuid;
     editValue.value = String(roomStore.getPlayerScore(player)?.score || 0);
+  };
+
+  const appendEditChar = (char: string) => {
+    editValue.value += char;
+  };
+
+  const removeLastEditChar = () => {
+    editValue.value = editValue.value.slice(0, -1);
   };
 
   const parseScoreInput = (value: string, currentScore: number): number | null => {
@@ -122,9 +132,12 @@ export const useScoreCounterActions = () => {
     handleStartPress,
     handleStopPress,
     editingPlayerUuid,
+    editingPlayer,
     editValue,
     vFocus,
     startEditingScore,
+    appendEditChar,
+    removeLastEditChar,
     applyScoreEdit,
     getButtonColor,
     getQuickDecrementItems,

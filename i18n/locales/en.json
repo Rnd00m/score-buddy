@@ -132,7 +132,10 @@
     "tieNotAllowedTitle": "A winner is required",
     "tieNotAllowedMessage": "In this mode, a tie is not allowed. Keep playing until there is a winner.",
     "quickRemovePoints": "Quick point removal",
-    "quickAddPoints": "Quick point addition"
+    "quickAddPoints": "Quick point addition",
+    "deleteLastDigit": "Delete last digit",
+    "addOperator": "Add",
+    "subtractOperator": "Subtract"
   },
   "newGame": {
     "title": "New Game",
