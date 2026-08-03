@@ -70,8 +70,9 @@ const emit = defineEmits<{
 }>();
 </script>
 
-<style scoped>
-:deep(.score-keypad-dialog) {
+<style>
+.score-keypad-dialog.p-dialog {
   max-height: 60dvh;
+  border: none;
 }
 </style>
