@@ -132,7 +132,10 @@
     "tieNotAllowedTitle": "Un vainqueur est requis",
     "tieNotAllowedMessage": "Dans ce mode, une égalité n'est pas autorisée. Continuez à jouer jusqu'à ce qu'il y ait un vainqueur.",
     "quickRemovePoints": "Retrait rapide de points",
-    "quickAddPoints": "Ajout rapide de points"
+    "quickAddPoints": "Ajout rapide de points",
+    "deleteLastDigit": "Supprimer le dernier chiffre",
+    "addOperator": "Ajouter",
+    "subtractOperator": "Soustraire"
   },
   "newGame": {
     "title": "Nouvelle partie",

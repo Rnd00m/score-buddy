@@ -11,7 +11,7 @@
 
       <div class="flex-1 flex items-center justify-center min-w-0">
         <InputText
-          v-if="editingPlayerUuid === player.uuid"
+          v-if="editingPlayerUuid === player.uuid && !isMobileDevice"
           v-focus
           v-auto-fit-font-size="editValue"
           v-model="editValue"
@@ -23,6 +23,12 @@
           @blur="applyScoreEdit(player)"
           @keyup.enter="applyScoreEdit(player)"
         />
+        <span
+          v-else-if="editingPlayerUuid === player.uuid"
+          v-auto-fit-font-size="editValue"
+          :style="{ color: getTextColorContrasted(player.color.value) }"
+          class="no-drag block font-bold text-6xl text-center max-w-full"
+        >{{ editValue || '0' }}</span>
         <p
           v-else
           v-ripple
@@ -149,6 +155,18 @@
         </div>
       </div>
     </div>
+
+    <GameScoreKeypad
+      :visible="editingPlayerUuid !== null && isMobileDevice"
+      :value="editValue"
+      :color="editingPlayer ? getButtonColor(editingPlayer.color.value, 'dark') : undefined"
+      :text-color="editingPlayer ? getTextColorContrasted(editingPlayer.color.value) : undefined"
+      :player-name="editingPlayer?.name"
+      @char="appendEditChar"
+      @backspace="removeLastEditChar"
+      @confirm="editingPlayer && applyScoreEdit(editingPlayer)"
+      @dismiss="editingPlayer && applyScoreEdit(editingPlayer)"
+    />
   </div>
 </template>
 
@@ -167,9 +185,12 @@ const {
   handleStartPress,
   handleStopPress,
   editingPlayerUuid,
+  editingPlayer,
   editValue,
   vFocus,
   startEditingScore,
+  appendEditChar,
+  removeLastEditChar,
   applyScoreEdit,
   getButtonColor,
   getQuickDecrementItems,
@@ -177,6 +198,7 @@ const {
 } = useScoreCounterActions();
 
 const {vAutoFitFontSize} = useAutoFitFontSize();
+const isMobileDevice = useIsMobileDevice();
 
 const isTouchDevice = ref(false);
 const cardsContainer = ref<HTMLElement | null>(null);
