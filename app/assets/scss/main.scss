@@ -45,6 +45,15 @@ html {
   -webkit-text-size-adjust: 100%;
 }
 
+// Everything in the app is sized in rem, so bumping the root size scales
+// text app-wide. Gated on a coarse pointer (touch-primary) so a desktop
+// window resized to tablet width isn't affected — only real tablets are.
+@media (min-width: 768px) and (pointer: coarse) {
+  html {
+    font-size: 22px;
+  }
+}
+
 body {
   margin: 0;
   background-color: var(--p-content-background);
