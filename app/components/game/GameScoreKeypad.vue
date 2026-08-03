@@ -8,7 +8,10 @@
     dismissable-mask
     :position="displayed.inverted ? 'top' : 'bottom'"
     :draggable="false"
-    class="score-keypad-dialog w-full lg:max-w-md m-0"
+    class="score-keypad-dialog w-full lg:max-w-md mx-0"
+    :class="displayed.inverted
+      ? 'mt-[var(--native-inset-top,0px)] mb-0'
+      : 'mb-[var(--native-inset-bottom,0px)] mt-0'"
     content-class="!p-0 !overflow-hidden"
     @update:visible="(next: boolean) => { if (!next) emit('dismiss'); }"
   >
