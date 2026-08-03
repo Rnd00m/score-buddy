@@ -270,6 +270,13 @@ onBeforeUnmount(() => {
   gap: 0 !important;
 }
 
+/* PrimeVue's default .p-speeddial-item transition (transform 200ms, opacity
+   0.8s) reads as sluggish for a quick-score popup — tighten both to match
+   the snappier feel we want here. */
+:deep(.speed-dial-glued .p-speeddial-item) {
+  transition: transform 100ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, opacity 100ms;
+}
+
 /* PrimeVue keeps the popup list in the DOM even when closed (items are just
    scaled to 0), which otherwise inflates the nearest scrollable ancestor's
    overflow with an invisible, full-sized, absolutely-positioned block.
@@ -278,7 +285,7 @@ onBeforeUnmount(() => {
    animate from/to. The collapse itself is delayed on close (so the item
    fade-out is visible before it's clipped) but instant on open. */
 :deep(.speed-dial-glued .p-speeddial-list) {
-  transition: max-width 0s linear 0.3s, max-height 0s linear 0.3s;
+  transition: max-width 0s linear 0.1s, max-height 0s linear 0.1s;
 }
 
 :deep(.speed-dial-glued:not(.p-speeddial-open) .p-speeddial-list) {
