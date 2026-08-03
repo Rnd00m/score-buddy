@@ -2,7 +2,7 @@
   <Toast position="bottom-center" class="max-w-[calc(100%-2rem)]"/>
 
   <div class="flex flex-col h-dvh">
-    <div ref="mainContent" class="main-content px-6 pb-6 pt-[calc(var(--native-inset-top,env(safe-area-inset-top))+0.5rem)] overflow-y-auto flex-1 min-h-0">
+    <div ref="mainContent" class="main-content px-6 pb-6 pt-[calc(var(--native-inset-top,env(safe-area-inset-top))+var(--web-top-inset,0px)+0.5rem)] overflow-y-auto flex-1 min-h-0">
       <div class="lg:max-w-3xl mx-auto h-full">
         <NuxtPage/>
       </div>
@@ -33,6 +33,7 @@
 <script setup lang="ts">
 import { VueQueryDevtools } from '@tanstack/vue-query-devtools'
 import { Play, History, Users, Clock, User, Android } from '@primeicons/vue';
+import { Capacitor } from '@capacitor/core';
 
 const { t, locale } = useI18n();
 
@@ -81,6 +82,13 @@ onMounted(() => {
   initWakeLock();
   initDuelMode();
   initQuickScoreValues();
+
+  // In a plain mobile browser tab there's no safe-area inset for the
+  // address bar (unlike the native app's status bar), so the header ends
+  // up flush against it — add breathing room there specifically.
+  if (!Capacitor.isNativePlatform()) {
+    document.documentElement.style.setProperty('--web-top-inset', '1rem');
+  }
 
   if (shouldShowPrompt()) {
     confirm.require({
