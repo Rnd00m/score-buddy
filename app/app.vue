@@ -2,8 +2,9 @@
   <Toast position="bottom-center" class="max-w-[calc(100%-2rem)]"/>
 
   <div class="flex flex-col h-dvh">
-    <div ref="mainContent" class="main-content px-6 pb-6 pt-[calc(var(--native-inset-top,env(safe-area-inset-top))+var(--web-top-inset,0px)+0.5rem)] overflow-y-auto flex-1 min-h-0">
-      <div class="lg:max-w-3xl mx-auto h-full">
+    <div class="flex-1 min-h-0" :class="isTabRoute ? 'overflow-hidden' : 'main-content px-6 pb-6 pt-[calc(var(--native-inset-top,env(safe-area-inset-top))+var(--web-top-inset,0px)+0.5rem)] overflow-y-auto'">
+      <BaseTabPager v-if="isTabRoute" :items="items"/>
+      <div v-else class="lg:max-w-3xl mx-auto h-full">
         <NuxtPage/>
       </div>
     </div>
@@ -50,8 +51,12 @@ useHead({
 });
 
 const roomStore = useRoomStore();
-const route = useRoute();
 const router = useRouter();
+// Nuxt's own useRoute() only updates via <NuxtPage>'s internal Suspense
+// sync — since tab routes intentionally don't render <NuxtPage>, it would
+// never advance past the last non-tab route. router.currentRoute (plain
+// vue-router) always reflects the real current path, so use that here.
+const currentPath = computed(() => router.currentRoute.value.path);
 
 // the floating pill nav only makes sense on a real mobile/tablet device —
 // on a desktop browser resized to a narrow width it stays a docked bar
@@ -69,6 +74,11 @@ const items = computed(() => {
     { icon: User, label: t('menu.account'), route: '/account' },
   ];
 });
+
+// The 5 bottom-nav tab roots render through BaseTabPager (live swipeable),
+// every other route (sub-pages like /account/login, /games/new, ...) keeps
+// using <NuxtPage/> with the default CSS page transition.
+const isTabRoute = computed(() => currentPath.value === '/games' || currentPath.value === '/game' || items.value.some(item => item.route === currentPath.value));
 
 const { init: initColorScheme } = useColorScheme();
 const { init: initWakeLock } = useScreenWakeLock();
@@ -104,44 +114,5 @@ onMounted(() => {
       },
     });
   }
-});
-
-router.beforeEach((to, from) => {
-  const routes = items.value.map(item => item.route);
-  const fromIndex = routes.indexOf(from.path);
-  const toIndex = routes.indexOf(to.path);
-
-  if (fromIndex === -1 || toIndex === -1 || fromIndex === toIndex) return;
-
-  const pageTransition = {
-    name: toIndex > fromIndex ? 'slide-left' : 'slide-right',
-    mode: 'out-in' as const,
-  };
-
-  to.meta.pageTransition = pageTransition;
-  from.meta.pageTransition = pageTransition;
-});
-
-const mainContent = ref<HTMLElement | null>(null);
-
-useSwipe(mainContent, {
-  onSwipeLeft: () => {
-    const routes = items.value.map(item => item.route);
-    const index = routes.indexOf(route.path);
-    const nextRoute = index !== -1 ? routes[index + 1] : undefined;
-
-    if (!nextRoute) return;
-
-    router.push(nextRoute);
-  },
-  onSwipeRight: () => {
-    const routes = items.value.map(item => item.route);
-    const index = routes.indexOf(route.path);
-    const previousRoute = index > 0 ? routes[index - 1] : undefined;
-
-    if (!previousRoute) return;
-
-    router.push(previousRoute);
-  },
 });
 </script>
