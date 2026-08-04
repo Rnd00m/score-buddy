@@ -25,7 +25,9 @@ export const useAutoFitFontSize = () => {
       if (el.parentElement) resizeObserver.observe(el.parentElement);
       el.__autoFitObserver = resizeObserver;
     },
-    updated(el: HTMLElement) {
+    updated(el: HTMLElement, binding: {value: unknown; oldValue: unknown}) {
+      if (binding.value === binding.oldValue) return;
+
       nextTick(() => fit(el));
     },
     beforeUnmount(el: ElementWithObserver) {
