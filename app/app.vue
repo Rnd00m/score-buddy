@@ -83,11 +83,13 @@ onMounted(() => {
   initDuelMode();
   initQuickScoreValues();
 
-  // In a plain mobile browser tab there's no safe-area inset for the
-  // address bar (unlike the native app's status bar), so the header ends
-  // up flush against it — add breathing room there specifically.
+  // In a plain browser tab there's no safe-area inset for the address bar
+  // or the bottom URL/gesture bar (unlike the native app's status/nav bars),
+  // so the header and bottom menu end up flush against them — add breathing
+  // room there specifically.
   if (!Capacitor.isNativePlatform()) {
     document.documentElement.style.setProperty('--web-top-inset', '1rem');
+    document.documentElement.style.setProperty('--web-bottom-inset', '1rem');
   }
 
   if (shouldShowPrompt()) {
