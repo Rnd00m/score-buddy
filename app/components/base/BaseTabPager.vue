@@ -73,7 +73,7 @@ const warm = (index: number) => {
 warm(activeIndex.value);
 
 const SETTLE_TRANSITION = 'transform 0.25s cubic-bezier(0.22, 1, 0.36, 1)';
-const NAV_TRANSITION = 'transform 0.35s cubic-bezier(0.22, 1, 0.36, 1)';
+const NAV_TRANSITION = 'transform 0.45s cubic-bezier(0.22, 1, 0.36, 1)';
 
 const applyTransform = (index: number, dragPx = 0, transition = '') => {
   const track = trackRef.value;
