@@ -178,8 +178,8 @@ const settle = () => {
 
   const distance = Math.abs(lastDx);
   const velocity = getVelocity();
-  const pastThreshold = distance > Math.min(containerWidth * 0.35, 140);
-  const isFlick = distance >= 40 && Math.abs(velocity) >= 0.6;
+  const pastThreshold = distance > Math.min(containerWidth * 0.4, 170);
+  const isFlick = distance >= 60 && Math.abs(velocity) >= 0.75;
 
   let targetIndex = activeIndex.value;
   if (pastThreshold || isFlick) {
