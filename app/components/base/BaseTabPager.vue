@@ -99,7 +99,7 @@ onMounted(() => {
   applyTransform(activeIndex.value);
 });
 
-const EXCLUDED_SELECTOR = '.player-score-card, .date-scroll-index, input, textarea, select, [contenteditable]';
+const EXCLUDED_SELECTOR = '.player-score-card, .date-scroll-index, button, input, textarea, select, [contenteditable]';
 const DIRECTION_LOCK_PX = 10;
 const RUBBER_BAND_FACTOR = 0.35;
 
