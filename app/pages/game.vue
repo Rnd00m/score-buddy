@@ -101,7 +101,7 @@
 
     <h1 class="mb-6 flex justify-between items-center shrink-0">
       <span class="text-3xl truncate w-full pr-2">{{ roomStore.currentGame.name }}</span>
-      <span class="inline-flex gap-2">
+      <span class="inline-flex gap-2 game-actions">
       <Button @click="handleUndo" :disabled="!canUndo" raised variant="outlined" severity="secondary" :aria-label="t('common.undo')">
         <template #icon><Undo :size="18"/></template>
       </Button>
