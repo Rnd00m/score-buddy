@@ -108,6 +108,7 @@ let startX = 0;
 let startY = 0;
 let isDragging = false;
 let directionLocked = false;
+let excludedStart = false;
 let lastDx = 0;
 let containerWidth = 0;
 const velocitySamples: { t: number; x: number }[] = [];
@@ -116,8 +117,7 @@ const onTouchStart = (event: TouchEvent) => {
   const touch = event.touches[0];
   if (!touch) return;
 
-  if ((event.target as HTMLElement | null)?.closest(EXCLUDED_SELECTOR)) return;
-
+  excludedStart = !!(event.target as HTMLElement | null)?.closest(EXCLUDED_SELECTOR);
   startX = touch.clientX;
   startY = touch.clientY;
   isDragging = false;
@@ -136,6 +136,8 @@ const dampen = (dx: number) => {
 };
 
 const onTouchMove = (event: TouchEvent) => {
+  if (excludedStart) return;
+
   const touch = event.touches[0];
   if (!touch) return;
 
