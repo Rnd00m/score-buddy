@@ -73,12 +73,13 @@ const warm = (index: number) => {
 warm(activeIndex.value);
 
 const SETTLE_TRANSITION = 'transform 0.25s cubic-bezier(0.22, 1, 0.36, 1)';
+const NAV_TRANSITION = 'transform 0.35s cubic-bezier(0.22, 1, 0.36, 1)';
 
-const applyTransform = (index: number, dragPx = 0, animated = false) => {
+const applyTransform = (index: number, dragPx = 0, transition = '') => {
   const track = trackRef.value;
   if (!track) return;
 
-  track.style.transition = animated ? SETTLE_TRANSITION : '';
+  track.style.transition = transition;
   track.style.transform = `translateX(calc(-${index * 100}% + ${dragPx}px))`;
 };
 
@@ -92,7 +93,7 @@ watch(currentPath, (path) => {
 
   activeIndex.value = index;
   warm(index);
-  applyTransform(index, 0, true);
+  applyTransform(index, 0, NAV_TRANSITION);
 });
 
 onMounted(() => {
@@ -193,7 +194,7 @@ const settle = () => {
   if (targetIndex !== activeIndex.value) {
     activeIndex.value = targetIndex;
     warm(targetIndex);
-    applyTransform(targetIndex, 0, true);
+    applyTransform(targetIndex, 0, SETTLE_TRANSITION);
 
     const targetRoute = targetIndex === 0
       ? (roomStore.currentGame !== null ? '/game' : '/games')
@@ -201,7 +202,7 @@ const settle = () => {
 
     router.push(targetRoute);
   } else {
-    applyTransform(activeIndex.value, 0, true);
+    applyTransform(activeIndex.value, 0, SETTLE_TRANSITION);
   }
 };
 
