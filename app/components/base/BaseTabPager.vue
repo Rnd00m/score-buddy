@@ -108,6 +108,7 @@ let startX = 0;
 let startY = 0;
 let isDragging = false;
 let directionLocked = false;
+let excludedStart = false;
 let lastDx = 0;
 let containerWidth = 0;
 const velocitySamples: { t: number; x: number }[] = [];
@@ -116,8 +117,12 @@ const onTouchStart = (event: TouchEvent) => {
   const touch = event.touches[0];
   if (!touch) return;
 
-  if ((event.target as HTMLElement | null)?.closest(EXCLUDED_SELECTOR)) return;
-
+  // Always reset the gesture state, even when the touch starts on an
+  // excluded element — otherwise a later touchmove computes dx/dy against
+  // stale coordinates from a previous gesture, which can spuriously exceed
+  // DIRECTION_LOCK_PX and arm a swipe from a mere finger tremor while
+  // pressing a button.
+  excludedStart = !!(event.target as HTMLElement | null)?.closest(EXCLUDED_SELECTOR);
   startX = touch.clientX;
   startY = touch.clientY;
   isDragging = false;
@@ -136,6 +141,8 @@ const dampen = (dx: number) => {
 };
 
 const onTouchMove = (event: TouchEvent) => {
+  if (excludedStart) return;
+
   const touch = event.touches[0];
   if (!touch) return;
 
