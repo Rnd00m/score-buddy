@@ -15,7 +15,7 @@
         </div>
       </template>
     </ConfirmDialog>
-    <ConfirmDialog group="reset" class="max-w-96 w-[calc(100%-6rem)]" dismissableMask>
+    <ConfirmDialog group="gameReset" class="max-w-96 w-[calc(100%-6rem)]" dismissableMask>
       <template #container="{ message, acceptCallback, rejectCallback }">
         <div class="flex flex-col items-center p-8 bg-surface-0 dark:bg-surface-900 rounded relative">
           <div class="rounded-full bg-orange-500 text-primary-contrast inline-flex justify-center items-center h-24 w-24 -mt-20">
@@ -35,7 +35,7 @@
         </div>
       </template>
     </ConfirmDialog>
-    <ConfirmDialog group="end" class="max-w-96 w-[calc(100%-6rem)]" dismissableMask>
+    <ConfirmDialog group="gameEnd" class="max-w-96 w-[calc(100%-6rem)]" dismissableMask>
       <template #container="{ message, acceptCallback, rejectCallback }" v-if="roomStore.winners">
         <div class="flex flex-col items-center p-8 bg-surface-0 dark:bg-surface-900 rounded">
           <div
@@ -295,7 +295,7 @@ const handleRoundFinished = () => {
 
 const handleResetGame = () => {
   confirm.require({
-    group: 'reset',
+    group: 'gameReset',
     header: t('game.resetOrCancelTitle'),
     message: t('game.resetOrCancelMessage'),
     accept: () => {
@@ -331,7 +331,7 @@ const handleGameFinished = () => {
     : t('game.tie');
 
   confirm.require({
-    group: 'end',
+    group: 'gameEnd',
     header: endMessage,
     message: t('game.startNewGame'),
     accept: () => {
