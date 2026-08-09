@@ -49,6 +49,7 @@ import { WinCondition } from "~/types/global";
 import SignIn from '@primeicons/vue/sign-in';
 import UserPlus from '@primeicons/vue/user-plus';
 import Replay from '@primeicons/vue/replay';
+import { userGamesHistoryQueryKey } from "~/composables/useUserGamesHistoryQuery";
 
 const {t} = useI18n();
 const user = useSupabaseUser();

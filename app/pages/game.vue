@@ -135,7 +135,7 @@ import EllipsisV from '@primeicons/vue/ellipsis-v';
 import Info from '@primeicons/vue/info';
 import Replay from '@primeicons/vue/replay';
 import { useQueryClient } from '@tanstack/vue-query';
-import type { UserGameHistoryRow } from "~/composables/useUserGamesHistoryQuery";
+import { userGamesHistoryQueryKey, type UserGameHistoryRow } from "~/composables/useUserGamesHistoryQuery";
 
 const {t} = useI18n();
 const roomStore = useRoomStore();
@@ -322,11 +322,6 @@ const finishGame = () => {
     syncGame(game)
       .then((row) => {
         if (!row) return;
-
-        // Writes the finished game straight into the users/games/history.vue
-        // query's cache instead of refetching: that page stays mounted
-        // permanently once warmed by BaseTabPager, so it never gets a
-        // natural remount to pick up fresh data on its own.
         queryClient.setQueryData(
           userGamesHistoryQueryKey(userId),
           (rows: UserGameHistoryRow[] | undefined) => [
