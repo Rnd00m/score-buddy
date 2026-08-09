@@ -15,10 +15,12 @@
     content-class="!p-0 !overflow-hidden"
     @update:visible="(next: boolean) => { if (!next) emit('dismiss'); }"
   >
-    <div class="flex flex-col h-[50dvh]" :class="{ 'rotate-180': displayed.inverted }">
-      <div class="flex-1 flex flex-col items-center justify-center gap-1 px-4 min-h-0 rounded-t-lg" :style="{ backgroundColor: displayed.color, color: displayed.textColor }">
-        <span v-if="displayed.playerName" class="text-2xl font-semibold opacity-80 truncate max-w-full">{{ displayed.playerName }}</span>
-        <span class="font-bold text-6xl text-center break-all">{{ displayed.value || '0' }}</span>
+    <div class="flex flex-col min-h-[50dvh] max-h-[75dvh]" :class="{ 'rotate-180': displayed.inverted }">
+      <div class="flex-1 flex flex-col min-h-0 rounded-t-lg" :style="{ backgroundColor: displayed.color, color: displayed.textColor }">
+        <span v-if="displayed.playerName" class="shrink-0 text-2xl font-semibold opacity-80 truncate max-w-full text-center px-4 pt-3">{{ displayed.playerName }}</span>
+        <div ref="displayContainer" class="score-keypad-value flex-1 flex flex-col items-center gap-1 px-4 py-2 min-h-0 overflow-y-auto overscroll-contain">
+          <span class="font-bold text-6xl text-center break-all">{{ displayed.value || '0' }}</span>
+        </div>
       </div>
 
       <div class="p-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))] shrink-0 bg-surface-0 dark:bg-surface-900">
@@ -88,6 +90,18 @@ watchEffect(() => {
   displayed.inverted = props.inverted;
 });
 
+// Long chained calculations (e.g. "+5+155+566+665...") can grow taller than
+// the display area, so it scrolls; keep the most recently typed characters
+// in view instead of leaving the scroll position wherever it happened to be.
+const displayContainer = ref<HTMLElement | null>(null);
+
+watch(() => displayed.value, async () => {
+  await nextTick();
+  if (displayContainer.value) {
+    displayContainer.value.scrollTop = displayContainer.value.scrollHeight;
+  }
+});
+
 const emit = defineEmits<{
   char: [char: string];
   backspace: [];
@@ -98,7 +112,18 @@ const emit = defineEmits<{
 
 <style>
 .score-keypad-dialog.p-dialog {
-  max-height: 60dvh;
+  max-height: 75dvh;
   border: none;
+}
+
+/* justify-content: center clips the start of the content once it overflows
+   a scroll container, making the first line of a long calculation
+   unreachable even when scrolled all the way up. "safe center" keeps it
+   centered while content fits, then falls back to start-aligned once it
+   overflows so every line stays reachable. Browsers that don't support the
+   "safe" keyword simply ignore the second declaration and keep centering. */
+.score-keypad-value {
+  justify-content: center;
+  justify-content: safe center;
 }
 </style>

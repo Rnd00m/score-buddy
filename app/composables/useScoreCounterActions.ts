@@ -63,32 +63,51 @@ export const useScoreCounterActions = () => {
     },
   };
 
+  // Tracks whether the player has interacted with the pre-filled score since
+  // opening the editor, so the first digit typed replaces it outright
+  // instead of appending to it (e.g. tapping "5" on a score of "10" yields
+  // "5", not "105"). Typing +/- first, or backspacing, keeps the pre-filled
+  // value as the calculation base.
+  const editTouched = ref(false);
+
   const startEditingScore = (player: Player) => {
     editingPlayerUuid.value = player.uuid;
     editValue.value = String(roomStore.getPlayerScore(player)?.score || 0);
+    editTouched.value = false;
   };
 
   const appendEditChar = (char: string) => {
-    editValue.value += char;
+    if (!editTouched.value && /^\d$/.test(char)) {
+      editValue.value = char;
+    } else {
+      editValue.value += char;
+    }
+
+    editTouched.value = true;
   };
 
   const removeLastEditChar = () => {
     editValue.value = editValue.value.slice(0, -1);
+    editTouched.value = true;
   };
 
   const parseScoreInput = (value: string, currentScore: number): number | null => {
     const trimmed = value.replace(/\s+/g, '');
 
-    const calcMatch = trimmed.match(/^(-?\d+)?([+-])(\d+)$/);
-    if (calcMatch) {
-      const [, base, sign, amount] = calcMatch;
-      const baseValue = base !== undefined ? parseInt(base, 10) : currentScore;
-
-      return sign === '+' ? baseValue + parseInt(amount!, 10) : baseValue - parseInt(amount!, 10);
+    if (/^[+-]?\d+$/.test(trimmed)) {
+      return parseInt(trimmed, 10);
     }
 
-    if (/^\d+$/.test(trimmed)) {
-      return parseInt(trimmed, 10);
+    const calcMatch = trimmed.match(/^(-?\d+)?((?:[+-]\d+)+)$/);
+    if (calcMatch) {
+      const [, base, operations] = calcMatch;
+      let result = base !== undefined ? parseInt(base, 10) : currentScore;
+
+      for (const [, sign, amount] of operations!.matchAll(/([+-])(\d+)/g)) {
+        result = sign === '+' ? result + parseInt(amount!, 10) : result - parseInt(amount!, 10);
+      }
+
+      return result;
     }
 
     return null;
