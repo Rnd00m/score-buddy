@@ -51,28 +51,22 @@ import UserPlus from '@primeicons/vue/user-plus';
 import Replay from '@primeicons/vue/replay';
 
 const {t} = useI18n();
-const supabase = useSupabaseClient();
 const user = useSupabaseUser();
 const roomStore = useRoomStore();
 const router = useRouter();
+const { fetchUserGamesHistory } = useUserGamesHistoryQuery();
 
-const { data, isFetching, refetch } = useQuery({
-  queryKey: ['user-games-history', computed(() => user.value?.id)],
-  queryFn: async () => {
-    const { data, error } = await supabase.from('games').select('*');
-    if (error) throw error;
-
-    return data ?? [];
-  },
+// Fetched once (app.vue prefetches this same query on load) rather than on
+// every visit to this tab: BaseTabPager keeps this page mounted permanently
+// after its first warm-up instead of remounting it on navigation, so a
+// mount-time fetch would only ever run once anyway. Freshness after that
+// comes from game.vue writing newly-finished games straight into this
+// query's cache (see finishGame()), not from refetching here.
+const { data, isFetching } = useQuery({
+  queryKey: computed(() => userGamesHistoryQueryKey(user.value?.id)),
+  queryFn: fetchUserGamesHistory,
   enabled: computed(() => !!user.value),
 });
-
-watch(
-  () => router.currentRoute.value.path,
-  (path) => {
-    if (path === '/users/games/history' && user.value) refetch();
-  }
-);
 
 const games = computed(() => (data.value ?? []).map((row): Game & { createdAtTime: number } => ({
   uuid: row.local_uuid,
