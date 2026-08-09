@@ -56,7 +56,7 @@ const user = useSupabaseUser();
 const roomStore = useRoomStore();
 const router = useRouter();
 
-const { data, isFetching } = useQuery({
+const { data, isFetching, refetch } = useQuery({
   queryKey: ['user-games-history', computed(() => user.value?.id)],
   queryFn: async () => {
     const { data, error } = await supabase.from('games').select('*');
@@ -66,6 +66,13 @@ const { data, isFetching } = useQuery({
   },
   enabled: computed(() => !!user.value),
 });
+
+watch(
+  () => router.currentRoute.value.path,
+  (path) => {
+    if (path === '/users/games/history' && user.value) refetch();
+  }
+);
 
 const games = computed(() => (data.value ?? []).map((row): Game & { createdAtTime: number } => ({
   uuid: row.local_uuid,
