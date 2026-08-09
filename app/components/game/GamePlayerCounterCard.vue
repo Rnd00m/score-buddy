@@ -91,14 +91,22 @@
             :style="{ color: getTextColorContrasted(player.color.value) }"
             class="no-drag block font-bold text-4xl text-center max-w-full"
           >{{ editValue || '0' }}</span>
-          <p
-            v-else
-            v-ripple
-            v-auto-fit-font-size="roomStore.getPlayerScore(player)?.score"
-            :style="{ color: getTextColorContrasted(player.color.value) }"
-            class="no-drag p-ripple font-bold text-4xl cursor-pointer select-none rounded-lg px-3 max-w-full"
-            @click="startEditingScore(player)"
-          >{{ roomStore.getPlayerScore(player)?.score || 0 }}</p>
+          <div v-else class="relative flex items-center justify-center">
+            <button
+              type="button"
+              tabindex="-1"
+              aria-hidden="true"
+              class="no-drag absolute -inset-3"
+              @click="startEditingScore(player)"
+            />
+            <p
+              v-ripple
+              v-auto-fit-font-size="roomStore.getPlayerScore(player)?.score"
+              :style="{ color: getTextColorContrasted(player.color.value) }"
+              class="no-drag p-ripple relative font-bold text-4xl cursor-pointer select-none rounded-lg px-3 max-w-full"
+              @click="startEditingScore(player)"
+            >{{ roomStore.getPlayerScore(player)?.score || 0 }}</p>
+          </div>
         </div>
 
         <div
