@@ -22,7 +22,7 @@
 
     <template v-else>
       <BaseConfirmModal
-        group="replay"
+        group="userGamesHistoryReplay"
         :icon="Replay"
         icon-bg-class="bg-primary"
         :accept-label="t('common.yes')"
@@ -89,7 +89,7 @@ const handleReplayGame = (game: Game) => {
   selectedGame.value = game;
 
   confirm.require({
-    group: 'replay',
+    group: 'userGamesHistoryReplay',
     header: game.name,
     message: roomStore.currentGame !== null
       ? t('gamesHistory.replayCurrentCanceled')

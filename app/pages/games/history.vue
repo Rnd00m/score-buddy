@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-col h-full">
     <BaseConfirmModal
-      group="replay"
+      group="gamesHistoryReplay"
       :icon="Replay"
       icon-bg-class="bg-primary"
       :accept-label="t('common.yes')"
@@ -46,7 +46,7 @@ const handleReplayGame = (game: Game) => {
   selectedGame.value = game;
 
   confirm.require({
-    group: 'replay',
+    group: 'gamesHistoryReplay',
     header: game.name,
     message: roomStore.currentGame !== null
       ? t('gamesHistory.replayCurrentCanceled')
