@@ -36,6 +36,7 @@ import { VueQueryDevtools } from '@tanstack/vue-query-devtools'
 import { useQueryClient } from '@tanstack/vue-query';
 import { Play, History, Users, Clock, User, Android } from '@primeicons/vue';
 import { Capacitor } from '@capacitor/core';
+import { userGamesHistoryQueryKey } from "~/composables/useUserGamesHistoryQuery";
 
 const { t, locale } = useI18n();
 
