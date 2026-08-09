@@ -214,14 +214,9 @@ actions: {
       clampedScore = Math.max(clampedScore, this.currentGame.lowestPossibleScore);
     }
 
-    // Mirrors the increment/decrement guard: the score can never move past
-    // endingScore, whichever direction it's being approached from.
-    if (this.currentGame.endingScore !== null) {
-      clampedScore = this.currentGame.endingScore >= this.currentGame.startScore
-        ? Math.min(clampedScore, this.currentGame.endingScore)
-        : Math.max(clampedScore, this.currentGame.endingScore);
-    }
-
+    // endingScore is not clamped to here: a calculation or manual edit that
+    // overshoots it should still end the game (see isGameFinished), but the
+    // player's real score must be preserved rather than capped to the target.
     playerScore.score = clampedScore;
 
     this.calculateRankings(this.currentGame);
@@ -250,9 +245,17 @@ getters: {
   isGameFinished: (state): boolean => {
     if (state.currentGame === null) return false;
 
-    if (state.currentGame.endingScore === null) return false;
+    const {endingScore, startScore, scores} = state.currentGame;
 
-    return state.currentGame.scores.some(playerScore => playerScore.score === state.currentGame?.endingScore);
+    if (endingScore === null) return false;
+
+    // Counting up (endingScore >= startScore): finished once a score reaches
+    // or overshoots the target. Counting down: finished once it reaches or
+    // undershoots it. Not a strict equality check, since scores are no
+    // longer clamped to endingScore and can land past it in one jump.
+    const countingUp = endingScore >= startScore;
+
+    return scores.some(playerScore => countingUp ? playerScore.score >= endingScore : playerScore.score <= endingScore);
   },
   currentRoundWinsTally: (state): Record<string, number> => {
     const tally: Record<string, number> = {};
