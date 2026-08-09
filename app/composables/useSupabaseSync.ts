@@ -1,6 +1,7 @@
 import type { Game, GameRound, GameScore, PlayerProfile } from "~/types/global";
 import { WinCondition } from "~/types/global";
 import type { Json } from "~/types/database.types";
+import type { UserGameHistoryRow } from "~/composables/useUserGamesHistoryQuery";
 
 export const useSupabaseSync = () => {
   const supabase = useSupabaseClient();
@@ -10,11 +11,11 @@ export const useSupabaseSync = () => {
 
   const isSyncing = ref(false);
 
-  const syncGame = async (game: Game) => {
+  const syncGame = async (game: Game): Promise<UserGameHistoryRow | null> => {
     const { data: { session } } = await supabase.auth.getSession();
-    if (!session) return;
+    if (!session) return null;
 
-    const { error } = await supabase.from('games').upsert({
+    const { data, error } = await supabase.from('games').upsert({
       owner_id: session.user.id,
       local_uuid: game.uuid,
       name: game.name,
@@ -27,9 +28,11 @@ export const useSupabaseSync = () => {
       rounds: (game.rounds ?? []) as unknown as Json,
       created_at: new Date(game.createdAt).toISOString(),
       ended_at: game.endedAt ? new Date(game.endedAt).toISOString() : null,
-    }, { onConflict: 'owner_id,local_uuid' });
+    }, { onConflict: 'owner_id,local_uuid' }).select().single();
 
     if (error) throw error;
+
+    return data;
   };
 
   const syncProfile = async (profile: PlayerProfile) => {

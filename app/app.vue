@@ -33,6 +33,7 @@
 
 <script setup lang="ts">
 import { VueQueryDevtools } from '@tanstack/vue-query-devtools'
+import { useQueryClient } from '@tanstack/vue-query';
 import { Play, History, Users, Clock, User, Android } from '@primeicons/vue';
 import { Capacitor } from '@capacitor/core';
 
@@ -86,6 +87,18 @@ const { init: initDuelMode } = useDuelMode();
 const { init: initQuickScoreValues } = useQuickScoreValues();
 const { shouldShowPrompt, markPromptAsSeen, openPlayStore } = useAndroidAppPrompt();
 const confirm = useConfirm();
+const user = useSupabaseUser();
+const queryClient = useQueryClient();
+const { fetchUserGamesHistory } = useUserGamesHistoryQuery();
+
+watch(user, (currentUser) => {
+  if (!currentUser) return;
+
+  queryClient.prefetchQuery({
+    queryKey: userGamesHistoryQueryKey(currentUser.id),
+    queryFn: fetchUserGamesHistory,
+  });
+}, { immediate: true });
 
 onMounted(() => {
   initColorScheme();
