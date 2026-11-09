@@ -1,13 +1,18 @@
 import type { Game, GameRound, GameScore, PlayerProfile } from "~/types/global";
 import { WinCondition } from "~/types/global";
 import type { Json } from "~/types/database.types";
-import type { UserGameHistoryRow } from "~/composables/useUserGamesHistoryQuery";
+import { useQueryClient } from "@tanstack/vue-query";
+import { userGamesHistoryQueryKey, type UserGameHistoryRow } from "~/composables/useUserGamesHistoryQuery";
+
+let isFlushing = false;
 
 export const useSupabaseSync = () => {
   const supabase = useSupabaseClient();
   const user = useSupabaseUser();
   const roomStore = useRoomStore();
   const playerProfilesStore = usePlayerProfilesStore();
+  const syncQueue = useSyncQueueStore();
+  const queryClient = useQueryClient();
 
   const isSyncing = ref(false);
 
@@ -47,6 +52,58 @@ export const useSupabaseSync = () => {
     }, { onConflict: 'owner_id,name' });
 
     if (error) throw error;
+  };
+
+  const storeSyncedRow = (ownerId: string, row: UserGameHistoryRow) => {
+    const rows = [
+      ...(queryClient.getQueryData<UserGameHistoryRow[]>(userGamesHistoryQueryKey(ownerId)) ?? syncQueue.historyCache[ownerId] ?? [])
+        .filter((existing) => existing.local_uuid !== row.local_uuid),
+      row,
+    ];
+
+    queryClient.setQueryData(userGamesHistoryQueryKey(ownerId), rows);
+    syncQueue.setHistoryCache(ownerId, rows);
+  };
+
+  // Each entry is retried independently so one rejected entry cannot block
+  // the rest of the queue. Failed entries stay queued for the next attempt.
+  const flushPending = async () => {
+    if (isFlushing || !navigator.onLine) return;
+    if (syncQueue.pendingGames.length === 0 && syncQueue.pendingProfiles.length === 0) return;
+
+    isFlushing = true;
+
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) return;
+
+      const ownerId = session.user.id;
+
+      for (const { profile } of syncQueue.pendingProfiles.filter((entry) => entry.ownerId === ownerId)) {
+        try {
+          await syncProfile(profile);
+          syncQueue.removePendingProfile(ownerId, profile.name);
+        } catch {
+          // Kept in the queue.
+        }
+      }
+
+      for (const { game } of syncQueue.pendingGames.filter((entry) => entry.ownerId === ownerId)) {
+        try {
+          const row = await syncGame(game);
+          if (!row) continue;
+
+          storeSyncedRow(ownerId, row);
+          syncQueue.removePendingGame(ownerId, game.uuid);
+        } catch {
+          // Kept in the queue.
+        }
+      }
+    } catch {
+      // The session could not be read: the next trigger retries.
+    } finally {
+      isFlushing = false;
+    }
   };
 
   const pullRemote = async () => {
@@ -116,6 +173,7 @@ export const useSupabaseSync = () => {
     isSyncing,
     syncGame,
     syncProfile,
+    flushPending,
     pullRemote,
     importLocalToRemote,
   };

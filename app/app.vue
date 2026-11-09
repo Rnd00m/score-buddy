@@ -88,9 +88,10 @@ const { init: initDuelMode } = useDuelMode();
 const { init: initQuickScoreValues } = useQuickScoreValues();
 const { shouldShowPrompt, markPromptAsSeen, openPlayStore } = useAndroidAppPrompt();
 const confirm = useConfirm();
-const user = useSupabaseUser();
+const user = useAuthUser();
 const queryClient = useQueryClient();
 const { fetchUserGamesHistory } = useUserGamesHistoryQuery();
+const { init: initOfflineSync } = useOfflineSync();
 
 watch(user, (currentUser) => {
   if (!currentUser) return;
@@ -106,6 +107,7 @@ onMounted(() => {
   initWakeLock();
   initDuelMode();
   initQuickScoreValues();
+  initOfflineSync();
 
   // In a plain mobile browser tab there's no safe-area inset for the
   // address bar (unlike the native app's status bar), so the header ends

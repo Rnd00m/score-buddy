@@ -86,8 +86,9 @@ import ArrowLeft from '@primeicons/vue/arrow-left';
 const {t} = useI18n();
 const roomStore = useRoomStore();
 const playerProfilesStore = usePlayerProfilesStore();
-const user = useSupabaseUser();
-const {syncProfile} = useSupabaseSync();
+const user = useAuthUser();
+const syncQueue = useSyncQueueStore();
+const {flushPending} = useSupabaseSync();
 const toast = useToast();
 
 const formKey = ref(0);
@@ -203,7 +204,8 @@ const onFormSubmit = ({valid, states}: FormSubmitEvent) => {
     const profile = playerProfilesStore.addProfile(name, color);
 
     if (user.value) {
-      syncProfile(profile).catch(() => {});
+      syncQueue.enqueueProfile(user.value.id, profile);
+      flushPending();
     }
   }
 
