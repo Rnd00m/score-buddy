@@ -52,7 +52,8 @@ import Replay from '@primeicons/vue/replay';
 import { useUserGamesHistoryQuery, userGamesHistoryQueryKey } from "~/composables/useUserGamesHistoryQuery";
 
 const {t} = useI18n();
-const user = useSupabaseUser();
+const user = useAuthUser();
+const syncQueue = useSyncQueueStore();
 const roomStore = useRoomStore();
 const router = useRouter();
 const { fetchUserGamesHistory } = useUserGamesHistoryQuery();
@@ -69,7 +70,25 @@ const { data, isFetching } = useQuery({
   enabled: computed(() => !!user.value),
 });
 
-const games = computed(() => (data.value ?? []).map((row): Game & { createdAtTime: number } => ({
+// Games finished offline are not on the server yet: they are shown from the
+// sync queue, on top of the last history fetched from the server.
+const pendingGames = computed(() => syncQueue.pendingGames
+  .filter((entry) => entry.ownerId === user.value?.id)
+  .map(({ game }): Game & { createdAtTime: number } => ({
+    ...game,
+    createdAt: new Date(game.createdAt),
+    endedAt: game.endedAt ? new Date(game.endedAt) : null,
+    createdAtTime: new Date(game.createdAt).getTime(),
+  })));
+
+const syncedRows = computed(() => {
+  const pendingUuids = new Set(pendingGames.value.map((game) => game.uuid));
+  const rows = data.value ?? syncQueue.historyCache[user.value?.id ?? ''] ?? [];
+
+  return rows.filter((row) => !pendingUuids.has(row.local_uuid));
+});
+
+const games = computed(() => [...syncedRows.value.map((row): Game & { createdAtTime: number } => ({
   uuid: row.local_uuid,
   name: row.name,
   startScore: row.start_score,
@@ -82,7 +101,7 @@ const games = computed(() => (data.value ?? []).map((row): Game & { createdAtTim
   createdAt: new Date(row.created_at),
   endedAt: row.ended_at ? new Date(row.ended_at) : null,
   createdAtTime: new Date(row.created_at).getTime(),
-})));
+})), ...pendingGames.value]);
 
 const confirm = useConfirm();
 const selectedGame = ref<Game | null>(null);

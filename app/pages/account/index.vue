@@ -132,7 +132,7 @@ const {t, locale, locales, setLocale} = useI18n() as unknown as ReturnType<typeo
 const duelModePopover = ref();
 const toggleDuelModePopover = (event: MouseEvent) => duelModePopover.value?.toggle(event);
 const supabase = useSupabaseClient();
-const user = useSupabaseUser();
+const user = useAuthUser();
 const toast = useToast();
 const confirm = useConfirm();
 const router = useRouter();
@@ -177,7 +177,16 @@ const handleQuickScoreValueChange = (index: number, newValue: number | null) => 
   setQuickScoreValues(updated);
 };
 
+const notifyOffline = () => {
+  toast.add({severity: 'warn', summary: t('account.offlineTitle'), detail: t('account.offlineMessage'), life: 4000});
+};
+
 const handleSync = async () => {
+  if (!navigator.onLine) {
+    notifyOffline();
+    return;
+  }
+
   try {
     await pullRemote();
     await importLocalToRemote();
@@ -188,6 +197,13 @@ const handleSync = async () => {
 };
 
 const handleLogout = () => {
+  // Signing out needs the server to revoke the session: offline it would
+  // silently fail and leave the user logged in.
+  if (!navigator.onLine) {
+    notifyOffline();
+    return;
+  }
+
   confirm.require({
     group: 'logout',
     header: t('account.logoutConfirmTitle'),

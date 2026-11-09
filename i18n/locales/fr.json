@@ -63,6 +63,8 @@
     "syncedMessage": "Vos données sont à jour.",
     "syncErrorTitle": "Erreur de synchronisation",
     "syncErrorMessage": "Impossible de synchroniser vos données.",
+    "offlineTitle": "Pas de connexion",
+    "offlineMessage": "Cette action nécessite une connexion internet. Vos données sont enregistrées sur cet appareil et seront synchronisées automatiquement.",
     "privacyPolicy": "Politique de confidentialité"
   },
   "login": {

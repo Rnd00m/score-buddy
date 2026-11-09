@@ -63,6 +63,8 @@
     "syncedMessage": "Your data is up to date.",
     "syncErrorTitle": "Sync error",
     "syncErrorMessage": "Could not sync your data.",
+    "offlineTitle": "No connection",
+    "offlineMessage": "This action requires an internet connection. Your data is saved on this device and will sync automatically.",
     "privacyPolicy": "Privacy Policy"
   },
   "login": {
